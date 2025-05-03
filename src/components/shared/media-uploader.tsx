@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Upload, Loader } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useUploadMedia } from "@/hooks/media/use-upload-media";

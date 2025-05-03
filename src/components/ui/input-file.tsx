@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Icons } from '@/assets/icons';
 import { cn } from '@/libs/utils';
-import type { FCC } from '@/types-1';
+import type { FCC } from '@/types';
 
 import { FILE_FORMAT } from '@/constants';
 import { validateFileFormat, validateFileSize } from '@/utils';
