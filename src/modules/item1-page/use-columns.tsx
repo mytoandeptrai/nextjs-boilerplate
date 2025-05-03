@@ -1,19 +1,19 @@
 'use client';
-import type { ColumnDef } from '@tanstack/react-table';
-import type { TFunction } from 'i18next';
-import { Edit, Flag, MoreHorizontal, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useCallback, useMemo, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { NotificationDelete } from '@/components/ui/notification-delete';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import type { Item1 } from '@/types/item1';
+import { NotificationDelete } from '@/components/ui/notification-delete';
 import { useDeleteItem1Mutation } from '@/hooks/item1/use-delete-item1-mutation';
+import type { Item1 } from '@/types/item1';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { TFunction } from 'i18next';
+import { Edit, Flag, MoreHorizontal, Trash } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useMemo, useState } from 'react';
 
 export function useColumns(t: TFunction, refetch: () => void): ColumnDef<Item1>[] {
   const pathname = usePathname();
@@ -113,12 +113,15 @@ export function useColumns(t: TFunction, refetch: () => void): ColumnDef<Item1>[
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
-                  <DropdownMenuItem
-                    variant='destructive'
-                    onClick={handleDelete(row.original.id, row.original.name || t('item.unknown'))}
-                  >
-                    <Trash className='mr-2 h-4 w-4' />
-                    {t('common.delete')}
+                  <DropdownMenuItem asChild>
+                    <Button
+                      variant='destructive'
+                      className='w-full justify-start'
+                      onClick={handleDelete(row.original.id, row.original.name || t('item.unknown'))}
+                    >
+                      <Trash className='mr-2 h-4 w-4' />
+                      {t('common.delete')}
+                    </Button>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleEdit(row.original.id)}>
                     <Edit className='mr-2 h-4 w-4' />
