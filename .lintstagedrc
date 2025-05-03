@@ -1,3 +1,7 @@
 {
-  "*.{js,jsx,ts,tsx}": "eslint --fix"
+  "*.{js,jsx,ts,tsx}": [
+    "biome format --write",
+    "biome lint --write"
+  ],
+  "*.{json,css,scss,md}": ["biome format --write"]
 } 

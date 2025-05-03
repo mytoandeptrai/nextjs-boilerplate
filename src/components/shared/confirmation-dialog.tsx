@@ -1,15 +1,9 @@
-"use client";
+'use client';
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 interface ConfirmationDialogProps {
   onConfirm: () => void;
@@ -39,21 +33,19 @@ export default function ConfirmationDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          {title && <DialogTitle>{title}</DialogTitle>}
-        </DialogHeader>
+      <DialogContent className='sm:max-w-[425px]'>
+        <DialogHeader>{title && <DialogTitle>{title}</DialogTitle>}</DialogHeader>
         {description && (
-          <div className="py-4">
-            <p className="text-sm text-muted-foreground">{description}</p>
+          <div className='py-4'>
+            <p className='text-muted-foreground text-sm'>{description}</p>
           </div>
         )}
-        <div className="flex justify-end gap-2">
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            {cancelText || t("common.cancel")}
+        <div className='flex justify-end gap-2'>
+          <Button variant='outline' onClick={() => setOpen(false)}>
+            {cancelText || t('common.cancel')}
           </Button>
-          <Button variant="destructive" onClick={handleConfirm}>
-            {confirmText || t("common.confirm")}
+          <Button variant='destructive' onClick={handleConfirm}>
+            {confirmText || t('common.confirm')}
           </Button>
         </div>
       </DialogContent>

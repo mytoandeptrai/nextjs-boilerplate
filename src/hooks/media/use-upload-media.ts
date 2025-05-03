@@ -1,5 +1,5 @@
-import { useServices } from "@/services";
-import { useMutation } from "@tanstack/react-query";
+import { useServices } from '@/services';
+import { useMutation } from '@tanstack/react-query';
 
 interface UploadMediaOptions {
   onSuccess?: (result: { id: string; url: string }) => void;

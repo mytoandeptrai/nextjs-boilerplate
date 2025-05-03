@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/contexts/auth";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/auth';
 
 export function AuthRedirect({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -10,7 +10,7 @@ export function AuthRedirect({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
-      router.push("/login");
+      router.push('/login');
     }
   }, [isAuthenticated, router, isLoading]);
 

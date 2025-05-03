@@ -1,66 +1,66 @@
 {
-    "home": {
-        "title": "Trang chủ"
-    },
-    "nav": {
-        "auth": "Xác thực",
-        "login": "Đăng nhập",
-        "register": "Đăng ký",
-        "forgotPassword": "Quên mật khẩu",
-        "resetPassword": "Đặt lại mật khẩu",
-        "verifyEmail": "Xác thực email",
-        "item1": "Mục 1",
-        "item2": "Mục 2",
-        "item3": "Mục 3",
-        "item4": "Mục 4",
-        "item5": "Mục 5",
-        "dashboard": "Bảng điều khiển",
-        "contentManagement": "Quản lý nội dung"
-    },
-    "common": {
-        "actions": "Hành động",
-        "edit": "Sửa",
-        "delete": "Xóa",
-        "create": "Tạo mới",
-        "upload": "Tải lên",
-        "choose": "Chọn",
-        "days": "Ngày",
-        "hours": "Giờ",
-        "minutes": "Phút",
-        "update": "Cập nhật",
-        "editContent": "Sửa nội dung",
-        "shortDays": "Ngày",
-        "shortHours": "Giờ",
-        "shortMinutes": "Phút",
-        "report": "Báo cáo",
-        "active": "Hoạt động",
-        "inactive": "Không hoạt động",
-        "cancel": "Hủy",
-        "addNew": "Thêm mới",
-        "none": "Không có",
-        "close": "Đóng",
-        "deleteConfirmation": "Bạn có chắc chắn muốn xóa {{itemName}}?",
-        "deleteSuccess": "{{itemName}} đã được xóa thành công",
-        "deleteError": "Không thể xóa {{itemName}}",
-        "deleteSuccessTitle": "Thành công",
-        "deleteErrorTitle": "Lỗi",
-        "connected": "Đã kết nối",
-        "errorOccurred": "Đã xảy ra lỗi"
-    },
-    "item": {
-        "name": "Mục 1",
-        "createdAt": "Ngày tạo",
-        "updatedAt": "Ngày cập nhật",
-        "actions": "Hành động",
-        "sort": "Sắp xếp",
-        "searching": "Đang tìm kiếm...",
-        "management": "Quản lý"
-    },
-    "langName": {
-        "vi": "Tiếng Việt",
-        "en": "Tiếng Anh"
-    },
-    "messages": {
-        "conflict": "{{itemName}} đã tồn tại"
-    }
+  "home": {
+    "title": "Trang chủ"
+  },
+  "nav": {
+    "auth": "Xác thực",
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "forgotPassword": "Quên mật khẩu",
+    "resetPassword": "Đặt lại mật khẩu",
+    "verifyEmail": "Xác thực email",
+    "item1": "Mục 1",
+    "item2": "Mục 2",
+    "item3": "Mục 3",
+    "item4": "Mục 4",
+    "item5": "Mục 5",
+    "dashboard": "Bảng điều khiển",
+    "contentManagement": "Quản lý nội dung"
+  },
+  "common": {
+    "actions": "Hành động",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "create": "Tạo mới",
+    "upload": "Tải lên",
+    "choose": "Chọn",
+    "days": "Ngày",
+    "hours": "Giờ",
+    "minutes": "Phút",
+    "update": "Cập nhật",
+    "editContent": "Sửa nội dung",
+    "shortDays": "Ngày",
+    "shortHours": "Giờ",
+    "shortMinutes": "Phút",
+    "report": "Báo cáo",
+    "active": "Hoạt động",
+    "inactive": "Không hoạt động",
+    "cancel": "Hủy",
+    "addNew": "Thêm mới",
+    "none": "Không có",
+    "close": "Đóng",
+    "deleteConfirmation": "Bạn có chắc chắn muốn xóa {{itemName}}?",
+    "deleteSuccess": "{{itemName}} đã được xóa thành công",
+    "deleteError": "Không thể xóa {{itemName}}",
+    "deleteSuccessTitle": "Thành công",
+    "deleteErrorTitle": "Lỗi",
+    "connected": "Đã kết nối",
+    "errorOccurred": "Đã xảy ra lỗi"
+  },
+  "item": {
+    "name": "Mục 1",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Ngày cập nhật",
+    "actions": "Hành động",
+    "sort": "Sắp xếp",
+    "searching": "Đang tìm kiếm...",
+    "management": "Quản lý"
+  },
+  "langName": {
+    "vi": "Tiếng Việt",
+    "en": "Tiếng Anh"
+  },
+  "messages": {
+    "conflict": "{{itemName}} đã tồn tại"
+  }
 }

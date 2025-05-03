@@ -21,34 +21,28 @@ export interface PaginatedListResponse<T> {
 }
 
 export type ContentType =
-  | "pdf"
-  | "doc"
-  | "sheet"
-  | "slide"
-  | "image"
-  | "video"
-  | "youtube"
-  | "vimeo"
-  | "text"
-  | "embed"
-  | "audio";
+  | 'pdf'
+  | 'doc'
+  | 'sheet'
+  | 'slide'
+  | 'image'
+  | 'video'
+  | 'youtube'
+  | 'vimeo'
+  | 'text'
+  | 'embed'
+  | 'audio';
 
 export type QuestionType =
-  | "BooleanQuestion"
-  | "SelectSingleQuestion"
-  | "SelectMultipleQuestion"
-  | "SortQuestion"
-  | "PairQuestion"
-  | "FillQuestion"
-  | "ImageMapQuestion"
-  | "OpenQuestion"
-  | "OpinionSelectMultipleQuestion"
-  | "OpinionOpenQuestion";
+  | 'BooleanQuestion'
+  | 'SelectSingleQuestion'
+  | 'SelectMultipleQuestion'
+  | 'SortQuestion'
+  | 'PairQuestion'
+  | 'FillQuestion'
+  | 'ImageMapQuestion'
+  | 'OpenQuestion'
+  | 'OpinionSelectMultipleQuestion'
+  | 'OpinionOpenQuestion';
 
-export type OrderStatus =
-  | "PENDING"
-  | "PROCESSING"
-  | "COMPLETED"
-  | "FAILED"
-  | "REFUNDED"
-  | "CANCELLED";
+export type OrderStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'REFUNDED' | 'CANCELLED';

@@ -1,24 +1,21 @@
-"use client";
-import { ColumnDef } from "@tanstack/react-table";
-import { TFunction } from "i18next";
-import { Edit, Flag, MoreHorizontal, Trash } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useCallback, useMemo, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { NotificationDelete } from "@/components/ui/notification-delete";
+'use client';
+import type { ColumnDef } from '@tanstack/react-table';
+import type { TFunction } from 'i18next';
+import { Edit, Flag, MoreHorizontal, Trash } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useCallback, useMemo, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { NotificationDelete } from '@/components/ui/notification-delete';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Item1 } from "@/types/item1";
-import { useDeleteItem1Mutation } from "@/hooks/item1/use-delete-item1-mutation";
+} from '@/components/ui/dropdown-menu';
+import type { Item1 } from '@/types/item1';
+import { useDeleteItem1Mutation } from '@/hooks/item1/use-delete-item1-mutation';
 
-export function useColumns(
-  t: TFunction,
-  refetch: () => void
-): ColumnDef<Item1>[] {
+export function useColumns(t: TFunction, refetch: () => void): ColumnDef<Item1>[] {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -62,8 +59,8 @@ export function useColumns(
   const handleEdit = useCallback(
     (itemId: string) => () => {
       const newSearchParams = new URLSearchParams(searchParams);
-      newSearchParams.set("action", "edit");
-      newSearchParams.set("id", itemId);
+      newSearchParams.set('action', 'edit');
+      newSearchParams.set('id', itemId);
       router.push(`${pathname}?${newSearchParams.toString()}`);
     },
     [pathname, router, searchParams]
@@ -72,93 +69,79 @@ export function useColumns(
   return useMemo(() => {
     return [
       {
-        accessorKey: "name",
-        header: t("item.name"),
+        accessorKey: 'name',
+        header: t('item.name'),
         cell: ({ row }) => {
           return (
-            <div className="flex items-center gap-2">
+            <div className='flex items-center gap-2'>
               <span>{row.original.name}</span>
             </div>
           );
         },
       },
       {
-        accessorKey: "createdAt",
-        header: t("item.createdAt"),
+        accessorKey: 'createdAt',
+        header: t('item.createdAt'),
         cell: ({ row }) => {
           return new Date(row.original.createdAt).toLocaleDateString();
         },
       },
       {
-        accessorKey: "updatedAt",
-        header: t("item.updatedAt"),
+        accessorKey: 'updatedAt',
+        header: t('item.updatedAt'),
         cell: ({ row }) => {
           return new Date(row.original.updatedAt).toLocaleDateString();
         },
       },
       {
-        id: "actions",
+        id: 'actions',
         cell: ({ row }) => {
           return (
             <>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    variant="ghost"
-                    className={`h-8 w-8 p-0 ${
-                      row.getIsSelected() ? "bg-brand-10 rounded-full" : ""
-                    }`}
+                    variant='ghost'
+                    className={`h-8 w-8 p-0 ${row.getIsSelected() ? 'rounded-full bg-brand-10' : ''}`}
                   >
-                    <span className="sr-only">Open menu</span>
+                    <span className='sr-only'>Open menu</span>
                     <MoreHorizontal
-                      className={`h-4 w-4 hover:bg-brand-10 hover:rounded-full ${
-                        row.getIsSelected() ? "text-brand-60" : ""
+                      className={`h-4 w-4 hover:rounded-full hover:bg-brand-10 ${
+                        row.getIsSelected() ? 'text-brand-60' : ''
                       }`}
                     />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align='end'>
                   <DropdownMenuItem
-                    variant="destructive"
-                    onClick={handleDelete(
-                      row.original.id,
-                      row.original.name || t("item.unknown")
-                    )}
+                    variant='destructive'
+                    onClick={handleDelete(row.original.id, row.original.name || t('item.unknown'))}
                   >
-                    <Trash className="mr-2 h-4 w-4" />
-                    {t("common.delete")}
+                    <Trash className='mr-2 h-4 w-4' />
+                    {t('common.delete')}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleEdit(row.original.id)}>
-                    <Edit className="mr-2 h-4 w-4" />
-                    {t("common.edit")}
+                    <Edit className='mr-2 h-4 w-4' />
+                    {t('common.edit')}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleEdit(row.original.id)}>
-                    <Flag className="mr-2 h-4 w-4" />
-                    {t("common.report")}
+                    <Flag className='mr-2 h-4 w-4' />
+                    {t('common.report')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
               <NotificationDelete
                 isOpen={deleteDialogState.isOpen}
-                onOpenChange={(open) =>
-                  setDeleteDialogState({ ...deleteDialogState, isOpen: open })
-                }
+                onOpenChange={(open) => setDeleteDialogState({ ...deleteDialogState, isOpen: open })}
                 onConfirm={handleConfirmDelete}
                 onCancel={handleCancelDelete}
-                itemName={deleteDialogState.itemName || t("item.unknown")}
+                itemName={deleteDialogState.itemName || t('item.unknown')}
               />
             </>
           );
         },
       },
     ];
-  }, [
-    t,
-    handleEdit,
-    handleDelete,
-    deleteDialogState,
-    handleConfirmDelete,
-    handleCancelDelete,
-  ]);
+  }, [t, handleEdit, handleDelete, deleteDialogState, handleConfirmDelete, handleCancelDelete]);
 }

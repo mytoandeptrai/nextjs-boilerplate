@@ -1,6 +1,6 @@
-"use client";
-import { useStorageState } from "@/hooks/use-storage-state";
-import { useContext, createContext, type PropsWithChildren } from "react";
+'use client';
+import { useStorageState } from '@/hooks/use-storage-state';
+import { useContext, createContext, type PropsWithChildren } from 'react';
 
 const AuthContext = createContext<{
   signIn: (accessToken: string, refreshToken: string) => void;
@@ -21,9 +21,9 @@ const AuthContext = createContext<{
 // This hook can be used to access the user info.
 export function useAuth() {
   const value = useContext(AuthContext);
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== 'production') {
     if (!value) {
-      throw new Error("useSession must be wrapped in a <SessionProvider />");
+      throw new Error('useSession must be wrapped in a <SessionProvider />');
     }
   }
 
@@ -31,10 +31,8 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: PropsWithChildren) {
-  const [[isLoadingAccessToken, accessToken], setAccessToken] =
-    useStorageState("accessToken");
-  const [[isLoadingRefreshToken, refreshToken], setRefreshToken] =
-    useStorageState("refreshToken");
+  const [[isLoadingAccessToken, accessToken], setAccessToken] = useStorageState('accessToken');
+  const [[isLoadingRefreshToken, refreshToken], setRefreshToken] = useStorageState('refreshToken');
 
   return (
     <AuthContext.Provider

@@ -1,8 +1,8 @@
-export type SupportedLocale = "en" | "vi";
+export type SupportedLocale = 'en' | 'vi';
 
 const i18nConfig = {
-  locales: ["en", "vi"],
-  defaultLocale: "en",
+  locales: ['en', 'vi'],
+  defaultLocale: 'en',
 } as {
   locales: SupportedLocale[];
   defaultLocale: SupportedLocale;

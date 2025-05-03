@@ -1,28 +1,24 @@
-import type {
-  Item1,
-  CreateItem1Request,
-  UpdateItem1Request,
-} from "@/types/item1";
-import type { PaginatedListResponse } from "@/types/common";
-import { transformPaginatedList } from "@/utils/pagination";
+import type { Item1, CreateItem1Request, UpdateItem1Request } from '@/types/item1';
+import type { PaginatedListResponse } from '@/types/common';
+import { transformPaginatedList } from '@/utils/pagination';
 
 // Mock data
 const mockItems: Item1[] = [
   {
-    id: "1",
-    name: "Item 1",
+    id: '1',
+    name: 'Item 1',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
   {
-    id: "2",
-    name: "Item 2",
+    id: '2',
+    name: 'Item 2',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
   {
-    id: "3",
-    name: "Item 3",
+    id: '3',
+    name: 'Item 3',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
@@ -44,9 +40,7 @@ export const Item1Service = {
 
     // Apply name filter if provided
     if (params.name) {
-      filteredItems = filteredItems.filter((item) =>
-        item.name.toLowerCase().includes(params.name!.toLowerCase())
-      );
+      filteredItems = filteredItems.filter((item) => item.name.toLowerCase().includes(params.name!.toLowerCase()));
     }
 
     // Apply pagination
@@ -86,7 +80,7 @@ export const Item1Service = {
     await delay(500);
     const index = mockItems.findIndex((item) => item.id === data.id);
     if (index === -1) {
-      throw new Error("Item not found");
+      throw new Error('Item not found');
     }
     const updatedItem: Item1 = {
       ...mockItems[index],
@@ -101,7 +95,7 @@ export const Item1Service = {
     await delay(500);
     const index = mockItems.findIndex((item) => item.id === id);
     if (index === -1) {
-      throw new Error("Item not found");
+      throw new Error('Item not found');
     }
     mockItems.splice(index, 1);
     return undefined;
@@ -111,7 +105,7 @@ export const Item1Service = {
     await delay(500);
     const item = mockItems.find((item) => item.id === id);
     if (!item) {
-      throw new Error("Item not found");
+      throw new Error('Item not found');
     }
     return item;
   },

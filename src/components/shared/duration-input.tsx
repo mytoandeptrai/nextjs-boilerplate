@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { useTranslation } from "react-i18next";
+import { Input } from '@/components/ui/input';
+import { useTranslation } from 'react-i18next';
 
 type DurationInputProps = {
   defaultDays?: number;
@@ -20,11 +20,7 @@ export default function DurationInput({
 }: DurationInputProps) {
   const { t } = useTranslation();
 
-  const calculateTotalMinutes = (
-    days: number,
-    hours: number,
-    minutes: number
-  ) => {
+  const calculateTotalMinutes = (days: number, hours: number, minutes: number) => {
     return Math.max(0, days) * 24 * 60 + Math.max(0, hours) * 60 + Math.max(0, minutes);
   };
 
@@ -45,48 +41,36 @@ export default function DurationInput({
   const minutes = value ? getMinutesFromMinutes(value) : defaultMinutes;
 
   return (
-    <div className="flex items-center gap-4 flex-wrap">
-      <div className="flex flex-1 items-center gap-2">
+    <div className='flex flex-wrap items-center gap-4'>
+      <div className='flex flex-1 items-center gap-2'>
         <Input
-          type="number"
-          min="0"
-          className="flex-1"
+          type='number'
+          min='0'
+          className='flex-1'
           value={days}
-          onChange={(e) =>
-            onChange?.(
-              calculateTotalMinutes(parseInt(e.target.value) || 0, hours, minutes)
-            )
-          }
+          onChange={(e) => onChange?.(calculateTotalMinutes(Number.parseInt(e.target.value) || 0, hours, minutes))}
         />
-        <span>{t("common.shortDays")}</span>
+        <span>{t('common.shortDays')}</span>
       </div>
-      <div className="flex flex-1 items-center gap-2">
+      <div className='flex flex-1 items-center gap-2'>
         <Input
-          type="number"
-          min="0"
-          className="flex-1"
+          type='number'
+          min='0'
+          className='flex-1'
           value={hours}
-          onChange={(e) =>
-            onChange?.(
-              calculateTotalMinutes(days, parseInt(e.target.value) || 0, minutes)
-            )
-          }
+          onChange={(e) => onChange?.(calculateTotalMinutes(days, Number.parseInt(e.target.value) || 0, minutes))}
         />
-        <span>{t("common.shortHours")}</span>
+        <span>{t('common.shortHours')}</span>
       </div>
-      <div className="flex flex-1 items-center gap-2">
+      <div className='flex flex-1 items-center gap-2'>
         <Input
-          type="number"
-          min="0"
-          className="flex-1"
+          type='number'
+          min='0'
+          className='flex-1'
           value={minutes}
-          onChange={(e) =>
-            onChange?.(
-              calculateTotalMinutes(days, hours, parseInt(e.target.value) || 0)
-            )
-          }
+          onChange={(e) => onChange?.(calculateTotalMinutes(days, hours, Number.parseInt(e.target.value) || 0))}
         />
-        <span>{t("common.shortMinutes")}</span>
+        <span>{t('common.shortMinutes')}</span>
       </div>
     </div>
   );

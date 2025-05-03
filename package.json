@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint . --write",
+    "format:check": "biome format . --write",
+    "format:fix": "biome format . --write",
     "ts-check": "tsc --noEmit",
     "prepare": "husky install",
     "lint-staged": "lint-staged"
@@ -56,9 +59,9 @@
     "zustand": "^5.0.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "^18.6.1",
     "@commitlint/config-conventional": "^18.6.1",
-    "@eslint/eslintrc": "^3",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4",
     "@tanstack/react-query-devtools": "^5.75.1",
@@ -67,8 +70,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
-    "eslint": "^9",
-    "eslint-config-next": "15.2.4",
     "husky": "^8.0.0",
     "lint-staged": "^15.2.2",
     "postcss": "^8.5.3",

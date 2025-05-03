@@ -36,7 +36,7 @@ export interface CreateMediaRequest {
   fileName: string;
   fileMime: string;
   fileSize: number;
-  access: "public" | "private";
+  access: 'public' | 'private';
 }
 
 export interface GenUploadUrlResponse {

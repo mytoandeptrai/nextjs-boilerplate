@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { I18nextProvider } from "react-i18next";
-import initTranslations from "@/libs/i18n";
-import { createInstance, ResourceKey, ResourceLanguage } from "i18next";
-import { initDayjs } from "@/libs/dayjs";
-import { createContext, useContext } from "react";
-import i18nConfig, { SupportedLocale } from "@/i18nConfig";
-import { z } from "zod";
-import { makeZodI18nMap } from "zod-i18n-map";
-import zodEnTranslation from "@/locales/zod/en.json";
-import zodViTranslation from "@/locales/zod/vi.json";
+import { I18nextProvider } from 'react-i18next';
+import initTranslations from '@/libs/i18n';
+import { createInstance, type ResourceKey, type ResourceLanguage } from 'i18next';
+import { initDayjs } from '@/libs/dayjs';
+import { createContext, useContext } from 'react';
+import i18nConfig, { type SupportedLocale } from '@/i18nConfig';
+import { z } from 'zod';
+import { makeZodI18nMap } from 'zod-i18n-map';
+import zodEnTranslation from '@/locales/zod/en.json';
+import zodViTranslation from '@/locales/zod/vi.json';
 
 const zodTranslations = {
   en: zodEnTranslation,
@@ -20,7 +20,7 @@ const LocaleContext = createContext(i18nConfig.defaultLocale);
 export const useLocale = () => {
   const locale = useContext(LocaleContext);
   if (!locale) {
-    throw new Error("useLocale must be used within a TranslationsProvider");
+    throw new Error('useLocale must be used within a TranslationsProvider');
   }
 
   return { locale, defaultLocale: i18nConfig.defaultLocale };

@@ -1,7 +1,7 @@
-import { createInstance, i18n, ResourceLanguage } from "i18next";
-import { initReactI18next } from "react-i18next/initReactI18next";
-import resourcesToBackend from "i18next-resources-to-backend";
-import i18nConfig from "@/i18nConfig";
+import { createInstance, type i18n, type ResourceLanguage } from 'i18next';
+import { initReactI18next } from 'react-i18next/initReactI18next';
+import resourcesToBackend from 'i18next-resources-to-backend';
+import i18nConfig from '@/i18nConfig';
 
 export default async function initTranslations(
   locale: string,
@@ -10,16 +10,12 @@ export default async function initTranslations(
 ) {
   i18nInstance = i18nInstance || createInstance();
 
-  console.log("resources", resources);
+  console.log('resources', resources);
 
   i18nInstance.use(initReactI18next);
 
   if (!resources) {
-    i18nInstance.use(
-      resourcesToBackend(
-        (language: string) => import(`@/locales/${language}.json`)
-      )
-    );
+    i18nInstance.use(resourcesToBackend((language: string) => import(`@/locales/${language}.json`)));
   }
 
   await i18nInstance.init({

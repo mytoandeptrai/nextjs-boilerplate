@@ -1,9 +1,9 @@
-"use client";
-import React, { useRef } from "react";
-import { Button } from "../ui/button";
-import { Upload, Loader } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { useUploadMedia } from "@/hooks/media/use-upload-media";
+'use client';
+import React, { useRef } from 'react';
+import { Button } from '../ui/button';
+import { Upload, Loader } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useUploadMedia } from '@/hooks/media/use-upload-media';
 
 type MediaUploaderProps = {
   onChange?: (result: { id: string; url: string }) => void;
@@ -30,26 +30,11 @@ export function MediaUploader({ onChange }: MediaUploaderProps) {
 
   return (
     <>
-      <Button
-        type="button"
-        variant="outline"
-        onClick={handleUpload}
-        disabled={isUploading}
-      >
-        {isUploading ? (
-          <Loader className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Upload className="mr-2 h-4 w-4" />
-        )}
-        {t("common.upload")}
+      <Button type='button' variant='outline' onClick={handleUpload} disabled={isUploading}>
+        {isUploading ? <Loader className='mr-2 h-4 w-4 animate-spin' /> : <Upload className='mr-2 h-4 w-4' />}
+        {t('common.upload')}
       </Button>
-      <input
-        ref={fileInputRef}
-        className="hidden"
-        type="file"
-        onChange={handleChange}
-        accept="image/jpeg,image/png"
-      />
+      <input ref={fileInputRef} className='hidden' type='file' onChange={handleChange} accept='image/jpeg,image/png' />
     </>
   );
 }

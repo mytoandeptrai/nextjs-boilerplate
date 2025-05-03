@@ -1,14 +1,8 @@
-import type {
-  Media,
-  MediaNode,
-  DeleteMediaRequest,
-  GenUploadUrlResponse,
-  CreateMediaRequest,
-} from "@/types/media";
-import type { PaginatedListResponse } from "@/types/common";
-import { api } from "../config/axios";
-import { transformPaginatedList } from "@/utils/pagination";
-import axios from "axios";
+import type { Media, MediaNode, DeleteMediaRequest, GenUploadUrlResponse, CreateMediaRequest } from '@/types/media';
+import type { PaginatedListResponse } from '@/types/common';
+import { api } from '../config/axios';
+import { transformPaginatedList } from '@/utils/pagination';
+import axios from 'axios';
 
 export class MediaService {
   static async find(params: {
@@ -18,7 +12,7 @@ export class MediaService {
     name?: string;
     is_all?: boolean;
   }) {
-    const response = await api.get<PaginatedListResponse<MediaNode>>("/media", {
+    const response = await api.get<PaginatedListResponse<MediaNode>>('/media', {
       params,
     });
     return transformPaginatedList(response.data);
@@ -30,7 +24,7 @@ export class MediaService {
   }
 
   static async create(data: CreateMediaRequest) {
-    const response = await api.post<GenUploadUrlResponse>("/media", data);
+    const response = await api.post<GenUploadUrlResponse>('/media', data);
     return response.data;
   }
 
@@ -39,20 +33,20 @@ export class MediaService {
       fileName: file.name,
       fileMime: file.type,
       fileSize: file.size,
-      access: "public",
+      access: 'public',
     });
 
-    console.log("uploading response", response);
+    console.log('uploading response', response);
 
     await axios.put(response.presignedUrl, file, {
       headers: {
-        "Content-Type": file.type,
+        'Content-Type': file.type,
       },
     });
 
     const media = await this.get(response.mediaId);
 
-    console.log("uploading response", media);
+    console.log('uploading response', media);
 
     return {
       id: media.id,
@@ -61,7 +55,7 @@ export class MediaService {
   }
 
   static async delete(data: DeleteMediaRequest) {
-    const response = await api.delete<Media>("/media", {
+    const response = await api.delete<Media>('/media', {
       data,
     });
     return response.data;

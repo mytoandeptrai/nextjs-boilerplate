@@ -61,7 +61,7 @@ export const formatAddress = (addr: string, length = 6) => {
 };
 
 export const formatCurrency = (value: number | string, currency = 'ETH', decimals = 4) => {
-  const num = typeof value === 'string' ? parseFloat(value) : value;
+  const num = typeof value === 'string' ? Number.parseFloat(value) : value;
   if (isNaN(num)) return '0 ' + currency;
 
   const formatted = num.toLocaleString('en-US', {

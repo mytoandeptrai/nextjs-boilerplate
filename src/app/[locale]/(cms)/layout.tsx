@@ -1,13 +1,12 @@
-import type { Metadata, Viewport } from "next";
-import "../../globals.css";
-import Providers from "../../providers";
-import { AuthRedirect } from "@/components/shared";
-import { fontMono, fontSans, siteConfig } from "@/constants";
-import { cn } from "@/libs/utils";
-
+import type { Metadata, Viewport } from 'next';
+import '../../globals.css';
+import Providers from '../../providers';
+import { AuthRedirect } from '@/components/shared';
+import { fontMono, fontSans, siteConfig } from '@/constants';
+import { cn } from '@/libs/utils';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.appUrl || "http://localhost:3000"),
+  metadataBase: new URL(siteConfig.appUrl || 'http://localhost:3000'),
   title: siteConfig.name,
   description: siteConfig.description,
   generator: 'Next.js',
@@ -62,11 +61,8 @@ export default async function RootLayout({
   const { locale } = await params;
 
   return (
-    <html lang="en">
-      <body
-        suppressHydrationWarning
-        className={cn(`antialiased`, fontSans.variable, fontMono.variable)}
-      >
+    <html lang='en'>
+      <body suppressHydrationWarning className={cn(`antialiased`, fontSans.variable, fontMono.variable)}>
         <Providers locale={locale}>
           <AuthRedirect>{children}</AuthRedirect>
         </Providers>

@@ -1,4 +1,4 @@
-import {env} from './env.const';
+import { env } from './env.const';
 
 export type SiteConfig = typeof siteConfig;
 

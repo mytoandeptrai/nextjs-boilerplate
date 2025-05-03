@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { useServices } from "@/services";
+import { useQuery } from '@tanstack/react-query';
+import { useServices } from '@/services';
 
 export function useItem1List({
   pageIndex,
@@ -15,7 +15,7 @@ export function useItem1List({
   const { Item1Service } = useServices();
 
   return useQuery({
-    queryKey: ["item1s", pageIndex, pageSize, name, sort],
+    queryKey: ['item1s', pageIndex, pageSize, name, sort],
     queryFn: () =>
       Item1Service.find({
         page: pageIndex + 1,

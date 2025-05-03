@@ -3,10 +3,10 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 // extends IUser
-interface IUser {}
+type IUser = {};
 
 // extends ILoginResponse
-interface IStore {}
+type IStore = {};
 
 export interface IMeQueryStore {
   status: 'waiting' | 'ready';

@@ -1,3 +1,2 @@
 #!/bin/sh
-# pnpm lint-staged
-echo "Skipping lint-staged for now"
+pnpm lint-staged
