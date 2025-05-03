@@ -3,5 +3,5 @@
     "biome format --write",
     "biome lint --write"
   ],
-  "*.{json,css,scss,md}": ["biome format --write"]
+  "*.{json,css,scss}": ["biome format --write"]
 } 
