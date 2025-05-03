@@ -1,0 +1,66 @@
+{
+  "home": {
+    "title": "Home"
+  },
+  "nav": {
+    "auth": "Auth",
+    "login": "Login",
+    "register": "Register",
+    "forgotPassword": "Forgot Password",
+    "resetPassword": "Reset Password",
+    "verifyEmail": "Verify Email",
+    "item1": "Item 1",
+    "item2": "Item 2",
+    "item3": "Item 3",
+    "item4": "Item 4",
+    "item5": "Item 5",
+    "dashboard": "Dashboard",
+    "contentManagement": "Content Management"
+  },
+  "common": {
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create",
+    "upload": "Upload",
+    "choose": "Choose",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "update": "Update",
+    "editContent": "Edit content",
+    "shortDays": "Days",
+    "shortHours": "Hrs",
+    "shortMinutes": "Mins",
+    "report": "Report",
+    "active": "Active",
+    "inactive": "Inactive",
+    "cancel": "Cancel",
+    "addNew": "Add New",
+    "none": "None",
+    "close": "Close",
+    "deleteConfirmation": "Are you sure you want to delete {{itemName}}?",
+    "deleteSuccess": "{{itemName}} has been deleted successfully",
+    "deleteError": "Failed to delete {{itemName}}",
+    "deleteSuccessTitle": "Success",
+    "deleteErrorTitle": "Error",
+    "connected": "Connected",
+    "errorOccurred": "An error occurred"
+  },
+  "item": {
+    "name": "Item 1",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "actions": "Actions",
+    "sort": "Sort",
+    "searching": "Searching...",
+    "management": "Management"
+  },
+  "langName": {
+    "vi": "Vietnamese",
+    "en": "English"
+  },
+  "messages": {
+    "conflict": "{{itemName}} already exists"
+  }
+}

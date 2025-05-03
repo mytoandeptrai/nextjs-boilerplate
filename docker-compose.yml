@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  frontend:
+    build:
+      dockerfile: ./docker/Dockerfile
+      args:
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    env_file:
+      - .env
+    restart: always
+
+  # Add more containers below (nginx, postgres, etc.)
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - "8080:8080"
