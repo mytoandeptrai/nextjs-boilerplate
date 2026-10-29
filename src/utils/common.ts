@@ -1,4 +1,4 @@
-import { FILE_FORMAT, NUMBER_FORMAT_LOOK_UP } from '@/constants';
+import { FILE_FORMAT, NUMBER_FORMAT_LOOK_UP } from '@/constants/const';
 import { toast } from 'sonner';
 
 export const range = (start: number, end: number) => {
@@ -62,7 +62,7 @@ export const formatAddress = (addr: string, length = 6) => {
 
 export const formatCurrency = (value: number | string, currency = 'ETH', decimals = 4) => {
   const num = typeof value === 'string' ? Number.parseFloat(value) : value;
-  if (isNaN(num)) return '0 ' + currency;
+  if (Number.isNaN(num)) return `0 ${currency}`;
 
   const formatted = num.toLocaleString('en-US', {
     minimumFractionDigits: 0,

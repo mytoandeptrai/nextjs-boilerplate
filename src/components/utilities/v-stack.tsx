@@ -1,14 +1,14 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from '@/libs/utils';
+import { cn } from '@/lib/utils';
 
 const vStackVariants = cva('flex flex-col', {
   variants: {
     align: {
       default: 'items-stretch',
-      center: 'items-center items',
+      center: 'items items-center',
       start: 'items-start',
       end: 'items-end',
       baseline: 'items-baseline',
@@ -53,16 +53,22 @@ export interface VStackProps extends React.HTMLAttributes<HTMLDivElement>, Varia
   asChild?: boolean;
 }
 
-const VStack = React.forwardRef<HTMLDivElement, VStackProps>(
-  ({ className, asChild = false, spacing, align, justify, children, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'div';
-    return (
-      <Comp className={cn(vStackVariants({ className, spacing, align, justify }))} ref={ref} {...props}>
-        {children}
-      </Comp>
-    );
-  }
-);
-VStack.displayName = 'VStack';
+function VStack({
+  className,
+  asChild = false,
+  spacing,
+  align,
+  justify,
+  children,
+  ref,
+  ...props
+}: VStackProps & { ref?: React.Ref<HTMLDivElement> }) {
+  const Comp = asChild ? Slot : 'div';
+  return (
+    <Comp className={cn(vStackVariants({ className, spacing, align, justify }))} ref={ref} {...props}>
+      {children}
+    </Comp>
+  );
+}
 
 export { VStack, vStackVariants };

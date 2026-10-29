@@ -1,0 +1,16 @@
+{
+  "auth": "Xác thực",
+  "login": "Đăng nhập",
+  "register": "Đăng ký",
+  "forgotPassword": "Quên mật khẩu",
+  "resetPassword": "Đặt lại mật khẩu",
+  "verifyEmail": "Xác thực email",
+  "item1": "Mục 1",
+  "item2": "Mục 2",
+  "item3": "Mục 3",
+  "item4": "Mục 4",
+  "item5": "Mục 5",
+  "dashboard": "Bảng điều khiển",
+  "contentManagement": "Quản lý nội dung",
+  "react19": "React 19 hooks"
+}

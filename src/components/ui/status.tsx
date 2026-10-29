@@ -1,4 +1,4 @@
-import { cn } from '@/libs/utils';
+import { cn } from '@/lib/utils';
 
 interface StatusProps {
   status: string;
@@ -28,7 +28,7 @@ const Status = ({ status, className }: StatusProps) => {
   }
 
   return (
-    <div className={cn('inline-flex items-center rounded-[5px] px-2 py-1 font-medium text-xs', statusClass, className)}>
+    <div className={cn('inline-flex items-center rounded-[5px] px-2 py-1 text-xs font-medium', statusClass, className)}>
       {statusText}
     </div>
   );

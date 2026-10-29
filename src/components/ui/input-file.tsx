@@ -3,10 +3,10 @@ import type { ChangeEvent, DragEvent, ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { Icons } from '@/assets/icons';
-import { cn } from '@/libs/utils';
-import type { FCC } from '@/types';
+import { cn } from '@/lib/utils';
+import type { FCC } from '@/types/type';
 
-import { FILE_FORMAT } from '@/constants';
+import { FILE_FORMAT } from '@/constants/const';
 import { validateFileFormat, validateFileSize } from '@/utils';
 import { toast } from 'sonner';
 import { HStack, VStack } from '../utilities';
@@ -109,7 +109,7 @@ const InputFile: FCC<InputFileProps> = ({
   }
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event?.target?.files![0];
+    const selectedFile = event.target.files?.[0];
 
     if (selectedFile) {
       const image = new Image();
@@ -173,12 +173,12 @@ const InputFile: FCC<InputFileProps> = ({
   };
 
   useEffect(() => {
-    if (!!preview && typeof preview === 'string') {
+    if (preview && typeof preview === 'string') {
       setBlob(preview);
       return;
     }
 
-    if (!!preview && typeof preview === 'object' && preview?.type) {
+    if (preview && typeof preview === 'object' && preview?.type) {
       setBlob(URL.createObjectURL(preview));
       onChange(preview);
       return;
@@ -219,7 +219,7 @@ const InputFile: FCC<InputFileProps> = ({
             alt=''
           />
         )}
-        <div className='-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 z-10 w-full'>
+        <div className='absolute top-1/2 left-1/2 z-10 w-full -translate-x-1/2 -translate-y-1/2'>
           {blob ? (
             withClear ? (
               <HStack
@@ -230,7 +230,7 @@ const InputFile: FCC<InputFileProps> = ({
                   disabled={disabled}
                   onClick={handleClear}
                   size={'sm'}
-                  className={cn('backdrop-blur-sm dark:bg-white-custom', {
+                  className={cn('dark:bg-white-custom backdrop-blur-sm', {
                     'h-8 px-2': isMobile,
                   })}
                 >
@@ -248,14 +248,14 @@ const InputFile: FCC<InputFileProps> = ({
 
                   <div className='hidden space-y-1 md:block'>
                     <div className='text-center'>
-                      <p className='inline font-medium text-brand-600 text-sm dark:text-brand-600'>Click to upload </p>
-                      <p className='inline font-medium text-gray-25 text-sm dark:text-gray-25'>or drag and drop</p>
+                      <p className='text-brand-600 dark:text-brand-600 inline text-sm font-medium'>Click to upload </p>
+                      <p className='text-gray-25 dark:text-gray-25 inline text-sm font-medium'>or drag and drop</p>
                     </div>
-                    <div className='text-center font-medium text-gray-25 text-xs dark:text-gray-25'>{description}</div>
+                    <div className='text-gray-25 dark:text-gray-25 text-center text-xs font-medium'>{description}</div>
                   </div>
                 </VStack>
               ) : (
-                <div className='absolute top-0 right-0 flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-black/55 opacity-0 transition-all hover:scale-125 active:scale-110 group-hover:opacity-100'>
+                <div className='absolute top-0 right-0 flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-black/55 opacity-0 transition-all group-hover:opacity-100 hover:scale-125 active:scale-110'>
                   <Icons.cloud className='text-gray-200' width={24} height={24} />
                 </div>
               )}
@@ -269,7 +269,7 @@ const InputFile: FCC<InputFileProps> = ({
           hidden
           onChange={handleFileChange}
           accept={accept}
-          className='w-full rounded border px-4 py-2 focus:border-blue-300 focus:outline-none focus:ring dark:border-gray-700 dark:bg-black dark:placeholder:text-gray-400'
+          className='w-full rounded border px-4 py-2 focus:border-blue-300 focus:ring focus:outline-none dark:border-gray-700 dark:bg-black dark:placeholder:text-gray-400'
         />
       </div>
 

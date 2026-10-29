@@ -1,0 +1,8 @@
+# Dependency build scripts. Only list packages that must run an install script.
+# `false` = reviewed and intentionally skipped (their native prebuilds / JS fallbacks are enough).
+allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false
+  "@biomejs/biome": false
+  esbuild: false
+  sharp: false

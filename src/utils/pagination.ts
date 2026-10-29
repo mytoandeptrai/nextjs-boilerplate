@@ -1,12 +1,12 @@
-import type { PaginatedListResponse } from '@/types/common';
+import type { IPaginatedListResponse } from '@/types/type';
 import type { PaginationState } from '@tanstack/react-table';
 
 export function transformPaginatedList<T, TOut = T>(
-  data: PaginatedListResponse<T>,
+  data: IPaginatedListResponse<T>,
   transform: (item: T) => TOut = (item) => item as unknown as TOut
 ): {
   items: TOut[];
-  meta: PaginatedListResponse<T>['meta'] & {
+  meta: IPaginatedListResponse<T>['meta'] & {
     nextPage: number | undefined;
   };
 } {
@@ -19,7 +19,7 @@ export function transformPaginatedList<T, TOut = T>(
   };
 }
 
-export function transformMetaToPaginationState(meta?: PaginatedListResponse<unknown>['meta']): PaginationState {
+export function transformMetaToPaginationState(meta?: IPaginatedListResponse<unknown>['meta']): PaginationState {
   if (!meta) {
     return {
       pageIndex: 0,

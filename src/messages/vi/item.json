@@ -1,0 +1,16 @@
+{
+  "name": "Mục 1",
+  "createdAt": "Ngày tạo",
+  "updatedAt": "Ngày cập nhật",
+  "actions": "Hành động",
+  "sort": "Sắp xếp",
+  "searching": "Đang tìm kiếm...",
+  "management": "Quản lý",
+  "editTitle": "Sửa mục",
+  "namePlaceholder": "Nhập tên mục",
+  "saveChanges": "Lưu thay đổi",
+  "openMenu": "Mở menu",
+  "unknown": "Không xác định",
+  "category": "Danh mục",
+  "price": "Giá"
+}

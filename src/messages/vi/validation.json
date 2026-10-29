@@ -1,0 +1,5 @@
+{
+  "invalidEmail": "Email không hợp lệ",
+  "passwordRequired": "Chuỗi phải chứa ít nhất 1 ký tự",
+  "nameRequired": "Tên là bắt buộc"
+}

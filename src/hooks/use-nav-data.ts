@@ -1,8 +1,10 @@
 import { FileChartColumn, LayoutDashboardIcon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+
+import { ROUTES } from '@/constants/routes';
+import { useTranslations } from '@/hooks/use-translations';
 
 export function useNavData() {
-  const { t } = useTranslation();
+  const { t } = useTranslations();
 
   const data = [
     {
@@ -26,6 +28,10 @@ export function useNavData() {
         {
           title: t('nav.item4'),
           url: '/item4',
+        },
+        {
+          title: t('nav.react19'),
+          url: ROUTES.REACT_19,
         },
       ],
     },

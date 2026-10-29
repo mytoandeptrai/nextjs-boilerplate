@@ -1,0 +1,16 @@
+{
+  "name": "Item 1",
+  "createdAt": "Created At",
+  "updatedAt": "Updated At",
+  "actions": "Actions",
+  "sort": "Sort",
+  "searching": "Searching...",
+  "management": "Management",
+  "editTitle": "Edit Item",
+  "namePlaceholder": "Enter item name",
+  "saveChanges": "Save changes",
+  "openMenu": "Open menu",
+  "unknown": "Unknown",
+  "category": "Category",
+  "price": "Price"
+}

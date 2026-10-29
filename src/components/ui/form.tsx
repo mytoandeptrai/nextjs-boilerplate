@@ -15,10 +15,10 @@ import {
   type FieldValues,
 } from 'react-hook-form';
 
-import { cn } from '@/libs/utils';
+import { cn } from '@/lib/utils';
 
 import { Label } from '@/components/ui/label';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from '@/hooks';
 
 const Form = FormProvider;
 
@@ -173,11 +173,11 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
 
 function FormMessageWithTranslation({ className, ...props }: React.ComponentProps<'p'>) {
   const { error, formMessageId } = useFormField();
-  const { t } = useTranslation();
+  const { t } = useTranslations();
 
   return (
     <p data-slot='form-message' id={formMessageId} className={cn('text-destructive text-sm', className)} {...props}>
-      {error?.message ? t(error?.message) : ''}
+      {error?.message ? (t.has(error.message as never) ? t(error.message as never) : error.message) : ''}
     </p>
   );
 }

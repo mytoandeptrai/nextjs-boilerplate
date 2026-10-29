@@ -1,34 +1,39 @@
 'use client';
-import { TextField } from '@/components/form-fields';
+import { TextField } from '@/components/form-field';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
-import { useUpdateItem1Mutation } from '@/hooks/item1/use-update-item1-mutation';
-import type { Item1 } from '@/types/item1';
+import { type IItem1, useUpdateItem1Mutation } from '@/api/item1';
+import { useTranslations } from '@/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-const formSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-});
+const createFormSchema = (nameRequired: string) =>
+  z.object({
+    name: z.string().min(1, nameRequired),
+  });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<ReturnType<typeof createFormSchema>>;
 
 interface EditDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  item?: Item1;
+  item?: IItem1;
 }
 
 export function EditDialog({ isOpen, onOpenChange, item }: EditDialogProps) {
+  const { t } = useTranslations('item');
+  const { t: tValidation } = useTranslations('validation');
+  const formSchema = useMemo(() => createFormSchema(tValidation('nameRequired')), [tValidation]);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: item?.name || '',
     },
   });
-  const { mutate: updateItem } = useUpdateItem1Mutation();
+  const { mutateAsync: updateItem } = useUpdateItem1Mutation();
   const onSubmit = async (values: FormValues) => {
     if (!item?.id) return;
     await updateItem({ id: item.id, ...values });
@@ -39,13 +44,13 @@ export function EditDialog({ isOpen, onOpenChange, item }: EditDialogProps) {
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className='sm:max-w-[600px]'>
         <DialogHeader>
-          <DialogTitle>Edit Item</DialogTitle>
+          <DialogTitle>{t('editTitle')}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-            <TextField control={form.control} name='name' label='Name' placeholder='Enter item name' />
+            <TextField control={form.control} name='name' label={t('name')} placeholder={t('namePlaceholder')} />
             <DialogFooter>
-              <Button type='submit'>Save changes</Button>
+              <Button type='submit'>{t('saveChanges')}</Button>
             </DialogFooter>
           </form>
         </Form>
