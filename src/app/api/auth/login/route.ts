@@ -5,8 +5,7 @@ import { createLoginSchema } from '@/api/auth/schema';
 import type { ILoginResponse } from '@/api/auth/type';
 import { request } from '@/api/axios';
 import { HttpStatus } from '@/enums/enum';
-import { setAuthCookies } from '@/lib/server/backend';
-import type { ITokenPair } from '@/types/type';
+import { parseTokenPair, setAuthCookies } from '@/lib/server/backend';
 import { createApiErrorResponse } from '@/utils/api-error';
 
 const loginSchema = createLoginSchema({ invalidEmail: 'Invalid email', passwordRequired: 'Password is required' });
@@ -20,9 +19,18 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { data } = await request.post<ITokenPair>(AUTH_KEYS.LOGIN, parsed.data);
+    const { data } = await request.post(AUTH_KEYS.LOGIN, parsed.data);
+    const tokens = parseTokenPair(data);
 
-    await setAuthCookies(data);
+    // Never answer "authenticated" without tokens: the cookies would be empty and the guard would bounce the user.
+    if (!tokens) {
+      return Response.json(
+        { message: 'Login response has no accessToken/refreshToken' },
+        { status: HttpStatus.BAD_GATEWAY }
+      );
+    }
+
+    await setAuthCookies(tokens);
 
     return Response.json({ authenticated: true } satisfies ILoginResponse);
   } catch (error) {
