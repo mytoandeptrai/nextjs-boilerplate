@@ -9,6 +9,12 @@ export const LOCALE_LABELS: Record<Locale, string> = {
   vi: 'Tiếng Việt',
 };
 
+/** Open Graph locale codes (`og:locale`). */
+export const LOCALE_OG: Record<Locale, string> = {
+  en: 'en_US',
+  vi: 'vi_VN',
+};
+
 export const routing = defineRouting({
   locales: LOCALES,
   defaultLocale: DEFAULT_LOCALE,

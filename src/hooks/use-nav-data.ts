@@ -1,5 +1,6 @@
 import { FileChartColumn, LayoutDashboardIcon } from 'lucide-react';
 
+import { ROUTES } from '@/constants/routes';
 import { useTranslations } from '@/hooks/use-translations';
 
 export function useNavData() {
@@ -27,6 +28,10 @@ export function useNavData() {
         {
           title: t('nav.item4'),
           url: '/item4',
+        },
+        {
+          title: t('nav.react19'),
+          url: ROUTES.REACT_19,
         },
       ],
     },

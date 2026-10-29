@@ -1,0 +1,47 @@
+{
+  "title": "React 19 hooks",
+  "subtitle": "Năm ví dụ nhỏ, chạy được. Đọc comment trong từng component để hiểu cách hook hoạt động.",
+  "actionState": {
+    "title": "Form với Server Actions",
+    "description": "Form gửi tới một Server Action. useActionState giữ state mà action trả về; useFormStatus cho nút submit biết form đang xử lý.",
+    "label": "Tên của bạn",
+    "placeholder": "Nhập tên (tối đa 20 ký tự)",
+    "submit": "Chào tôi",
+    "submitting": "Đang gửi...",
+    "greeting": "Xin chào, {name}!",
+    "nameRequired": "Vui lòng nhập tên.",
+    "nameTooLong": "Chỉ được dùng tối đa {max} ký tự."
+  },
+  "optimistic": {
+    "title": "Cập nhật lạc quan",
+    "description": "Ghi chú hiện ngay trong khi server vẫn đang lưu. Nhập nội dung có chữ \"fail\" để xem React tự rollback.",
+    "label": "Ghi chú",
+    "placeholder": "Viết một ghi chú",
+    "add": "Thêm ghi chú",
+    "saving": "Đang lưu...",
+    "pending": "đang lưu...",
+    "hint": "Server mất khoảng 1 giây để phản hồi.",
+    "failed": "Server đã từ chối ghi chú."
+  },
+  "use": {
+    "title": "Đọc promise bằng use()",
+    "description": "Server Component khởi chạy một request chậm rồi truyền promise xuống. Client đọc nó bằng use() trong khi Suspense hiển thị fallback.",
+    "toggleSource": "Dữ liệu này đến từ đâu?",
+    "source": "Nguồn: {source}"
+  },
+  "transition": {
+    "title": "Transition bất đồng bộ",
+    "description": "startTransition nhận hàm async trong React 19: isPending giữ true cho tới khi server trả lời, và trang vẫn tương tác được.",
+    "ping": "Ping server",
+    "pinging": "Đang ping...",
+    "lastPing": "Phản hồi lúc {at}",
+    "never": "Chưa ping lần nào."
+  },
+  "deferred": {
+    "title": "Giá trị trì hoãn",
+    "description": "Danh sách cố tình chậm. useDeferredValue giữ việc gõ luôn mượt và render danh sách với nội dung mới ở nền.",
+    "placeholder": "Lọc mục, ví dụ 12",
+    "updating": "Đang cập nhật danh sách...",
+    "upToDate": "Danh sách đã cập nhật."
+  }
+}

@@ -3,53 +3,43 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 
 import { fontMono, fontSans } from '@/config/fonts';
+import { JsonLd } from '@/components/seo/json-ld';
 import { siteConfig } from '@/config/site';
-import { routing } from '@/i18n/routing';
+import { useTranslationsServer } from '@/hooks/use-translations-server';
+import { routing, toLocale } from '@/i18n/routing';
+import { webSiteJsonLd } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 import type { LayoutProps } from '@/types/type';
 import '../../styles/globals.css';
 import Providers from './providers';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.appUrl),
-  title: siteConfig.name,
-  description: siteConfig.description,
-  generator: 'Next.js',
-  applicationName: siteConfig.name,
-  referrer: 'origin-when-cross-origin',
-  keywords: [],
-  authors: [{ name: siteConfig.name }],
-  creator: siteConfig.name,
-  publisher: siteConfig.name,
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  openGraph: {
-    images: [siteConfig.ogImage],
-    description: siteConfig.description,
-    title: {
-      default: siteConfig.name,
-      template: `${siteConfig.name} - %s`,
+export async function generateMetadata({ params }: Pick<LayoutProps<{ locale: string }>, 'params'>): Promise<Metadata> {
+  const { locale } = await params;
+  const { t } = await useTranslationsServer('common.seo', locale);
+
+  return {
+    metadataBase: new URL(siteConfig.appUrl),
+    applicationName: t('siteName'),
+    // Pages override `title`; `%s` is replaced with their own title.
+    title: { default: t('defaultTitle'), template: `%s | ${t('siteName')}` },
+    description: t('description'),
+    generator: 'Next.js',
+    referrer: 'origin-when-cross-origin',
+    authors: [{ name: siteConfig.name }],
+    creator: siteConfig.name,
+    publisher: siteConfig.name,
+    formatDetection: { email: false, address: false, telephone: false },
+    icons: {
+      icon: '/favicon.ico',
+      shortcut: '/favicon-96x96-1.png',
+      apple: '/apple-touch-icon.png',
     },
-  },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-96x96.png',
-    apple: '/apple-touch-icon.png',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteConfig.name,
-    description: siteConfig.description,
-    images: [siteConfig.ogImage],
-    creator: `@${siteConfig.name}`,
-  },
-};
+  };
+}
 
 export const viewport: Viewport = {
-  width: 1,
+  width: 'device-width',
+  initialScale: 1,
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
@@ -65,9 +55,14 @@ export default async function LocaleLayout({ children, params }: LayoutProps<{ l
 
   if (!hasLocale(routing.locales, locale)) notFound();
 
+  const { t } = await useTranslationsServer('common.seo', locale);
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <body suppressHydrationWarning className={cn('antialiased', fontSans.variable, fontMono.variable)}>
+        <JsonLd
+          data={webSiteJsonLd({ locale: toLocale(locale), name: t('siteName'), description: t('description') })}
+        />
         <NextIntlClientProvider>
           <Providers>{children}</Providers>
         </NextIntlClientProvider>

@@ -36,5 +36,13 @@
     "title": "Đã xảy ra lỗi!",
     "retry": "Thử lại"
   },
-  "confirm": "Xác nhận"
+  "confirm": "Xác nhận",
+  "seo": {
+    "siteName": "Jacob",
+    "defaultTitle": "Jacob CMS",
+    "description": "Jacob Template: hệ thống quản trị nội dung Next.js với i18n có kiểu và BFF an toàn.",
+    "login": "Đăng nhập",
+    "item1": "Quản lý mục",
+    "react19": "React 19 hooks"
+  }
 }

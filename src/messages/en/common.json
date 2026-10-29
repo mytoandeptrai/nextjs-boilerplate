@@ -36,5 +36,13 @@
     "title": "Something went wrong!",
     "retry": "Try again"
   },
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "seo": {
+    "siteName": "Jacob",
+    "defaultTitle": "Jacob CMS",
+    "description": "Jacob Template: a Next.js content management system with typed i18n and a secure BFF.",
+    "login": "Sign in",
+    "item1": "Item management",
+    "react19": "React 19 hooks"
+  }
 }

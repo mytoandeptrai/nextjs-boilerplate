@@ -1,12 +1,11 @@
 import type { MetadataRoute } from 'next';
-import { siteConfig } from '@/config/site';
+
+import { env, isProductionEnv } from '@/constants/env';
+
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: '/private/',
-    },
-    sitemap: `${siteConfig.appUrl}/sitemap.xml`,
+    rules: isProductionEnv ? { userAgent: '*', allow: '/', disallow: ['/api/'] } : { userAgent: '*', disallow: '/' },
+    sitemap: `${env.APP_URL}/sitemap.xml`,
+    host: env.APP_URL,
   };
 }

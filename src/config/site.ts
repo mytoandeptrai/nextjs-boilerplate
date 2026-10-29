@@ -8,6 +8,7 @@ export { isProductionEnv };
 export const siteConfig = {
   appUrl: env.APP_URL,
   name: 'Jacob',
+  shortName: 'Jacob',
   description: 'Jacob Template',
   ogImage: `${env.APP_URL}/og-image.jpg`,
 };

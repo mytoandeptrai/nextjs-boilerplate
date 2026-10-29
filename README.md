@@ -59,6 +59,24 @@ Principles:
 - **Env.** Read environment variables only through `src/constants/env.ts` (validated with Zod).
 - **Naming.** All files and folders are `kebab-case`.
 
+## SEO
+
+- `buildMetadata()` (`src/lib/seo.ts`) builds a page's full metadata: title, description, canonical, hreflang, Open Graph, Twitter, robots.
+  Every page exports `generateMetadata` and calls it; the layout holds the title template and the `WebSite` JSON-LD
+  (`components/seo/json-ld.tsx`).
+- `app/sitemap.ts` lists `INDEXABLE_ROUTES` (only the public login page: the CMS sits behind the session guard) once per
+  locale with hreflang alternates. Pages behind the guard pass `noIndex: true`.
+- `app/robots.ts`, `app/manifest.ts`, `app/opengraph-image` and `app/twitter-image` are generated routes.
+- Outside `NEXT_PUBLIC_APP_ENV=production` everything is `noindex` (robots.txt, meta robots and `X-Robots-Tag`).
+- Security headers are set in `next.config.ts`.
+
+## React 19 playground
+
+`/react-19` (sidebar: Dashboard > React 19 hooks) has one small working example per hook, with comments:
+`useActionState` + `useFormStatus` (Server Action form), `useOptimistic` (instant UI with automatic rollback), `use()`
+(promise streamed from a Server Component, conditional context), async `useTransition` and `useDeferredValue`.
+Code: `src/modules/react-19-page`.
+
 ## Getting Started
 
 Requirements: Node.js >= 22 (see `.nvmrc`) and pnpm.

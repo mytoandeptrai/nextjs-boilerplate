@@ -1,0 +1,47 @@
+{
+  "title": "React 19 hooks",
+  "subtitle": "Five small, working examples. Read the comments in each component to learn how the hook behaves.",
+  "actionState": {
+    "title": "Forms with Server Actions",
+    "description": "The form posts to a Server Action. useActionState keeps the returned state; useFormStatus lets the submit button know the form is pending.",
+    "label": "Your name",
+    "placeholder": "Type your name (max 20 characters)",
+    "submit": "Greet me",
+    "submitting": "Sending...",
+    "greeting": "Hello, {name}!",
+    "nameRequired": "Please enter your name.",
+    "nameTooLong": "Use at most {max} characters."
+  },
+  "optimistic": {
+    "title": "Optimistic updates",
+    "description": "The note appears instantly while the server is still saving it. Type a text containing \"fail\" to see the automatic rollback.",
+    "label": "Note",
+    "placeholder": "Write a note",
+    "add": "Add note",
+    "saving": "Saving...",
+    "pending": "saving...",
+    "hint": "The server takes ~1 second to answer.",
+    "failed": "The server rejected the note."
+  },
+  "use": {
+    "title": "Reading a promise with use()",
+    "description": "The Server Component starts a slow request and passes the promise down. The client reads it with use() while Suspense shows a fallback.",
+    "toggleSource": "Where does this come from?",
+    "source": "Source: {source}"
+  },
+  "transition": {
+    "title": "Async transitions",
+    "description": "startTransition accepts an async function in React 19: isPending stays true until the server answers, and the page stays interactive.",
+    "ping": "Ping the server",
+    "pinging": "Pinging...",
+    "lastPing": "Last answer at {at}",
+    "never": "No ping yet."
+  },
+  "deferred": {
+    "title": "Deferred values",
+    "description": "The list is deliberately slow. useDeferredValue keeps typing responsive and renders the list with the new text in the background.",
+    "placeholder": "Filter items, e.g. 12",
+    "updating": "Updating the list...",
+    "upToDate": "The list is up to date."
+  }
+}

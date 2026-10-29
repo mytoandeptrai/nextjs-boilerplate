@@ -19,6 +19,9 @@ export const COOKIE_KEYS = {
   REFRESH_TOKEN: 'refreshToken',
 } as const;
 
+export const OG_IMAGE_SIZE = { width: 1200, height: 630 } as const;
+export const OG_IMAGE_CONTENT_TYPE = 'image/png';
+
 export const IMAGE_TYPE = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
 export const VIDEO_TYPE = ['mp4', 'mov', 'webm', 'ogg', 'wmv'];
 

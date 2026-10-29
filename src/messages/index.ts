@@ -6,6 +6,7 @@ import enItem from './en/item.json';
 import enLangName from './en/langName.json';
 import enMessages from './en/messages.json';
 import enNav from './en/nav.json';
+import enReact19 from './en/react19.json';
 import enValidation from './en/validation.json';
 import viAuth from './vi/auth.json';
 import viCommon from './vi/common.json';
@@ -14,6 +15,7 @@ import viItem from './vi/item.json';
 import viLangName from './vi/langName.json';
 import viMessages from './vi/messages.json';
 import viNav from './vi/nav.json';
+import viReact19 from './vi/react19.json';
 import viValidation from './vi/validation.json';
 
 /**
@@ -34,6 +36,7 @@ export const messages = {
     langName: enLangName,
     messages: enMessages,
     nav: enNav,
+    react19: enReact19,
     validation: enValidation,
   },
   vi: {
@@ -44,6 +47,7 @@ export const messages = {
     langName: viLangName,
     messages: viMessages,
     nav: viNav,
+    react19: viReact19,
     validation: viValidation,
   },
 } as const satisfies Record<Locale, unknown>;
