@@ -46,8 +46,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     try {
       await login(data);
       router.replace(ROUTES.HOME);
-    } catch (e) {
-      console.error(e);
+    } catch {
       setError(t('invalidCredentials'));
     }
   };

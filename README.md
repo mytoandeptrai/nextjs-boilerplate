@@ -1,288 +1,104 @@
-# 🚀 Next.js CMS Template
+# Next.js CMS Template
 
-A modern Content Management System built with Next.js 15, React 19, and TypeScript, featuring a robust UI component library and internationalization support.
+A Content Management System template built with Next.js 16, React 19 and TypeScript: layered architecture, typed i18n,
+a Backend-for-Frontend (BFF) with httpOnly-cookie auth, and a shadcn/ui component library.
 
-## ✨ Features
+## Tech Stack
 
--  🎨 Modern UI components with Radix UI
--  📝 Form validation with Zod
--  📱 Responsive design with TailwindCSS
--  🔒 Type-safe development with TypeScript
--  ⚡ Efficient data fetching with React Query
--  📤 File upload capabilities with React Dropzone
--  🌐 Internationalization support
+| Category             | Technologies                                          |
+| -------------------- | ----------------------------------------------------- |
+| Framework            | Next.js 16 (App Router, Turbopack), React 19          |
+| Language             | TypeScript 5                                          |
+| UI                   | Radix UI, shadcn/ui (new-york), Tailwind CSS 4        |
+| Server state         | TanStack Query 5, Axios                               |
+| Client state         | Zustand (`auto-zustand-selectors-hook`)               |
+| Forms / validation   | React Hook Form + Zod 4                               |
+| Internationalization | next-intl (typed messages, `en` + `vi`)               |
+| Tables               | TanStack Table 8                                      |
+| Lint / format        | Biome 2                                               |
+| Tests                | Vitest, Testing Library                               |
+| Git hooks            | Husky, lint-staged, commitlint (conventional commits) |
 
-## 🛠️ Tech Stack
+## Architecture
 
-| Category             | Technologies                        |
-| -------------------- | ----------------------------------- |
-| Framework            | Next.js 15.2.4                      |
-| Language             | TypeScript                          |
-| UI Components        | Radix UI, TailwindCSS               |
-| State Management     | React Query, Zustand                |
-| Form Handling        | React Hook Form with Zod validation |
-| Internationalization | i18next                             |
-| Styling              | TailwindCSS with custom animations  |
-| API Client           | Axios                               |
-| Utilities            | Lodash, Dayjs                       |
-| Lint                 | Biome                               |
-
-## 📁 Project Structure
-
-```bash
-├── src/                 # Source code
-│   ├── app/            # Next.js app directory
-│   │   ├── [locale]/   # Internationalized routes
-│   │   │   ├── (auth)/ # Authentication routes
-│   │   │   │   ├── login/
-│   │   │   │   ├── register/
-│   │   │   │   └── forgot-password/
-│   │   │   └── (cms)/  # CMS routes
-│   │   │       ├── dashboard/
-│   │   │       ├── users/
-│   │   │       ├── settings/
-│   │   │       └── ...
-│   │   ├── globals.css # Global styles
-│   │   ├── providers.tsx # App providers
-│   │   └── favicon.ico # App icon
-│   ├── components/     # Reusable UI components
-│   ├── modules/        # Page modules
-│   ├── contexts/       # React contexts
-│   ├── hooks/          # Custom React hooks
-│   ├── libs/           # Third-party library configurations
-│   ├── locales/        # Translation files
-│   ├── types/          # Data types/interfaces
-│   ├── schemas/        # Zod validation schemas
-│   ├── services/       # API services
-│   ├── utils/          # Utility functions
-│   ├── constants/      # App constants
-│   ├── utils/          # App utils
-│   ├── stores/         # Zustand stores
-│   ├── i18nConfig.ts   # i18n configuration
-│   └── middleware.ts   # Next.js middleware
-├── public/             # Static assets
-├── .next/             # Next.js build output
-├── node_modules/      # Dependencies
-├── package.json       # Project dependencies and scripts
-├── tsconfig.json      # TypeScript configuration
-├── next.config.ts     # Next.js configuration
-├── postcss.config.mjs # PostCSS configuration
-└── biome.json         # Biome configuration
-└── docker             # Docker configuration
-└── docker-compose.yml # Docker compose execution
+```
+src/
+  app/
+    [locale]/              layout, providers, error, not-found, (auth)/login, (cms)/item1
+    api/                   BFF Route Handlers: auth, item1, media, health
+    global-not-found.tsx   404 for URLs outside any locale
+  proxy.ts                 next-intl + session guard (Next.js 16 name for middleware)
+  api/<domain>/            keys, requests, queries, mutations, type, schema, index   (auth, item1, media)
+  modules/<page>/          page-level UI: index.tsx, components/, hooks, __tests__/
+  components/
+    ui/                    shadcn/ui primitives (do not hand-edit, wrap them in common/)
+    common/                shared app components (data table, sidebar, locale switcher, ...)
+    form-field/            react-hook-form field wrappers
+    providers/             QueryClient + theme providers
+    utilities/             HStack, VStack, Show
+  hooks/                   shared hooks + barrel (`useTranslations` is typed against src/messages)
+  stores/                  zustand stores
+  i18n/                    routing, request, navigation (locale-aware Link / useRouter / usePathname)
+  messages/                en/*.json, vi/*.json + index.ts (compile-time key parity check)
+  lib/                     utils (cn), dayjs, string helpers, server/ (server-only BFF helpers)
+  utils/  constants/  config/  enums/  types/  styles/  assets/
 ```
 
-## 📦 Source Code Structure
+Principles:
 
-### `src/app/` 📱
+- **Thin pages, fat modules.** `app/**/page.tsx` only composes a module from `src/modules`.
+- **One folder per API domain** under `src/api`. Components never call axios directly: they use the domain's `queries` /
+  `mutations`. Query keys come from a factory (`item1QueryKeys`) and mutations invalidate it.
+- **BFF.** The browser only talks to `/api/*`. Route Handlers call the real backend (`NEXT_PUBLIC_API_URL`) on the server.
+- **Auth.** `/api/auth/login` stores the tokens in `httpOnly` cookies. `src/proxy.ts` redirects anonymous visitors to
+  `/login` before anything renders; `lib/server/backend.ts` attaches the access token and renews it once on a 401.
+  The browser never sees a token.
+- **i18n.** Never import `useTranslations` from `next-intl` (Biome blocks it): use `@/hooks` on the client and
+  `@/hooks/use-translations-server` on the server. Add every key to **all** locales; `pnpm type-check` fails otherwise.
+  Navigation helpers come from `@/i18n/navigation`.
+- **Env.** Read environment variables only through `src/constants/env.ts` (validated with Zod).
+- **Naming.** All files and folders are `kebab-case`.
 
--  Contains the main application routes and layouts
--  Uses Next.js 15+ App Router
--  Supports internationalization with `[locale]` dynamic routing
+## Getting Started
 
-### `src/app/[locale]/` 🌐
-
--  Handles internationalized routes
--  Contains two main route groups:
-   -  `(auth)/`: Authentication-related routes
-      -  `login/`: User login page
-      -  `register/`: User registration page
-      -  `forgot-password/`: Password recovery page
-   -  `(cms)/`: CMS management routes
-      -  `dashboard/`: Main dashboard page
-      -  `users/`: User management section
-      -  `settings/`: System settings
-      -  Other CMS-specific routes
-
-### `src/components/` 🧩
-
--  Reusable UI components
--  Follows atomic design principles
--  Includes shared components like buttons, forms, modals, etc.
-
-### `src/modules/` 📦
-
--  Page-level components and layouts
--  Handles page-specific logic and state management
--  Integrates multiple components into complete pages
-
-### `src/contexts/` 🔄
-
--  React context providers
--  Manages global application state
--  Handles theme, authentication, and other shared states
-
-### `src/hooks/` 🎣
-
--  Custom React hooks
--  Reusable logic for components
--  Includes hooks for data fetching, form handling, etc.
-
-### `src/libs/` 📚
-
--  Third-party library configurations
--  Custom implementations of external libraries
--  Integration setups
-
-### `src/locales/` 🌍
-
--  Internationalization files
--  Translation strings for different languages
--  i18n configuration
-
-### `src/types/` 📊
-
--  TypeScript interfaces and types
--  Data models for API responses
--  Shared type definitions
-
-### `src/schemas/` 📝
-
--  Zod validation schemas
--  Form validation rules
--  API request/response validation
-
-### `src/services/` 🔌
-
--  API service functions
--  HTTP client configurations
--  API endpoint definitions
-
-### `src/utils/` 🛠️
-
--  Helper functions
--  Common utilities
--  Shared business logic
-
-### `src/constants/` ⚙️
-
--  Application constants
--  Configuration values
--  Static data
-
-### `src/stores/` ⚡
-
--  Global state management
-
-## 🚀 Getting Started
-
-### Prerequisites
-
--  Node.js (LTS version recommended)
--  Yarn package manager
-
-### Installation
-
-1. Clone your forked repository:
-
-```bash
-git clone https://github.com/mytoandeptrai/nextjs-boilerplate.git
-```
-
-2. Install dependencies:
+Requirements: Node.js >= 22 (see `.nvmrc`) and pnpm.
 
 ```bash
 pnpm install
+cp .env.example .env.local   # set NEXT_PUBLIC_API_URL to your backend
+pnpm dev                     # http://localhost:3000
 ```
 
-### Development
+| Script                            | Purpose                                   |
+| --------------------------------- | ----------------------------------------- |
+| `pnpm dev` / `build` / `start`    | Develop, build, serve                     |
+| `pnpm lint` / `lint:fix`          | Biome lint                                |
+| `pnpm format:check` / `format:fix`| Biome format                              |
+| `pnpm type-check`                 | `next typegen` + `tsc --noEmit`           |
+| `pnpm test` / `test:coverage`     | Vitest                                    |
+| `pnpm check`                      | lint + type-check + test                  |
 
-Start the development server:
+## Customization
+
+- **Backend URL:** `NEXT_PUBLIC_API_URL` in `.env.local` (baked in at build time, also a Docker build arg). The login
+  endpoint is expected at `POST /auth/login` returning `{ accessToken, refreshToken }`; token refresh at
+  `POST /users/token/refresh` (see `src/lib/server/backend.ts`).
+- **Item1 is a mock.** `src/lib/server/item1-mock.ts` is an in-memory backend behind `/api/item1`. Replace its calls with
+  `backendRequest(...)` from `src/lib/server/backend.ts` to go live.
+- **Add an API domain:** copy `src/api/item1`, add the Route Handlers in `src/app/api/<domain>`.
+- **Add a page:** create `src/modules/<name>-page`, then a thin route in `src/app/[locale]/`.
+- **Add a locale:** add it to `LOCALES` in `src/i18n/routing.ts` and create `src/messages/<locale>/*.json`.
+- **Theme:** edit the `@theme inline` block in `src/styles/globals.css`.
+- **Site metadata:** `src/config/site.ts` and `src/app/[locale]/layout.tsx`.
+
+## Docker
 
 ```bash
-pnpm dev
+docker compose up --build   # frontend + nginx on http://localhost:8080
 ```
 
-The application will be available at [http://localhost:3000](http://localhost:3000).
+`NEXT_PUBLIC_*` values are build args (see `docker-compose.yml`).
 
-### Build
+## Commit convention
 
-To create a production build:
-
-```bash
-pnpm build
-```
-
-### Start Production Server
-
-```bash
-pnpm start
-```
-
-### Linting
-
-Run the linter to check for code quality:
-
-```bash
-pnpm lint
-```
-
-### TypeScript Type Checking
-
-To verify type safety and catch potential type errors in your project, run the TypeScript compiler check:
-
-```bash
-pnpm ts-check
-```
-
-### Customization Guide
-
-#### API Configuration
-
-1. Navigate to `src/services/config/axios.ts`
-2. Update the `API_URL` constant with your backend endpoint
-3. Modify default headers in `defaultHeaders` object as needed
-4. Add any custom interceptors for authentication or error handling
-
-#### Logo Integration
-
-1. Place your logo file in `public/images/` directory
-2. Supported formats: SVG, PNG, JPG
-3. Recommended dimensions: 200x50px for header logos
-4. Update logo path in your layout components
-
-#### Theme Customization
-
-1. Open `src/app/globals.css`
-2. Locate the `@theme inline` section
-3. Update color variables:
-   -  Primary colors: `--color-primary`, `--color-primary-foreground`
-   -  Brand colors: `--color-brand-100` through `--color-brand-10`
-   -  Customize other theme variables as needed
-
-#### Metadata Configuration
-
-1. Edit `src/app/[locale]/(auth)/layout.tsx` or `src/app/[locale]/(cms)/layout.tsx`
-2. Update the `metadata` object:
-   ```typescript
-   export const metadata: Metadata = {
-      title: "Your App Name",
-      description: "Your app description",
-      keywords: ["your", "keywords"],
-      authors: [{ name: "Your Name" }],
-      openGraph: {
-         title: "Your App Name",
-         description: "Your app description",
-         images: ["/images/og-image.jpg"],
-      },
-   };
-   ```
-
-## 📚 Documentation
-
--  [Next.js Documentation](https://nextjs.org/docs)
--  [React Documentation](https://react.dev)
--  [TailwindCSS Documentation](https://tailwindcss.com/docs)
--  [Radix UI Documentation](https://www.radix-ui.com/primitives/docs/overview/introduction)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+Conventional commits (`feat`, `fix`, `refactor`, ...), enforced by commitlint. Subjects are lowercase and imperative.

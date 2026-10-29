@@ -17,7 +17,11 @@ const splitLocale = (pathname: string) => {
   return { locale, path };
 };
 
-const withLocale = (locale: string, path: string) => (locale === DEFAULT_LOCALE ? path : `/${locale}${path}`);
+const withLocale = (locale: string, path: string) => {
+  if (locale === DEFAULT_LOCALE) return path;
+
+  return path === '/' ? `/${locale}` : `/${locale}${path}`;
+};
 
 /** Session guard: the BFF stores the tokens in httpOnly cookies, so the server can decide before rendering. */
 export default function proxy(req: NextRequest) {
