@@ -1,72 +1,34 @@
-import type { Metadata, Viewport } from 'next';
-import '../../globals.css';
-import Providers from '../../providers';
-import { AuthRedirect } from '@/components/shared';
-import { fontMono, fontSans, siteConfig } from '@/constants';
-import { cn } from '@/libs/utils';
+import { Suspense } from 'react';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.appUrl || 'http://localhost:3000'),
-  title: siteConfig.name,
-  description: siteConfig.description,
-  generator: 'Next.js',
-  applicationName: siteConfig.name,
-  referrer: 'origin-when-cross-origin',
-  keywords: [],
-  authors: [{ name: siteConfig.name }],
-  creator: siteConfig.name,
-  publisher: siteConfig.name,
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  openGraph: {
-    images: [siteConfig.ogImage],
-    description: siteConfig.description,
-    title: {
-      default: siteConfig.name,
-      template: `${siteConfig.name} - %s`,
-    },
-  },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-96x96.png',
-    apple: '/apple-touch-icon.png',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: siteConfig.name,
-    description: siteConfig.description,
-    images: [siteConfig.ogImage],
-    creator: `@${siteConfig.name}`,
-  },
-};
+import { HeaderLocaleSwitcher, AppSidebar, NavUser } from '@/components/common';
+import { Separator } from '@/components/ui/separator';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
-export const viewport: Viewport = {
-  width: 1,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
-};
-
-export default async function RootLayout({
-  children,
-  params,
-}: Readonly<{
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
-}>) {
-  const { locale } = await params;
-
+export default function CmsLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='en'>
-      <body suppressHydrationWarning className={cn(`antialiased`, fontSans.variable, fontMono.variable)}>
-        <Providers locale={locale}>
-          <AuthRedirect>{children}</AuthRedirect>
-        </Providers>
-      </body>
-    </html>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className='flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4'>
+          <div className='flex items-center gap-2'>
+            <SidebarTrigger className='-ml-1' />
+            <Separator orientation='vertical' className='mr-2 h-4' />
+          </div>
+          <div className='flex items-center gap-2'>
+            <Suspense>
+              <HeaderLocaleSwitcher />
+            </Suspense>
+            <NavUser
+              user={{
+                name: 'John Doe',
+                email: 'john.doe@example.com',
+                avatar: 'https://github.com/shadcn.png',
+              }}
+            />
+          </div>
+        </header>
+        <div className='flex flex-1 flex-col gap-4 p-4'>{children}</div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

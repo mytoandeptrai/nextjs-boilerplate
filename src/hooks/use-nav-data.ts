@@ -1,8 +1,9 @@
 import { FileChartColumn, LayoutDashboardIcon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+
+import { useTranslations } from '@/hooks/use-translations';
 
 export function useNavData() {
-  const { t } = useTranslation();
+  const { t } = useTranslations();
 
   const data = [
     {

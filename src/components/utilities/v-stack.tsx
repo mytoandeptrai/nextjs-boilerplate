@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from '@/libs/utils';
+import { cn } from '@/lib/utils';
 
 const vStackVariants = cva('flex flex-col', {
   variants: {
     align: {
       default: 'items-stretch',
-      center: 'items-center items',
+      center: 'items items-center',
       start: 'items-start',
       end: 'items-end',
       baseline: 'items-baseline',

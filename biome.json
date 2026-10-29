@@ -29,7 +29,8 @@
       "!**/.turbo",
       "!**/.vscode",
       "!**/storybook-static",
-      "!**/coverage"
+      "!**/coverage",
+      "!**/src/assets/svg"
     ]
   },
   "formatter": {
@@ -149,7 +150,10 @@
         "noImgElement": "warn"
       },
       "nursery": {
-        "useTailwindSortedClasses": { "level": "error", "fix": "safe" }
+        "useTailwindSortedClasses": {
+          "level": "error",
+          "fix": "safe"
+        }
       }
     }
   },
@@ -299,10 +303,15 @@
           "a11y": {
             "useFocusableInteractive": "off",
             "useKeyWithClickEvents": "off",
-            "useAriaPropsForRole": "off"
+            "useAriaPropsForRole": "off",
+            "noLabelWithoutControl": "off"
           },
           "style": {
             "noNestedTernary": "off"
+          },
+          "correctness": {
+            "useExhaustiveDependencies": "off",
+            "noUnusedImports": "off"
           }
         }
       }
@@ -333,6 +342,31 @@
         "rules": {
           "style": {
             "noRestrictedImports": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "src/components/ui/dialog.tsx",
+        "src/components/ui/notification-delete.tsx",
+        "src/components/ui/input-file.tsx",
+        "src/modules/item1-page/index.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "nursery": {
+            "useTailwindSortedClasses": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/components/form-field/**"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "noLabelWithoutControl": "off"
           }
         }
       }

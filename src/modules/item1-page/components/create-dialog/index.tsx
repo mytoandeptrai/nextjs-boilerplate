@@ -7,19 +7,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { DialogFooter } from '@/components/ui/dialog';
-import { useState } from 'react';
-import { useCreateItem1Mutation } from '@/hooks/item1/use-create-item1-mutation';
-import { useTranslation } from 'react-i18next';
+import { useMemo, useState } from 'react';
+import { useCreateItem1Mutation } from '@/api/item1';
+import { useTranslations } from '@/hooks';
 
-const formSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-});
+const createFormSchema = (nameRequired: string) =>
+  z.object({
+    name: z.string().min(1, nameRequired),
+  });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<ReturnType<typeof createFormSchema>>;
 
 export function CreateDialog() {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useTranslations();
+  const { t: tValidation } = useTranslations('validation');
+  const formSchema = useMemo(() => createFormSchema(tValidation('nameRequired')), [tValidation]);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {

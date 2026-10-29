@@ -1,0 +1,40 @@
+{
+  "actions": "Actions",
+  "edit": "Edit",
+  "delete": "Delete",
+  "create": "Create",
+  "upload": "Upload",
+  "choose": "Choose",
+  "days": "Days",
+  "hours": "Hours",
+  "minutes": "Minutes",
+  "update": "Update",
+  "editContent": "Edit content",
+  "shortDays": "Days",
+  "shortHours": "Hrs",
+  "shortMinutes": "Mins",
+  "report": "Report",
+  "active": "Active",
+  "inactive": "Inactive",
+  "cancel": "Cancel",
+  "addNew": "Add New",
+  "none": "None",
+  "close": "Close",
+  "deleteConfirmation": "Are you sure you want to delete {itemName}?",
+  "deleteSuccess": "{itemName} has been deleted successfully",
+  "deleteError": "Failed to delete {itemName}",
+  "deleteSuccessTitle": "Success",
+  "deleteErrorTitle": "Error",
+  "connected": "Connected",
+  "errorOccurred": "An error occurred",
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist.",
+    "backHome": "Back to home"
+  },
+  "error": {
+    "title": "Something went wrong!",
+    "retry": "Try again"
+  },
+  "confirm": "Confirm"
+}

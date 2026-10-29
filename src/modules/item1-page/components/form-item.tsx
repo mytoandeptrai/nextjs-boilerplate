@@ -18,7 +18,7 @@ export default function FormItem({ label, required = false, description, inputCo
           {label}
           {required && <span className='text-red-500'>*</span>}
         </Label>
-        {description && <span className='text-gray-400 text-sm'>{description}</span>}
+        {description && <span className='text-sm text-gray-400'>{description}</span>}
       </div>
       <div>
         <div>{inputComponent}</div>

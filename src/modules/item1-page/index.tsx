@@ -1,64 +1,47 @@
 'use client';
-import { useTranslation } from 'react-i18next';
+import { useTranslations, useDebounce, usePaginationQuery } from '@/hooks';
 import { Input } from '@/components/ui/input';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search } from 'lucide-react';
-import { DataTable } from '@/components/shared';
-import { usePaginationQuery } from '@/hooks/use-pagination-query';
+import { DataTable } from '@/components/common';
 import { useColumns } from './use-columns';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { CreateDialog } from './components/create-dialog';
 import { EditDialog } from './components/edit-dialog';
-import { useItem1List } from '@/hooks/item1/use-item1-list';
+import { useItem1ListQuery } from '@/api/item1';
 
 export default function Item1Page() {
-  const { t } = useTranslation();
+  const { t } = useTranslations();
   const { setPagination, ...pagination } = usePaginationQuery();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState<string>('');
   const [sort, setSort] = useState<string>('name');
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const debouncedSearch = useDebounce(search);
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const { data, refetch } = useItem1List({
-    pageIndex: pagination.pageIndex,
-    pageSize: pagination.pageSize,
+  const { data } = useItem1ListQuery({
+    page: pagination.pageIndex + 1,
+    limit: pagination.pageSize,
     name: debouncedSearch,
     sort: sort ? [sort] : undefined,
   });
 
-  const columns = useColumns(t, refetch);
+  const columns = useColumns(t);
 
   const openEditDialog = searchParams.get('action') === 'edit' && searchParams.has('id');
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(search);
-    }, 500);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [search]);
-
-  useEffect(() => {
-    if (openEditDialog) {
-      setIsEditDialogOpen(true);
-    } else {
-      setIsEditDialogOpen(false);
-    }
-  }, [openEditDialog, searchParams]);
 
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex items-center justify-between'>
-        <h1 className='font-bold text-2xl'>{t('item.management')}</h1>
+        <h1 className='text-2xl font-bold'>{t('item.management')}</h1>
         <CreateDialog />
       </div>
       <div className='flex flex-row gap-4'>
         <div className='relative w-1/4'>
-          <Search className='absolute top-2.5 left-2 h-4 w-4 text-muted-foreground' />
+          <Search className='text-muted-foreground absolute top-2.5 left-2 h-4 w-4' />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -67,20 +50,20 @@ export default function Item1Page() {
           />
         </div>
         <Select onValueChange={(value) => setSort(value)}>
-          <SelectTrigger className='!text-bg-primary w-24 border-bg-primary focus:border-bg-primary focus:ring-bg-primary [&>svg]:text-bg-primary'>
+          <SelectTrigger className='!text-bg-primary border-bg-primary focus:border-bg-primary focus:ring-bg-primary [&>svg]:text-bg-primary w-24'>
             <SelectValue
               placeholder={t('item.sort')}
               className='!text-bg-primary font-medium !placeholder:text-bg-primary'
             />
           </SelectTrigger>
           <SelectContent className='rounded-md border border-gray-200 bg-white shadow-lg'>
-            <SelectItem value='name' className='cursor-pointer hover:bg-bg-primary/10 focus:bg-bg-primary/10'>
+            <SelectItem value='name' className='hover:bg-bg-primary/10 focus:bg-bg-primary/10 cursor-pointer'>
               {t('item.name')}
             </SelectItem>
-            <SelectItem value='category' className='cursor-pointer hover:bg-bg-primary/10 focus:bg-bg-primary/10'>
+            <SelectItem value='category' className='hover:bg-bg-primary/10 focus:bg-bg-primary/10 cursor-pointer'>
               {t('item.category')}
             </SelectItem>
-            <SelectItem value='price' className='cursor-pointer hover:bg-color-primary/10 focus:bg-color-primary/10'>
+            <SelectItem value='price' className='hover:bg-color-primary/10 focus:bg-color-primary/10 cursor-pointer'>
               {t('item.price')}
             </SelectItem>
           </SelectContent>
@@ -102,13 +85,10 @@ export default function Item1Page() {
 
       {openEditDialog && searchParams.get('id') && (
         <EditDialog
-          isOpen={isEditDialogOpen}
+          isOpen={openEditDialog}
           onOpenChange={(open) => {
-            setIsEditDialogOpen(open);
-            if (!open) {
-              // Reset URL parameters when closing dialog
-              window.history.replaceState({}, '', window.location.pathname);
-            }
+            // Closing the dialog resets the URL parameters, which is what drives `openEditDialog`.
+            if (!open) router.replace(pathname);
           }}
           item={data?.items.find((item) => item.id === searchParams.get('id'))}
         />

@@ -1,8 +1,8 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { ChevronRight, MoreHorizontal } from 'lucide-react';
 
-import { cn } from '@/libs/utils';
+import { cn } from '@/lib/utils';
 
 function Breadcrumb({ ...props }: React.ComponentProps<'nav'>) {
   return <nav aria-label='breadcrumb' data-slot='breadcrumb' {...props} />;
@@ -13,7 +13,7 @@ function BreadcrumbList({ className, ...props }: React.ComponentProps<'ol'>) {
     <ol
       data-slot='breadcrumb-list'
       className={cn(
-        'flex flex-wrap items-center gap-1.5 break-words text-muted-foreground text-sm sm:gap-2.5',
+        'text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5',
         className
       )}
       {...props}
@@ -35,7 +35,7 @@ function BreadcrumbLink({
   const Comp = asChild ? Slot : 'a';
 
   return (
-    <Comp data-slot='breadcrumb-link' className={cn('transition-colors hover:text-foreground', className)} {...props} />
+    <Comp data-slot='breadcrumb-link' className={cn('hover:text-foreground transition-colors', className)} {...props} />
   );
 }
 
@@ -46,7 +46,7 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<'span'>) {
       role='link'
       aria-disabled='true'
       aria-current='page'
-      className={cn('font-normal text-foreground', className)}
+      className={cn('text-foreground font-normal', className)}
       {...props}
     />
   );

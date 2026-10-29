@@ -7,15 +7,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { NotificationDelete } from '@/components/ui/notification-delete';
-import { useDeleteItem1Mutation } from '@/hooks/item1/use-delete-item1-mutation';
-import type { Item1 } from '@/types/item1';
+import { type IItem1, useDeleteItem1Mutation } from '@/api/item1';
+import type { Translator } from '@/types/translation';
 import type { ColumnDef } from '@tanstack/react-table';
-import type { TFunction } from 'i18next';
 import { Edit, Flag, MoreHorizontal, Trash } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { useCallback, useMemo, useState } from 'react';
 
-export function useColumns(t: TFunction, refetch: () => void): ColumnDef<Item1>[] {
+export function useColumns(t: Translator): ColumnDef<IItem1>[] {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -48,13 +48,10 @@ export function useColumns(t: TFunction, refetch: () => void): ColumnDef<Item1>[
   const handleConfirmDelete = useCallback(() => {
     if (deleteDialogState.itemId) {
       deleteItem(deleteDialogState.itemId, {
-        onSuccess: () => {
-          refetch();
-          handleCancelDelete();
-        },
+        onSuccess: handleCancelDelete,
       });
     }
-  }, [deleteDialogState.itemId, refetch, deleteItem, handleCancelDelete]);
+  }, [deleteDialogState.itemId, deleteItem, handleCancelDelete]);
 
   const handleEdit = useCallback(
     (itemId: string) => () => {
@@ -102,11 +99,11 @@ export function useColumns(t: TFunction, refetch: () => void): ColumnDef<Item1>[
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant='ghost'
-                    className={`h-8 w-8 p-0 ${row.getIsSelected() ? 'rounded-full bg-brand-10' : ''}`}
+                    className={`h-8 w-8 p-0 ${row.getIsSelected() ? 'bg-brand-10 rounded-full' : ''}`}
                   >
-                    <span className='sr-only'>Open menu</span>
+                    <span className='sr-only'>{t('item.openMenu')}</span>
                     <MoreHorizontal
-                      className={`h-4 w-4 hover:rounded-full hover:bg-brand-10 ${
+                      className={`hover:bg-brand-10 h-4 w-4 hover:rounded-full ${
                         row.getIsSelected() ? 'text-brand-60' : ''
                       }`}
                     />

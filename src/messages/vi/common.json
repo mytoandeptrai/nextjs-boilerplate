@@ -1,0 +1,40 @@
+{
+  "actions": "Hành động",
+  "edit": "Sửa",
+  "delete": "Xóa",
+  "create": "Tạo mới",
+  "upload": "Tải lên",
+  "choose": "Chọn",
+  "days": "Ngày",
+  "hours": "Giờ",
+  "minutes": "Phút",
+  "update": "Cập nhật",
+  "editContent": "Sửa nội dung",
+  "shortDays": "Ngày",
+  "shortHours": "Giờ",
+  "shortMinutes": "Phút",
+  "report": "Báo cáo",
+  "active": "Hoạt động",
+  "inactive": "Không hoạt động",
+  "cancel": "Hủy",
+  "addNew": "Thêm mới",
+  "none": "Không có",
+  "close": "Đóng",
+  "deleteConfirmation": "Bạn có chắc chắn muốn xóa {itemName}?",
+  "deleteSuccess": "{itemName} đã được xóa thành công",
+  "deleteError": "Không thể xóa {itemName}",
+  "deleteSuccessTitle": "Thành công",
+  "deleteErrorTitle": "Lỗi",
+  "connected": "Đã kết nối",
+  "errorOccurred": "Đã xảy ra lỗi",
+  "notFound": {
+    "title": "Không tìm thấy trang",
+    "description": "Trang bạn đang tìm không tồn tại.",
+    "backHome": "Về trang chủ"
+  },
+  "error": {
+    "title": "Đã xảy ra lỗi!",
+    "retry": "Thử lại"
+  },
+  "confirm": "Xác nhận"
+}

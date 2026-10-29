@@ -1,0 +1,5 @@
+{
+  "invalidEmail": "Invalid email",
+  "passwordRequired": "String must contain at least 1 character(s)",
+  "nameRequired": "Name is required"
+}
