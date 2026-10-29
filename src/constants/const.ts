@@ -9,6 +9,12 @@ export const DEFAULT_PAGINATION = {
 /** Debounce delay (ms) used by search inputs. */
 export const SEARCH_DEBOUNCE_MS = 500;
 
+/** The only account accepted while no backend is configured (demo mode). */
+export const DEMO_ACCOUNT = {
+  email: 'demo@example.com',
+  password: 'demo1234',
+} as const;
+
 export const STORAGE_KEYS = {
   SESSION: 'session-store',
 } as const;

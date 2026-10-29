@@ -4,7 +4,9 @@ import { AUTH_KEYS } from '@/api/auth/keys';
 import { createLoginSchema } from '@/api/auth/schema';
 import type { ILoginResponse } from '@/api/auth/type';
 import { request } from '@/api/axios';
+import { isDemoMode } from '@/constants/env';
 import { HttpStatus } from '@/enums/enum';
+import { demoLogin } from '@/lib/server/demo-auth';
 import { parseTokenPair, setAuthCookies } from '@/lib/server/backend';
 import { createApiErrorResponse } from '@/utils/api-error';
 
@@ -19,7 +21,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { data } = await request.post(AUTH_KEYS.LOGIN, parsed.data);
+    const { data } = isDemoMode ? demoLogin(parsed.data) : await request.post(AUTH_KEYS.LOGIN, parsed.data);
     const tokens = parseTokenPair(data);
 
     // Never answer "authenticated" without tokens: the cookies would be empty and the guard would bounce the user.

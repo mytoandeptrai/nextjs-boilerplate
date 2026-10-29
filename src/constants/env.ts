@@ -8,8 +8,8 @@ const envSchema = z.object({
   APP_ENV: z.enum(AppEnv).default(AppEnv.DEVELOPMENT),
   /** Public origin of this app. Used for canonical URLs, sitemap and Open Graph. */
   APP_URL: z.string().default('http://localhost:3000'),
-  /** Backend origin the BFF route handlers forward to. Never called from the browser. */
-  API_URL: z.string().default('https://your-app.com'),
+  /** Backend origin the BFF route handlers forward to. Never called from the browser. Unset = demo mode. */
+  API_URL: z.string().optional(),
 });
 
 /**
@@ -26,4 +26,6 @@ export const env = envSchema.parse({
 
 export const isProductionEnv = env.APP_ENV === AppEnv.PRODUCTION;
 export const isDevelopmentEnv = env.APP_ENV === AppEnv.DEVELOPMENT;
+/** No backend configured: login accepts the demo account and Item1 is mocked (see `DEMO_ACCOUNT`). */
+export const isDemoMode = !env.API_URL;
 export const isServer = typeof window === 'undefined';

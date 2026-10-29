@@ -13,6 +13,8 @@ import { createLoginSchema, type LoginFormData, useLoginMutation } from '@/api/a
 import { Loader, Eye, EyeOff } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
+import { DEMO_ACCOUNT } from '@/constants/const';
+import { isDemoMode } from '@/constants/env';
 import { ROUTES } from '@/constants/routes';
 import { useTranslations } from '@/hooks';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -114,6 +116,11 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                   </FormItem>
                 )}
               />
+              {isDemoMode ? (
+                <div className='bg-muted text-muted-foreground rounded-md p-3 text-center text-sm'>
+                  {t('demoHint', DEMO_ACCOUNT)}
+                </div>
+              ) : null}
               {error && <div className='rounded-md bg-red-50 p-3 text-center text-sm text-red-500'>{error}</div>}
               <Button
                 type='submit'

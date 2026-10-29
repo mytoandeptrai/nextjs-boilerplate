@@ -19,7 +19,7 @@ COPY . .
 # NEXT_PUBLIC_* values are inlined at build time, so they must be build args.
 ARG NEXT_PUBLIC_APP_ENV=production
 ARG NEXT_PUBLIC_APP_URL=http://localhost:3000
-ARG NEXT_PUBLIC_API_URL=https://your-app.com
+ARG NEXT_PUBLIC_API_URL=
 ENV NEXT_PUBLIC_APP_ENV=$NEXT_PUBLIC_APP_ENV \
     NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL \
     NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL \

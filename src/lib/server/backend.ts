@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 import { request } from '@/api/axios';
 import { COOKIE_KEYS } from '@/constants/const';
-import { env } from '@/constants/env';
+import { env, isDemoMode } from '@/constants/env';
 import { HttpStatus } from '@/enums/enum';
 import type { ITokenPair } from '@/types/type';
 
@@ -76,6 +76,10 @@ const refreshSession = async (refreshToken: string): Promise<string | null> => {
  * renew it once with the refresh token before giving up.
  */
 export const backendRequest = async <T = unknown>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
+  // Reject: `createApiErrorResponse` turns it into a 501 for the browser.
+  if (isDemoMode)
+    throw { status: HttpStatus.NOT_IMPLEMENTED, message: 'Demo mode: set NEXT_PUBLIC_API_URL to use a backend' };
+
   const store = await cookies();
   const accessToken = store.get(COOKIE_KEYS.ACCESS_TOKEN)?.value;
   const refreshToken = store.get(COOKIE_KEYS.REFRESH_TOKEN)?.value;

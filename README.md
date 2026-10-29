@@ -83,8 +83,7 @@ Requirements: Node.js >= 22 (see `.nvmrc`) and pnpm.
 
 ```bash
 pnpm install
-cp .env.example .env.local   # set NEXT_PUBLIC_API_URL to your backend
-pnpm dev                     # http://localhost:3000
+pnpm dev                     # http://localhost:3000, demo mode: sign in with demo@example.com / demo1234
 ```
 
 | Script                            | Purpose                                   |
@@ -98,6 +97,9 @@ pnpm dev                     # http://localhost:3000
 
 ## Customization
 
+- **Demo mode.** With `NEXT_PUBLIC_API_URL` unset (the default) there is no backend: login accepts only
+  `demo@example.com` / `demo1234` (`DEMO_ACCOUNT` in `src/constants/const.ts`), Item1 is mocked, and `/api/media` answers 501.
+  The login page shows the credentials. Set the variable to switch to your real backend.
 - **Backend URL:** `NEXT_PUBLIC_API_URL` in `.env.local` (baked in at build time, also a Docker build arg). The login
   endpoint is expected at `POST /auth/login` returning `{ accessToken, refreshToken }`; token refresh at
   `POST /users/token/refresh` (see `src/lib/server/backend.ts`).
