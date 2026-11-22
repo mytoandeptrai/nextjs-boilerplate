@@ -9,6 +9,11 @@ export interface ICategory {
   display_order: number;
 }
 
+/** A category in the admin list. */
+export interface IAdminCategory extends ICategory {
+  product_count: number;
+}
+
 /** `multiplier` applies to linear-meter pricing only. */
 export interface IPleatOption {
   id: string;

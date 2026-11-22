@@ -357,6 +357,7 @@ src/app/[locale]/
       products/page.tsx              /admin/products
       products/new/page.tsx          /admin/products/new
       products/[id]/page.tsx         /admin/products/[id]
+      categories/page.tsx            /admin/categories
       lookbooks/page.tsx             /admin/lookbooks
       posts/page.tsx                 /admin/posts
       posts/new/page.tsx             /admin/posts/new
@@ -368,6 +369,7 @@ src/app/api/
   admin/auth/login|logout/route.ts   POST
   admin/uploads/route.ts             POST (multipart)
   admin/products/route.ts            GET, POST      admin/products/[id]/route.ts   GET, PUT, DELETE
+  admin/categories/route.ts          GET, POST      admin/categories/[id]/route.ts PUT, DELETE
   admin/lookbooks/route.ts           GET, POST      admin/lookbooks/[id]/route.ts  PUT, DELETE
   admin/posts/route.ts               GET, POST      admin/posts/[id]/route.ts      GET, PUT, DELETE
   admin/quotes/route.ts              GET (status, page)       admin/quotes/[id]/route.ts  PATCH, DELETE
@@ -386,6 +388,7 @@ src/modules/
   admin-login-page/        login-form
   admin-quotes-page/       status-filter, quotes-table, quote-detail-sheet, status-select
   admin-products-page/     products-table, product-form (option-list-editor, image-list-uploader)
+  admin-categories-page/   categories table, category-dialog (name, slug, order); deleting keeps the products
   admin-lookbooks-page/    lookbook-table, lookbook-form-dialog (product multi-select)
   admin-posts-page/        posts-table, post-form (markdown editor + preview)
   admin-settings-page/     settings-form

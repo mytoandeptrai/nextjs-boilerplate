@@ -451,6 +451,21 @@ const admin = async (browser: Browser) => {
 
   await capture('/admin/settings', '48-admin-settings');
 
+  await capture('/admin/categories', '52-admin-categories');
+
+  await optional('category dialogs', async () => {
+    const row = page.locator('[data-testid="category-row"]').first();
+
+    await page.setViewportSize(DESKTOP.viewport);
+    await page.locator('button:has(svg.lucide-plus)').first().click();
+    await page.locator(`${DIALOG} input[name="title"]`).fill('Rèm sáo nhôm'); // shows the generated slug; not saved
+    await dialogShot('53-admin-category-new');
+    await row.locator('button').first().click();
+    await dialogShot('54-admin-category-edit');
+    await row.locator('button[aria-haspopup="dialog"]').last().click();
+    await dialogShot('55-admin-category-delete-confirmation'); // closed with Escape: nothing is deleted
+  });
+
   // The same session on a phone: the sidebar collapses into a sheet.
   const mobile = await browser.newContext({ ...MOBILE, locale: 'vi-VN', storageState: await context.storageState() });
   const phone = await mobile.newPage();
@@ -469,6 +484,10 @@ const admin = async (browser: Browser) => {
   await open(phone, '/admin/quotes');
   await idle(phone);
   await shot(phone, '51-admin-quotes-mobile');
+
+  await open(phone, '/admin/categories');
+  await idle(phone);
+  await shot(phone, '56-admin-categories-mobile');
 
   await mobile.close();
   await context.close();

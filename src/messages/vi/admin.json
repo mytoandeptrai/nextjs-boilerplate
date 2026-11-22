@@ -90,6 +90,20 @@
       "removeOption": "Xóa lựa chọn"
     }
   },
+  "categories": {
+    "title": "Danh mục",
+    "subtitle": "Nhóm sản phẩm hiển thị ở bộ lọc cửa hàng và khi tạo sản phẩm.",
+    "new": "Thêm danh mục",
+    "edit": "Sửa danh mục",
+    "empty": "Chưa có danh mục. Hãy thêm danh mục đầu tiên.",
+    "name": "Tên danh mục",
+    "slug": "Đường dẫn (slug)",
+    "slugHint": "Địa chỉ bộ lọc: /products?category={slug}",
+    "order": "Thứ tự",
+    "orderHint": "Số nhỏ hiển thị trước.",
+    "products": "Sản phẩm",
+    "deleteConfirm": "Xóa danh mục \"{name}\"? {count} sản phẩm thuộc danh mục này sẽ được giữ lại và chuyển thành chưa phân loại."
+  },
   "lookbooks": {
     "title": "Công trình",
     "subtitle": "Ảnh lắp đặt thực tế và sản phẩm liên quan.",

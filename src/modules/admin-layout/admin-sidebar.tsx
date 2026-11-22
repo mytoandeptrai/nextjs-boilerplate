@@ -1,6 +1,16 @@
 'use client';
 
-import { ExternalLink, FileText, Images, Inbox, LayoutDashboard, LogOut, Package, Settings } from 'lucide-react';
+import {
+  ExternalLink,
+  FileText,
+  FolderTree,
+  Images,
+  Inbox,
+  LayoutDashboard,
+  LogOut,
+  Package,
+  Settings,
+} from 'lucide-react';
 
 import { useLogoutMutation } from '@/api/admin-auth';
 import {
@@ -23,6 +33,7 @@ const NAV = [
   { href: ROUTES.ADMIN, key: 'dashboard', icon: LayoutDashboard },
   { href: ROUTES.ADMIN_QUOTES, key: 'quotes', icon: Inbox },
   { href: ROUTES.ADMIN_PRODUCTS, key: 'products', icon: Package },
+  { href: ROUTES.ADMIN_CATEGORIES, key: 'categories', icon: FolderTree },
   { href: ROUTES.ADMIN_LOOKBOOKS, key: 'lookbooks', icon: Images },
   { href: ROUTES.ADMIN_POSTS, key: 'posts', icon: FileText },
   { href: ROUTES.ADMIN_SETTINGS, key: 'settings', icon: Settings },

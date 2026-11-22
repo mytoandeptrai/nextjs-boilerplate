@@ -12,6 +12,7 @@ export const ROUTES = {
   ADMIN_PRODUCTS: '/admin/products',
   ADMIN_PRODUCT_NEW: '/admin/products/new',
   ADMIN_PRODUCT_EDIT: '/admin/products/:id',
+  ADMIN_CATEGORIES: '/admin/categories',
   ADMIN_LOOKBOOKS: '/admin/lookbooks',
   ADMIN_POSTS: '/admin/posts',
   ADMIN_POST_NEW: '/admin/posts/new',

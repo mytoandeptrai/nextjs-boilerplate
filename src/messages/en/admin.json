@@ -90,6 +90,20 @@
       "removeOption": "Remove option"
     }
   },
+  "categories": {
+    "title": "Categories",
+    "subtitle": "Product groups shown in the store filter and when creating a product.",
+    "new": "Add category",
+    "edit": "Edit category",
+    "empty": "No categories yet. Add the first one.",
+    "name": "Category name",
+    "slug": "Slug",
+    "slugHint": "Filter address: /products?category={slug}",
+    "order": "Order",
+    "orderHint": "Lower numbers come first.",
+    "products": "Products",
+    "deleteConfirm": "Delete category \"{name}\"? Its {count} product(s) are kept and become uncategorised."
+  },
   "lookbooks": {
     "title": "Lookbook",
     "subtitle": "Installation photos and the products they feature.",
