@@ -10,6 +10,7 @@ import { createLoginSchema, type LoginFormData, useLoginMutation } from '@/api/a
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { LogoMark } from '@/components/brand/logo';
 import { siteConfig } from '@/config/site';
 import { ROUTES, safeAdminNext } from '@/constants/routes';
 import { HttpStatus } from '@/enums/enum';
@@ -52,6 +53,7 @@ export default function AdminLoginPage() {
   return (
     <main className='flex min-h-dvh items-center justify-center px-4 py-12'>
       <div className='w-full max-w-sm'>
+        <LogoMark className='mx-auto mb-4 size-12' />
         <p className='text-center text-sm font-medium tracking-[0.28em] uppercase'>{siteConfig.shortName}</p>
         <div className='border-border bg-card mt-8 border p-6 sm:p-8'>
           <h1 className='text-2xl font-light tracking-tight'>{t('title')}</h1>

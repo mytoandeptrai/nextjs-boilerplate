@@ -9,7 +9,9 @@ export const siteConfig = {
   appUrl: env.APP_URL,
   name: 'Màn Rèm Thùy Hương',
   shortName: 'Thùy Hương',
-  description: 'Rèm cửa may đo cao cấp: rèm vải, rèm cuốn, rèm cầu vồng, rèm gỗ.',
-  ogImage: `${env.APP_URL}/og-image.jpg`,
+  tagline: 'Rèm cửa may đo cao cấp',
+  description: 'Rèm vải, rèm cuốn, rèm cầu vồng, rèm gỗ may đo theo kích thước cửa nhà bạn.',
+  /** The shop's Facebook page, listed as `sameAs` in the structured data. */
+  facebookUrl: 'https://www.facebook.com/ManRemThuyHuongcaocap',
   themeColor: '#FAF9F6',
 };

@@ -1,3 +1,4 @@
+import { LogoMark } from '@/components/brand/logo';
 import { siteConfig } from '@/config/site';
 import { ROUTES } from '@/constants/routes';
 import { useTranslationsServer } from '@/hooks/use-translations-server';
@@ -18,7 +19,10 @@ export async function SiteFooter({ zaloHotline }: { zaloHotline: string }) {
     <footer className='border-border bg-secondary/60 mt-24 border-t'>
       <div className='container-page grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr]'>
         <div>
-          <p className='text-base font-medium tracking-[0.28em] uppercase'>{siteConfig.shortName}</p>
+          <p className='flex items-center gap-3 text-base font-medium tracking-[0.28em] uppercase'>
+            <LogoMark />
+            {siteConfig.shortName}
+          </p>
           <p className='text-muted-foreground mt-4 max-w-sm text-sm leading-6'>{t('store.footer.about')}</p>
         </div>
         <nav aria-label={t('store.footer.explore')}>

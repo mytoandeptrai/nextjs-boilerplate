@@ -24,6 +24,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar';
+import { LogoMark } from '@/components/brand/logo';
 import { siteConfig } from '@/config/site';
 import { ROUTES } from '@/constants/routes';
 import { useTranslations } from '@/hooks';
@@ -53,6 +54,7 @@ export function AdminSidebar({ email }: { email: string }) {
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader className='px-4 py-5 group-data-[collapsible=icon]:px-2'>
+        <LogoMark className='mb-3 size-9 group-data-[collapsible=icon]:mb-0 group-data-[collapsible=icon]:size-8' />
         <p className='truncate text-sm font-medium tracking-[0.2em] uppercase group-data-[collapsible=icon]:hidden'>
           {siteConfig.shortName}
         </p>

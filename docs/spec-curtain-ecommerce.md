@@ -51,6 +51,8 @@ New dependencies: `@supabase/supabase-js` (data, auth, storage), `react-markdown
 | `GEMINI_API_KEY` | server only | Storefront chat assistant (added). Unset: the chat button is not rendered and `POST /api/chat` answers 503. Read at runtime, like the other server secrets |
 | `GEMINI_MODEL` | server only | Optional, defaults to `gemini-flash-lite-latest` |
 | `QUOTE_EMAIL_FROM` | server only | Sender, default `onboarding@resend.dev` (the only sender Resend allows before a domain is verified) |
+| `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_APP_ENV` | public | Public origin (canonical URLs, sitemap, share images) and environment; only `production` is indexable. On Vercel's production deployment they default to `https://<production domain>` and `production` when unset (`next.config.ts`), so `manremthuyhuong.vercel.app` needs neither |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | public | Optional Google Search Console token, rendered as the verification meta tag |
 | `SUPABASE_DB_URL` | tooling only | Postgres URI used to apply migrations. Never read by the app |
 
 Public values are parsed in `src/constants/env.ts`; server-only values in `src/constants/env.server.ts`, which imports `server-only` so a client import fails the build. No key is committed: `.env.example` lists names only and `.gitignore` is extended to cover `.env*.local` (today it ignores only `.env`).
@@ -340,6 +342,13 @@ A floating chat on every storefront page (`ChatWidget`, mounted by `StoreLayout`
 - **Prices.** The model never does the arithmetic: it calls the `estimate_price` tool, which runs `calculatePrice`, so the assistant quotes what the configurator shows (at most 3 model calls per message).
 - **Limits.** Same-origin only, 20 messages per 5 minutes per address, 1,000 characters per message, the last 20 messages as context, 15 s timeout per model call.
 - **Errors.** The body carries `code`: `overloaded` (Gemini answered 429 / 5xx or timed out; 503), `rate_limited` (429), `unavailable` (no key; 503), `failed` (502). A 5xx from Gemini is tried once more first; a 429 is not. The widget shows a toast ("Hệ thống đang quá tải…" for `overloaded`), takes the unanswered question back out of the conversation and puts it back in the input.
+
+## 8c. SEO and brand assets (added)
+
+- **Metadata** (`buildMetadata` in `src/lib/seo.ts`): title, description, canonical, hreflang (`vi`, `en`, `x-default`), Open Graph and Twitter on every page. A catalogue or lookbook category and a page number are part of the canonical URL; the sort order is not. Product and guide pages share their own photo. Admin and cart are `noindex`.
+- **Structured data**: `WebSite` and `HomeGoodsStore` (logo, Zalo hotline, Facebook page) on every page; `Product` with a per-metre / per-m² `Offer` and `BreadcrumbList` on product pages; `Article` and `BreadcrumbList` on guides.
+- **`/sitemap.xml`**: static routes, one catalogue URL per category with products, products (with their photos) and guides, each in both locales. **`/robots.txt`** disallows `/api/`, admin and cart, and everything outside production.
+- **Logo**: `public/icon.svg` is the source. `pnpm icons:generate` renders `src/app/favicon.ico` and the PNG, Apple touch and maskable manifest icons from it; `LogoMark` (`src/components/brand/logo.tsx`) draws the same mark in the header, footer, admin and the share image (`/opengraph-image`).
 
 ## 9. Admin authentication and authorisation
 

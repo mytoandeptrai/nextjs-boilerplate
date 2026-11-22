@@ -36,16 +36,22 @@
   "confirm": "Confirm",
   "seo": {
     "siteName": "Thuy Huong Curtains",
-    "defaultTitle": "Thuy Huong Curtains | Made-to-measure curtains & blinds",
-    "description": "Made-to-measure fabric curtains, roller, zebra and wooden blinds. Configure your size, see an instant estimate and book a home survey.",
-    "products": "Products",
+    "defaultTitle": "Thuy Huong Curtains | Made-to-measure curtains & blinds in Vietnam",
+    "description": "Made-to-measure fabric curtains, roller, zebra and wooden blinds. Configure your size, see an instant estimate and book a free home survey.",
+    "products": "Made-to-measure curtains & blinds",
     "productsDescription": "Made-to-measure curtains and blinds: pick a style, enter your size and see an instant estimate.",
-    "lookbook": "Lookbook",
+    "lookbook": "Curtain installations",
     "lookbookDescription": "Photos of curtains installed in our customers' homes.",
-    "blog": "Guides",
+    "blog": "Curtain guides",
     "blogDescription": "How to measure, choose fabric and care for your curtains.",
     "cart": "Cart",
     "admin": "Admin",
-    "adminLogin": "Admin sign in"
+    "adminLogin": "Admin sign in",
+    "keywords": "curtains, made-to-measure curtains, blinds, roller blinds, zebra blinds, wooden blinds, fabric curtains, curtain quote, Màn Rèm Thùy Hương",
+    "productsCategoryDescription": "Made-to-measure {category}: browse the designs, see the price per metre and get an instant estimate.",
+    "lookbookCategory": "{category} installations",
+    "lookbookCategoryDescription": "Photos of {category} installed in our customers' homes.",
+    "page": "Page {page}",
+    "home": "Home"
   }
 }

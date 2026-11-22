@@ -22,7 +22,7 @@ export default async function BlogPage() {
                 <div className='bg-muted relative aspect-[3/2] overflow-hidden'>
                   <StoreImage
                     src={post.thumbnail_url}
-                    alt=''
+                    alt={post.title}
                     sizes='(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'
                     eager={index === 0}
                     className='transition-transform duration-700 ease-out group-hover:scale-105'

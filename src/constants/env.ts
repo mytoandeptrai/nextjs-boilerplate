@@ -14,6 +14,8 @@ const envSchema = z.object({
   SUPABASE_ANON_KEY: z.string().optional(),
   /** Existing public bucket that stores every uploaded image. */
   SUPABASE_STORAGE_BUCKET: z.string().optional(),
+  /** Google Search Console token (the `content` of its HTML tag). */
+  GOOGLE_SITE_VERIFICATION: z.string().optional(),
 });
 
 /**
@@ -31,6 +33,7 @@ export const env = envSchema.parse({
     emptyToUndefined(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) ??
     emptyToUndefined(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
   SUPABASE_STORAGE_BUCKET: emptyToUndefined(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET),
+  GOOGLE_SITE_VERIFICATION: emptyToUndefined(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION),
 });
 
 export const isProductionEnv = env.APP_ENV === AppEnv.PRODUCTION;

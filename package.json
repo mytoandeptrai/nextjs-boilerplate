@@ -18,6 +18,7 @@
     "admin:create": "node --env-file=.env.local scripts/create-admin.ts",
     "assets:ingest": "node --env-file=.env.local scripts/ingest-curtain-assets.ts",
     "screenshots": "node --env-file=.env.local scripts/capture-screenshots.ts",
+    "icons:generate": "node scripts/generate-icons.ts",
     "prepare": "husky"
   },
   "dependencies": {

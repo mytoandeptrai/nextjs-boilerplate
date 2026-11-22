@@ -5,6 +5,9 @@ export const PRODUCT_SORTS = ['newest', 'popular', 'price-asc', 'price-desc'] as
 
 export type ProductSort = (typeof PRODUCT_SORTS)[number];
 
+/** Products per page of the storefront catalogue. */
+export const PRODUCTS_PAGE_SIZE = 12;
+
 export const DEFAULT_PRODUCT_SORT: ProductSort = PRODUCT_SORTS[0];
 
 /** An unknown or missing `?sort=` value is the default order. */

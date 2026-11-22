@@ -3,6 +3,7 @@
 import { Menu, ShoppingBag } from 'lucide-react';
 import { useState } from 'react';
 
+import { LogoMark } from '@/components/brand/logo';
 import { useStore } from '@/components/store/store-provider';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { siteConfig } from '@/config/site';
@@ -86,10 +87,13 @@ export function SiteHeader() {
           </Sheet>
         </div>
 
-        <Link href={ROUTES.HOME} className='flex flex-col leading-none' aria-label={siteConfig.name}>
-          <span className='text-base font-medium tracking-[0.28em] uppercase lg:text-lg'>{siteConfig.shortName}</span>
-          <span className='text-muted-foreground mt-1 hidden text-[10px] tracking-[0.3em] uppercase lg:block'>
-            {t('store.brand.tagline')}
+        <Link href={ROUTES.HOME} className='flex items-center gap-3 leading-none' aria-label={siteConfig.name}>
+          <LogoMark className='size-8 lg:size-10' />
+          <span className='flex flex-col'>
+            <span className='text-base font-medium tracking-[0.28em] uppercase lg:text-lg'>{siteConfig.shortName}</span>
+            <span className='text-muted-foreground mt-1 hidden text-[10px] tracking-[0.3em] uppercase lg:block'>
+              {t('store.brand.tagline')}
+            </span>
           </span>
         </Link>
 

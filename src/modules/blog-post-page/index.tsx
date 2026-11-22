@@ -30,7 +30,7 @@ export default async function BlogPostPage({ post }: { post: IBlogPost }) {
       </div>
       {post.thumbnail_url ? (
         <div className='bg-muted relative mx-auto mt-8 aspect-[16/9] max-w-5xl overflow-hidden'>
-          <StoreImage src={post.thumbnail_url} alt='' sizes='(min-width: 1024px) 1024px, 100vw' eager />
+          <StoreImage src={post.thumbnail_url} alt={post.title} sizes='(min-width: 1024px) 1024px, 100vw' eager />
         </div>
       ) : null}
       <Markdown content={post.content_markdown} className='mx-auto mt-10 max-w-3xl' />

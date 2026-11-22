@@ -36,16 +36,22 @@
   "confirm": "Xác nhận",
   "seo": {
     "siteName": "Màn Rèm Thùy Hương",
-    "defaultTitle": "Màn Rèm Thùy Hương | Rèm cửa may đo cao cấp",
-    "description": "Rèm vải, rèm cuốn, rèm cầu vồng, rèm gỗ may đo theo kích thước cửa nhà bạn. Tự chọn mẫu, xem giá tạm tính ngay và đặt lịch khảo sát tại nhà.",
-    "products": "Sản phẩm",
-    "productsDescription": "Bộ sưu tập rèm may đo: chọn mẫu, nhập kích thước và xem giá tạm tính ngay.",
-    "lookbook": "Công trình thực tế",
-    "lookbookDescription": "Hình ảnh rèm đã lắp đặt tại nhà khách hàng.",
-    "blog": "Cẩm nang",
-    "blogDescription": "Hướng dẫn đo cửa, chọn vải và chăm sóc rèm.",
+    "defaultTitle": "Màn Rèm Thùy Hương | Rèm cửa may đo cao cấp, khảo sát tận nhà",
+    "description": "Rèm vải, rèm cuốn, rèm cầu vồng, rèm gỗ may đo theo kích thước cửa nhà bạn. Tự chọn mẫu, xem giá tạm tính ngay và đặt lịch khảo sát, đo đạc miễn phí tại nhà.",
+    "products": "Sản phẩm rèm cửa may đo",
+    "productsDescription": "Bộ sưu tập rèm vải, rèm cuốn, rèm cầu vồng, rèm gỗ may đo: chọn mẫu, nhập kích thước cửa và xem giá tạm tính ngay.",
+    "lookbook": "Công trình rèm cửa thực tế",
+    "lookbookDescription": "Hình ảnh rèm cửa Màn Rèm Thùy Hương đã may và lắp đặt tại nhà khách hàng: phòng khách, phòng ngủ, cửa sổ, cửa ban công.",
+    "blog": "Cẩm nang chọn và đo rèm cửa",
+    "blogDescription": "Hướng dẫn đo cửa, chọn vải, chọn kiểu rèm và chăm sóc rèm từ Màn Rèm Thùy Hương.",
     "cart": "Giỏ hàng",
     "admin": "Quản trị",
-    "adminLogin": "Đăng nhập quản trị"
+    "adminLogin": "Đăng nhập quản trị",
+    "keywords": "rèm cửa, màn rèm, rèm cửa may đo, rèm vải, rèm cuốn, rèm cầu vồng, rèm gỗ, rèm cửa cao cấp, rèm phòng ngủ, rèm phòng khách, báo giá rèm cửa, Màn Rèm Thùy Hương",
+    "productsCategoryDescription": "{category} may đo theo kích thước cửa: xem mẫu, giá theo mét và giá tạm tính ngay tại Màn Rèm Thùy Hương.",
+    "lookbookCategory": "Công trình {category} thực tế",
+    "lookbookCategoryDescription": "Hình ảnh {category} đã lắp đặt tại nhà khách hàng của Màn Rèm Thùy Hương.",
+    "page": "Trang {page}",
+    "home": "Trang chủ"
   }
 }

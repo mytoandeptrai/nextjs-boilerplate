@@ -6,10 +6,15 @@ import { SectionHeading } from '@/components/store/section-heading';
 import { SortSelect } from '@/components/store/sort-select';
 import { useTranslationsServer } from '@/hooks/use-translations-server';
 import { getTotalPages } from '@/lib/pagination';
-import { buildProductsHref, DEFAULT_PRODUCT_SORT, PRODUCT_SORTS, type ProductSort } from '@/lib/product-listing';
+import {
+  buildProductsHref,
+  DEFAULT_PRODUCT_SORT,
+  PRODUCT_SORTS,
+  PRODUCTS_PAGE_SIZE,
+  type ProductSort,
+} from '@/lib/product-listing';
 
 /** Three rows of four on desktop, six rows of two on a phone. */
-const PRODUCTS_PAGE_SIZE = 12;
 
 interface IProductsPageProps {
   categorySlug?: string;
