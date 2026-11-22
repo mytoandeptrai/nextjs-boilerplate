@@ -2,7 +2,7 @@ import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { COOKIE_KEYS } from '@/constants/const';
-import { isAdminPath, ROUTES, safeAdminNext } from '@/constants/routes';
+import { ADMIN_REAUTH_PARAM, isAdminPath, ROUTES, safeAdminNext } from '@/constants/routes';
 import { DEFAULT_LOCALE, LOCALES, routing } from './i18n/routing';
 
 // Next.js 16 renamed `middleware.ts` to `proxy.ts`. next-intl negotiates the locale and handles redirects here.
@@ -92,7 +92,7 @@ export default async function proxy(req: NextRequest) {
 
     login.searchParams.set('next', path);
     response = NextResponse.redirect(login);
-  } else if (hasSession && isLogin) {
+  } else if (hasSession && isLogin && !req.nextUrl.searchParams.has(ADMIN_REAUTH_PARAM)) {
     response = NextResponse.redirect(
       new URL(withLocale(locale, safeAdminNext(req.nextUrl.searchParams.get('next'))), req.url)
     );

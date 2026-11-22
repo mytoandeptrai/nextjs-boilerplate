@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { ROUTES } from '@/constants/routes';
+import { ADMIN_REAUTH_PARAM, ROUTES } from '@/constants/routes';
 import { redirect } from '@/i18n/navigation';
 import { getAdminUser } from '@/lib/server/admin-session';
 import { AdminSidebar } from './admin-sidebar';
@@ -14,7 +14,9 @@ import { AdminSidebar } from './admin-sidebar';
 export default async function AdminLayout({ children, locale }: { children: ReactNode; locale: string }) {
   const admin = await getAdminUser();
 
-  if (!admin) return redirect({ href: ROUTES.ADMIN_LOGIN, locale });
+  // The cookie can still look valid to the proxy (unexpired) after Supabase revoked it or the role was removed:
+  // the flag stops the proxy from bouncing the login page back here.
+  if (!admin) return redirect({ href: { pathname: ROUTES.ADMIN_LOGIN, query: { [ADMIN_REAUTH_PARAM]: '1' } }, locale });
 
   return (
     <SidebarProvider>

@@ -28,6 +28,9 @@ export const INDEXABLE_ROUTES: string[] = [ROUTES.HOME, ROUTES.PRODUCTS, ROUTES.
 export const isAdminPath = (path: string): boolean => path === ADMIN_PREFIX || path.startsWith(`${ADMIN_PREFIX}/`);
 
 /** Only same-app admin paths are accepted as a post-login destination (no open redirect). */
+/** Query flag on the admin login URL: the session cookie was rejected by Supabase, show the form anyway. */
+export const ADMIN_REAUTH_PARAM = 'reauth';
+
 export const safeAdminNext = (next: string | null | undefined): string =>
   next && isAdminPath(next) && next !== ROUTES.ADMIN_LOGIN && !next.startsWith('//') ? next : ROUTES.ADMIN;
 

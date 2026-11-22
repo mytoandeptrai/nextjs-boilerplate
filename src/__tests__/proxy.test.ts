@@ -65,6 +65,11 @@ describe('proxy', () => {
     );
   });
 
+  it('shows the login page when the admin layout rejected an unexpired session', async () => {
+    expect(await location('/admin/login?reauth=1', `accessToken=${VALID}`)).toBeNull();
+    expect(await location('/en/admin/login?reauth=1', `accessToken=${VALID}`)).toBeNull();
+  });
+
   it('rejects an expired session that cannot be renewed and clears its cookies', async () => {
     const response = await call('/admin', `accessToken=${EXPIRED}`);
 
