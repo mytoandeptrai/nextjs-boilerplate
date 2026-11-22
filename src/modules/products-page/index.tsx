@@ -1,16 +1,34 @@
-import { getCategories, getProducts } from '@/api/catalog/requests';
+import { getCategories, getProductsPage } from '@/api/catalog/requests';
 import { CategoryFilter } from '@/components/store/category-filter';
+import { Pagination } from '@/components/store/pagination';
 import { ProductCard } from '@/components/store/product-card';
 import { SectionHeading } from '@/components/store/section-heading';
 import { ROUTES } from '@/constants/routes';
 import { useTranslationsServer } from '@/hooks/use-translations-server';
+import { getTotalPages } from '@/lib/pagination';
 
-export default async function ProductsPage({ categorySlug }: { categorySlug?: string }) {
+/** Three rows of four on desktop, six rows of two on a phone. */
+const PRODUCTS_PAGE_SIZE = 12;
+
+export default async function ProductsPage({ categorySlug, page = 1 }: { categorySlug?: string; page?: number }) {
   const { t } = await useTranslationsServer();
   const categories = await getCategories();
   // An unknown slug shows everything instead of an empty page.
   const active = categories.find((category) => category.slug === categorySlug);
-  const products = await getProducts({ categoryId: active?.id });
+  const query = { categoryId: active?.id, pageSize: PRODUCTS_PAGE_SIZE };
+  const requested = await getProductsPage({ ...query, page });
+  // A page past the end (an old link, a product removed since) shows the first page instead of an empty one.
+  const isPastEnd = page > 1 && requested.products.length === 0;
+  const { products, total } = isPastEnd ? await getProductsPage({ ...query, page: 1 }) : requested;
+  const currentPage = isPastEnd ? 1 : page;
+  const getPageHref = (target: number) => {
+    const params = new URLSearchParams();
+
+    if (active) params.set('category', active.slug);
+    if (target > 1) params.set('page', String(target));
+
+    return params.size > 0 ? `${ROUTES.PRODUCTS}?${params}` : ROUTES.PRODUCTS;
+  };
   const categoryTitle = new Map(categories.map((category) => [category.id, category.title]));
   const filters = [
     { href: ROUTES.PRODUCTS, label: t('store.categories.all'), isActive: !active },
@@ -56,6 +74,18 @@ export default async function ProductsPage({ categorySlug }: { categorySlug?: st
           {t('store.product.empty')}
         </p>
       )}
+
+      <Pagination
+        page={currentPage}
+        totalPages={getTotalPages(total, PRODUCTS_PAGE_SIZE)}
+        getHref={getPageHref}
+        labels={{
+          navigation: t('store.pagination.label'),
+          previous: t('store.pagination.previous'),
+          next: t('store.pagination.next'),
+          page: (target) => t('store.pagination.page', { page: target }),
+        }}
+      />
     </div>
   );
 }

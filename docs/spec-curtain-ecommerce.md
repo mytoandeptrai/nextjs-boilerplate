@@ -344,7 +344,7 @@ src/app/[locale]/
   (storefront)/
     layout.tsx                       SiteHeader, SiteFooter, CartDrawer, FloatingZaloButton
     page.tsx                         /                  HomePage
-    products/page.tsx                /products          ProductsPage (?category=slug)
+    products/page.tsx                /products          ProductsPage (?category=slug&page=n, 12 per page)
     products/[slug]/page.tsx         /products/[slug]   ProductDetailPage
     lookbook/page.tsx                /lookbook          LookbookPage (?category=slug)
     blog/page.tsx                    /blog              BlogPage

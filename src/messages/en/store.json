@@ -15,6 +15,12 @@
     "all": "All",
     "other": "Other"
   },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous page",
+    "next": "Next page",
+    "page": "Page {page}"
+  },
   "featured": {
     "eyebrow": "Most loved",
     "title": "Featured products",

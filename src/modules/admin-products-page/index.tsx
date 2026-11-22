@@ -1,6 +1,7 @@
 'use client';
 
 import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { useAdminProductsQuery, useDeleteAdminProductMutation } from '@/api/admin-products';
@@ -15,7 +16,10 @@ import { buildRoute, ROUTES } from '@/constants/routes';
 import { useTranslations } from '@/hooks';
 import { Link } from '@/i18n/navigation';
 import { formatVnd } from '@/lib/format';
+import { getTotalPages } from '@/lib/pagination';
 import { cn } from '@/lib/utils';
+
+const PAGE_SIZE = 10;
 
 export default function AdminProductsPage() {
   const { t } = useTranslations('admin');
@@ -23,6 +27,11 @@ export default function AdminProductsPage() {
   const { data: categories = [] } = useCategoriesQuery();
   const { mutate: deleteProduct } = useDeleteAdminProductMutation();
   const categoryTitle = new Map(categories.map((category) => [category.id, category.title]));
+  const [requestedPage, setPage] = useState(1);
+  const totalPages = getTotalPages(products.length, PAGE_SIZE);
+  // Deleting the last product of the last page steps back instead of showing an empty table.
+  const page = Math.min(requestedPage, totalPages);
+  const visible = products.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const _handleDelete = (id: string) =>
     deleteProduct(id, {
@@ -64,7 +73,7 @@ export default function AdminProductsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {products.map((product) => (
+              {visible.map((product) => (
                 <TableRow key={product.id}>
                   <TableCell>
                     <div className='flex items-center gap-3'>
@@ -121,6 +130,18 @@ export default function AdminProductsPage() {
             </TableBody>
           </Table>
         </div>
+
+        {totalPages > 1 ? (
+          <div className='mt-4 flex items-center justify-end gap-3 text-sm'>
+            <span className='text-muted-foreground'>{t('common.page', { page, total: totalPages })}</span>
+            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>
+              {t('common.previous')}
+            </Button>
+            <Button variant='outline' size='sm' disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
+              {t('common.next')}
+            </Button>
+          </div>
+        ) : null}
       </QueryState>
     </>
   );

@@ -15,6 +15,12 @@
     "all": "Tất cả",
     "other": "Khác"
   },
+  "pagination": {
+    "label": "Phân trang",
+    "previous": "Trang trước",
+    "next": "Trang sau",
+    "page": "Trang {page}"
+  },
   "featured": {
     "eyebrow": "Được chọn nhiều",
     "title": "Sản phẩm nổi bật",

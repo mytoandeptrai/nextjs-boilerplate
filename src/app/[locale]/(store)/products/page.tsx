@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { ROUTES } from '@/constants/routes';
 import { useTranslationsServer } from '@/hooks/use-translations-server';
 import { toLocale } from '@/i18n/routing';
+import { parsePage } from '@/lib/pagination';
 import { buildMetadata } from '@/lib/seo';
 import type { PageProps } from '@/types/type';
 import ProductsPage from '@/modules/products-page';
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: Pick<PageProps<{ locale: stri
 }
 
 export default async function Page({ searchParams }: PageProps<{ locale: string }>) {
-  const { category } = await searchParams;
+  const { category, page } = await searchParams;
 
-  return <ProductsPage categorySlug={typeof category === 'string' ? category : undefined} />;
+  return <ProductsPage categorySlug={typeof category === 'string' ? category : undefined} page={parsePage(page)} />;
 }

@@ -54,6 +54,54 @@ export const getProducts = ({ categoryId, limit }: { categoryId?: string; limit?
     []
   );
 
+/**
+ * One page of the catalogue with the number of matching products. A page past the end comes back empty with
+ * `total: 0` (PostgREST refuses the range), which the catalogue treats as "go back to the first page".
+ */
+export const getProductsPage = ({
+  categoryId,
+  page,
+  pageSize,
+}: {
+  categoryId?: string;
+  page: number;
+  pageSize: number;
+}): Promise<{ products: IProduct[]; total: number }> => {
+  const db = getSupabaseClient();
+  const empty = { products: [], total: 0 };
+
+  if (!db) return Promise.resolve(empty);
+
+  let query = db
+    .from('products')
+    .select('*', { count: 'exact' })
+    .eq('is_active', true)
+    .order('created_at', { ascending: false })
+    // Products created in the same instant must not swap places between pages.
+    .order('id')
+    .range((page - 1) * pageSize, page * pageSize - 1);
+
+  if (categoryId) query = query.eq('category_id', categoryId);
+
+  return Promise.resolve(query).then(
+    ({ data, error, count }) => {
+      if (error || !data) {
+        // PGRST103: the requested range starts after the last row.
+        if (error && error.code !== 'PGRST103') console.error('[catalog]', error.message);
+
+        return empty;
+      }
+
+      return { products: (data as Record<string, unknown>[]).map(toProduct), total: count ?? data.length };
+    },
+    (error) => {
+      console.error('[catalog]', error);
+
+      return empty;
+    }
+  );
+};
+
 export const getProductBySlug = (slug: string): Promise<IProduct | null> =>
   safe((db) => db.from('products').select('*').eq('slug', slug).eq('is_active', true).maybeSingle(), toProduct, null);
 
