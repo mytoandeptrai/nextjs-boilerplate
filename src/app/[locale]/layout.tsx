@@ -40,10 +40,7 @@ export async function generateMetadata({ params }: Pick<LayoutProps<{ locale: st
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  themeColor: siteConfig.themeColor,
 };
 
 export function generateStaticParams() {
@@ -58,7 +55,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<{ l
   const { t } = await useTranslationsServer('common.seo', locale);
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} data-scroll-behavior='smooth' suppressHydrationWarning>
       <body suppressHydrationWarning className={cn('antialiased', fontSans.variable, fontMono.variable)}>
         <JsonLd
           data={webSiteJsonLd({ locale: toLocale(locale), name: t('siteName'), description: t('description') })}

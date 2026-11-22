@@ -1,0 +1,169 @@
+{
+  "brand": {
+    "tagline": "Rèm cửa may đo cao cấp"
+  },
+  "hero": {
+    "eyebrow": "May đo theo từng ô cửa",
+    "title": "Rèm đẹp, vừa khít ô cửa nhà bạn",
+    "subtitle": "Chọn mẫu, nhập kích thước và xem giá tạm tính ngay. Chúng tôi khảo sát, may đo và lắp đặt tận nhà.",
+    "primaryCta": "Xem bộ sưu tập",
+    "secondaryCta": "Công trình thực tế"
+  },
+  "categories": {
+    "eyebrow": "Dòng sản phẩm",
+    "title": "Chọn kiểu rèm",
+    "all": "Tất cả"
+  },
+  "featured": {
+    "eyebrow": "Được chọn nhiều",
+    "title": "Sản phẩm nổi bật",
+    "viewAll": "Xem tất cả sản phẩm"
+  },
+  "steps": {
+    "eyebrow": "Quy trình",
+    "title": "Ba bước để có bộ rèm ưng ý",
+    "one": {
+      "title": "Chọn mẫu và nhập kích thước",
+      "text": "Chọn kiểu rèm, chất vải, kiểu xếp ly và nhập chiều rộng, chiều cao ô cửa."
+    },
+    "two": {
+      "title": "Xem giá tạm tính ngay",
+      "text": "Giá được tính ngay theo kích thước và lựa chọn của bạn, không cần chờ báo giá."
+    },
+    "three": {
+      "title": "Khảo sát và lắp đặt tại nhà",
+      "text": "Gửi đơn qua Zalo hoặc đặt lịch khảo sát. Thợ đến đo lại, may và lắp hoàn thiện."
+    }
+  },
+  "lookbook": {
+    "eyebrow": "Công trình thực tế",
+    "title": "Rèm đã lắp tại nhà khách hàng",
+    "subtitle": "Hình ảnh thật từ các công trình chúng tôi đã thi công.",
+    "viewAll": "Xem tất cả công trình",
+    "empty": "Chưa có hình ảnh công trình.",
+    "taggedProducts": "Sản phẩm trong ảnh",
+    "viewPhoto": "Xem ảnh: {title}"
+  },
+  "guides": {
+    "eyebrow": "Cẩm nang",
+    "title": "Kinh nghiệm chọn rèm",
+    "subtitle": "Cách đo cửa, chọn vải và chăm sóc rèm bền đẹp.",
+    "viewAll": "Xem tất cả bài viết",
+    "empty": "Chưa có bài viết.",
+    "readMore": "Đọc tiếp",
+    "back": "Tất cả bài viết"
+  },
+  "cta": {
+    "title": "Cần tư vấn tại nhà?",
+    "text": "Đặt lịch khảo sát miễn phí. Chúng tôi mang mẫu vải đến tận nơi và đo đạc chính xác.",
+    "zalo": "Chat Zalo",
+    "browse": "Chọn rèm và đặt lịch"
+  },
+  "product": {
+    "from": "Từ",
+    "perMeter": "/ mét ngang",
+    "perSquareMeter": "/ m²",
+    "empty": "Chưa có sản phẩm nào.",
+    "description": "Mô tả sản phẩm",
+    "seenInHomes": "Sản phẩm này tại nhà khách hàng",
+    "madeToMeasure": "May đo theo kích thước",
+    "photo": "Ảnh {index}",
+    "related": "Có thể bạn cũng thích"
+  },
+  "configurator": {
+    "title": "Tùy chọn của bạn",
+    "width": "Chiều rộng (cm)",
+    "height": "Chiều cao (cm)",
+    "range": "Từ {min} đến {max} cm",
+    "pleat": "Kiểu xếp ly",
+    "fullness": "Độ chun",
+    "fullnessHint": "Độ chun càng cao, sóng rèm càng dày và sang.",
+    "fullnessStandard": "Tiêu chuẩn",
+    "fullnessLuxury": "Sang trọng",
+    "fabric": "Chất liệu / màu",
+    "motor": "Động cơ",
+    "noMotor": "Kéo tay",
+    "quantity": "Số lượng",
+    "decrease": "Giảm số lượng",
+    "increase": "Tăng số lượng",
+    "estimate": "Giá tạm tính",
+    "estimateNote": "Giá cuối cùng được xác nhận sau khi khảo sát thực tế.",
+    "perPiece": "{price} / bộ",
+    "addToCart": "Thêm vào giỏ hàng",
+    "added": "Đã thêm vào giỏ hàng",
+    "errorWidth": "Chiều rộng phải từ {min} đến {max} cm",
+    "errorHeight": "Chiều cao phải từ {min} đến {max} cm",
+    "errorQuantity": "Số lượng phải từ {min} đến {max}",
+    "minArea": "Tính tối thiểu 1 m mỗi chiều.",
+    "included": "Đã gồm"
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "open": "Mở giỏ hàng ({count})",
+    "empty": "Giỏ hàng đang trống",
+    "emptyHint": "Chọn mẫu rèm và nhập kích thước để xem giá tạm tính.",
+    "continueShopping": "Tiếp tục xem sản phẩm",
+    "total": "Tổng tạm tính",
+    "estimateNote": "Chưa gồm phí lắp đặt. Giá cuối cùng được xác nhận sau khảo sát.",
+    "checkout": "Gửi yêu cầu báo giá",
+    "remove": "Xóa {title}",
+    "viewCart": "Xem giỏ hàng",
+    "itemCount": "{count} sản phẩm",
+    "width": "Rộng",
+    "height": "Cao",
+    "fullness": "Độ chun",
+    "each": "{price} / bộ",
+    "priceUpdated": "Giá một số sản phẩm đã được cập nhật theo bảng giá mới.",
+    "unavailable": "Sản phẩm này hiện không còn bán. Vui lòng xóa khỏi giỏ hàng.",
+    "summary": "Tóm tắt"
+  },
+  "checkout": {
+    "title": "Thông tin liên hệ",
+    "subtitle": "Không cần thanh toán trước. Chúng tôi sẽ liên hệ xác nhận đơn.",
+    "name": "Họ và tên",
+    "namePlaceholder": "Nguyễn Văn A",
+    "phone": "Số điện thoại",
+    "phonePlaceholder": "09xx xxx xxx",
+    "address": "Địa chỉ lắp đặt",
+    "addressPlaceholder": "Số nhà, đường, phường, quận",
+    "notes": "Ghi chú",
+    "notesPlaceholder": "Thời gian thuận tiện, yêu cầu riêng...",
+    "zaloButton": "Chốt đơn & Gửi qua Zalo",
+    "surveyButton": "Gửi yêu cầu khảo sát tại nhà",
+    "sending": "Đang gửi...",
+    "zaloHint": "Mở Zalo với nội dung đơn đã soạn sẵn, bạn chỉ cần bấm Gửi.",
+    "successTitle": "Đã ghi nhận yêu cầu",
+    "successZalo": "Nội dung đơn đã được sao chép. Nếu Zalo không tự điền, hãy dán vào ô chat và gửi cho chúng tôi.",
+    "successSurvey": "Chúng tôi sẽ gọi lại để hẹn lịch khảo sát trong thời gian sớm nhất.",
+    "orderCode": "Mã đơn",
+    "copyMessage": "Sao chép nội dung đơn",
+    "copied": "Đã sao chép nội dung đơn",
+    "openZalo": "Mở Zalo",
+    "done": "Hoàn tất",
+    "errorGeneric": "Không gửi được yêu cầu. Vui lòng thử lại hoặc gọi hotline.",
+    "errorRateLimit": "Bạn gửi quá nhiều yêu cầu. Vui lòng thử lại sau ít phút.",
+    "errorUnavailable": "Một số sản phẩm không còn bán. Vui lòng kiểm tra lại giỏ hàng.",
+    "zaloNotSaved": "Đơn đã mở trên Zalo nhưng chưa lưu được vào hệ thống. Hãy gửi tin nhắn Zalo để chúng tôi nhận đơn."
+  },
+  "zalo": {
+    "heading": "ĐƠN ĐẶT RÈM",
+    "code": "Mã đơn",
+    "customer": "Khách",
+    "address": "Địa chỉ",
+    "width": "Rộng",
+    "height": "Cao",
+    "fullness": "Độ chun",
+    "subtotal": "Thành tiền",
+    "total": "TỔNG TẠM TÍNH",
+    "notes": "Ghi chú",
+    "more": "... và {count} sản phẩm khác (xem theo mã đơn)",
+    "chat": "Chat Zalo với chúng tôi"
+  },
+  "footer": {
+    "about": "Rèm vải, rèm cuốn, rèm cầu vồng và rèm gỗ may đo, thi công tận nhà.",
+    "explore": "Khám phá",
+    "contact": "Liên hệ",
+    "hotline": "Hotline / Zalo",
+    "rights": "© {year} Màn Rèm Thùy Hương."
+  }
+}

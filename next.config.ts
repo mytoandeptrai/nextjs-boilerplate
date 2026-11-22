@@ -3,12 +3,25 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const isProductionEnv = process.env.NEXT_PUBLIC_APP_ENV === 'production';
 
+// Only images from this project's public storage bucket may go through the image optimizer.
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, '');
+const storageBucket = process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET;
+const storagePattern =
+  supabaseUrl && storageBucket ? [new URL(`${supabaseUrl}/storage/v1/object/public/${storageBucket}/**`)] : [];
+
 const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
   output: 'standalone',
   experimental: { globalNotFound: true },
+  images: {
+    remotePatterns: storagePattern,
+    formats: ['image/avif', 'image/webp'],
+    qualities: [75, 85],
+    // Uploaded objects have random names and never change.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
+  },
   async headers() {
     const security = [
       { key: 'X-Content-Type-Options', value: 'nosniff' },

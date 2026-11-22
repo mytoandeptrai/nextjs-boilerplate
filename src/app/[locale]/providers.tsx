@@ -9,11 +9,11 @@ import { Toaster } from '@/components/ui/sonner';
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
-    <ProgressProvider height='4px' color='#a12d23' options={{ showSpinner: false }} shallowRouting>
+    <ProgressProvider height='2px' color='#8a6d3b' options={{ showSpinner: false }} shallowRouting>
       <QueryClientProvider>
         <ThemeProvider>
           {children}
-          <Toaster />
+          <Toaster position='top-center' />
         </ThemeProvider>
       </QueryClientProvider>
     </ProgressProvider>

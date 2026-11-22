@@ -9,11 +9,9 @@
   "hours": "Giờ",
   "minutes": "Phút",
   "update": "Cập nhật",
-  "editContent": "Sửa nội dung",
   "shortDays": "Ngày",
   "shortHours": "Giờ",
   "shortMinutes": "Phút",
-  "report": "Báo cáo",
   "active": "Hoạt động",
   "inactive": "Không hoạt động",
   "cancel": "Hủy",
@@ -25,7 +23,6 @@
   "deleteError": "Không thể xóa {itemName}",
   "deleteSuccessTitle": "Thành công",
   "deleteErrorTitle": "Lỗi",
-  "connected": "Đã kết nối",
   "errorOccurred": "Đã xảy ra lỗi",
   "notFound": {
     "title": "Không tìm thấy trang",
@@ -38,11 +35,17 @@
   },
   "confirm": "Xác nhận",
   "seo": {
-    "siteName": "Jacob",
-    "defaultTitle": "Jacob CMS",
-    "description": "Jacob Template: hệ thống quản trị nội dung Next.js với i18n có kiểu và BFF an toàn.",
-    "login": "Đăng nhập",
-    "item1": "Quản lý mục",
-    "react19": "React 19 hooks"
+    "siteName": "Màn Rèm Thùy Hương",
+    "defaultTitle": "Màn Rèm Thùy Hương | Rèm cửa may đo cao cấp",
+    "description": "Rèm vải, rèm cuốn, rèm cầu vồng, rèm gỗ may đo theo kích thước cửa nhà bạn. Tự chọn mẫu, xem giá tạm tính ngay và đặt lịch khảo sát tại nhà.",
+    "products": "Sản phẩm",
+    "productsDescription": "Bộ sưu tập rèm may đo: chọn mẫu, nhập kích thước và xem giá tạm tính ngay.",
+    "lookbook": "Công trình thực tế",
+    "lookbookDescription": "Hình ảnh rèm đã lắp đặt tại nhà khách hàng.",
+    "blog": "Cẩm nang",
+    "blogDescription": "Hướng dẫn đo cửa, chọn vải và chăm sóc rèm.",
+    "cart": "Giỏ hàng",
+    "admin": "Quản trị",
+    "adminLogin": "Đăng nhập quản trị"
   }
 }

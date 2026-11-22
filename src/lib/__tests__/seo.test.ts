@@ -9,21 +9,21 @@ import {
 
 describe('seo helpers', () => {
   it('prefixes only non-default locales', () => {
-    expect(getLocalizedPath('en', '/login')).toBe('/login');
-    expect(getLocalizedPath('vi', '/login')).toBe('/vi/login');
-    expect(getLocalizedPath('en')).toBe('/');
-    expect(getLocalizedPath('vi')).toBe('/vi');
+    expect(getLocalizedPath('vi', '/products')).toBe('/products');
+    expect(getLocalizedPath('en', '/products')).toBe('/en/products');
+    expect(getLocalizedPath('vi')).toBe('/');
+    expect(getLocalizedPath('en')).toBe('/en');
   });
 
   it('builds absolute URLs from the app origin', () => {
-    expect(getAbsoluteUrl('vi', '/login')).toBe('http://localhost:3000/vi/login');
+    expect(getAbsoluteUrl('en', '/products')).toBe('http://localhost:3000/en/products');
   });
 
   it('lists every locale plus x-default as hreflang alternates', () => {
-    expect(getLanguageAlternates('/login')).toEqual({
-      en: 'http://localhost:3000/login',
-      vi: 'http://localhost:3000/vi/login',
-      'x-default': 'http://localhost:3000/login',
+    expect(getLanguageAlternates('/products')).toEqual({
+      en: 'http://localhost:3000/en/products',
+      vi: 'http://localhost:3000/products',
+      'x-default': 'http://localhost:3000/products',
     });
   });
 
@@ -33,10 +33,10 @@ describe('seo helpers', () => {
   });
 
   it('builds schema.org payloads', () => {
-    expect(webSiteJsonLd({ locale: 'vi', name: 'Jacob', description: 'd' })).toMatchObject({
+    expect(webSiteJsonLd({ locale: 'en', name: 'Store', description: 'd' })).toMatchObject({
       '@type': 'WebSite',
-      url: 'http://localhost:3000/vi',
-      inLanguage: 'vi',
+      url: 'http://localhost:3000/en',
+      inLanguage: 'en',
     });
     expect(breadcrumbJsonLd([{ name: 'Home', url: 'http://x' }]).itemListElement[0]).toMatchObject({ position: 1 });
   });

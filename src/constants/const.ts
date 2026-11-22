@@ -9,14 +9,9 @@ export const DEFAULT_PAGINATION = {
 /** Debounce delay (ms) used by search inputs. */
 export const SEARCH_DEBOUNCE_MS = 500;
 
-/** The only account accepted while no backend is configured (demo mode). */
-export const DEMO_ACCOUNT = {
-  email: 'demo@example.com',
-  password: 'demo1234',
-} as const;
-
 export const STORAGE_KEYS = {
   SESSION: 'session-store',
+  CART: 'cart-store',
 } as const;
 
 /** httpOnly cookies set by the BFF. The browser never reads them. */
@@ -50,3 +45,31 @@ export const NUMBER_FORMAT_LOOK_UP = [
   { value: 1e15, symbol: 'P' },
   { value: 1e18, symbol: 'E' },
 ];
+
+/** Site settings an admin can edit (`site_settings.key`). */
+export const SETTING_KEYS = {
+  ZALO_HOTLINE: 'zalo_hotline',
+  QUOTE_NOTIFICATION_EMAIL: 'quote_notification_email',
+} as const;
+
+/** Folders inside the storage bucket. */
+export const UPLOAD_FOLDERS = ['products', 'lookbooks', 'posts'] as const;
+export type UploadFolder = (typeof UPLOAD_FOLDERS)[number];
+export const UPLOAD_MAX_BYTES = 8 * 1024 * 1024;
+/** Longest edge of an image after the browser downscales it before upload. */
+export const UPLOAD_MAX_EDGE = 2400;
+
+export const FALLBACK_IMAGE = '/images/image_unavailable.webp';
+
+/** Consultation progress of a lead, in order. */
+export const QUOTE_STATUSES = ['new', 'contacted', 'surveyed', 'quoted', 'won', 'lost'] as const;
+export type QuoteStatus = (typeof QUOTE_STATUSES)[number];
+
+export const CONFIGURATOR_LIMITS = {
+  width: { min: 30, max: 1200 },
+  height: { min: 30, max: 600 },
+  quantity: { min: 1, max: 20 },
+} as const;
+
+export const FULLNESS_OPTIONS = [2, 2.3] as const;
+export type Fullness = (typeof FULLNESS_OPTIONS)[number];

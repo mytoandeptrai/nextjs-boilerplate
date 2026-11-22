@@ -1,1 +1,1 @@
-export { getApiRequestClient, request, requestInternal } from './axios';
+export { requestInternal } from './axios';

@@ -41,9 +41,10 @@ interface BuildMetadataOptions {
   locale: Locale;
   /** Route without the locale prefix, e.g. `/health`. */
   path?: string;
-  /** Page title (the site name is appended by the layout template) or `{ absolute }` to skip the template. */
-  title: string | { absolute: string };
-  description: string;
+  /** Page title (the site name is appended by the layout template) or `{ absolute }` to skip the template. Defaults to the site title. */
+  title?: string | { absolute: string };
+  /** Defaults to the site description. */
+  description?: string;
   noIndex?: boolean;
 }
 
@@ -54,12 +55,15 @@ interface BuildMetadataOptions {
 export const buildMetadata = async ({
   locale,
   path = '/',
-  title,
-  description,
+  title: pageTitle,
+  description: pageDescription,
   noIndex = false,
 }: BuildMetadataOptions): Promise<Metadata> => {
   const { t } = await useTranslationsServer('common.seo', locale);
   const siteName = t('siteName');
+  // No title: the page keeps the layout's default title (the home page).
+  const title = pageTitle ?? { absolute: t('defaultTitle') };
+  const description = pageDescription ?? t('description');
   const fullTitle = typeof title === 'string' ? `${title} | ${siteName}` : title.absolute;
   const url = getAbsoluteUrl(locale, path);
 

@@ -1,5 +1,13 @@
 {
   "invalidEmail": "Invalid email",
-  "passwordRequired": "String must contain at least 1 character(s)",
-  "nameRequired": "Name is required"
+  "passwordRequired": "Password is required",
+  "nameRequired": "Please enter your name",
+  "phoneInvalid": "Invalid phone number",
+  "tooLong": "Too long",
+  "required": "This field is required",
+  "slugInvalid": "Use lowercase letters, numbers and hyphens only",
+  "slugTaken": "This slug is already in use",
+  "imageRequired": "Please upload an image",
+  "numberInvalid": "Invalid value",
+  "hotlineInvalid": "Phone number must have 8 to 15 digits"
 }

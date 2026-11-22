@@ -1,0 +1,169 @@
+{
+  "brand": {
+    "tagline": "Made-to-measure curtains"
+  },
+  "hero": {
+    "eyebrow": "Made to measure",
+    "title": "Curtains tailored to every window",
+    "subtitle": "Pick a style, enter your size and see the estimate instantly. We survey, tailor and install at your home.",
+    "primaryCta": "Shop the collection",
+    "secondaryCta": "See real homes"
+  },
+  "categories": {
+    "eyebrow": "Collections",
+    "title": "Shop by type",
+    "all": "All"
+  },
+  "featured": {
+    "eyebrow": "Most loved",
+    "title": "Featured products",
+    "viewAll": "View all products"
+  },
+  "steps": {
+    "eyebrow": "How it works",
+    "title": "Three steps to your new curtains",
+    "one": {
+      "title": "Choose and measure",
+      "text": "Pick the style, fabric and pleat, then enter the width and height of your window."
+    },
+    "two": {
+      "title": "See your estimate",
+      "text": "The price updates as you type, based on your size and options."
+    },
+    "three": {
+      "title": "Survey and installation",
+      "text": "Send the order on Zalo or book a survey. We re-measure, tailor and install."
+    }
+  },
+  "lookbook": {
+    "eyebrow": "Lookbook",
+    "title": "Installed in real homes",
+    "subtitle": "Real photos from projects we have completed.",
+    "viewAll": "View the lookbook",
+    "empty": "No lookbook photos yet.",
+    "taggedProducts": "Products in this photo",
+    "viewPhoto": "View photo: {title}"
+  },
+  "guides": {
+    "eyebrow": "Guides",
+    "title": "Curtain guides",
+    "subtitle": "How to measure, choose fabric and care for your curtains.",
+    "viewAll": "View all guides",
+    "empty": "No guides yet.",
+    "readMore": "Read more",
+    "back": "All guides"
+  },
+  "cta": {
+    "title": "Need advice at home?",
+    "text": "Book a free survey. We bring fabric samples and measure precisely.",
+    "zalo": "Chat on Zalo",
+    "browse": "Choose curtains and book"
+  },
+  "product": {
+    "from": "From",
+    "perMeter": "/ linear meter",
+    "perSquareMeter": "/ m²",
+    "empty": "No products yet.",
+    "description": "Description",
+    "seenInHomes": "This product in real homes",
+    "madeToMeasure": "Made to measure",
+    "photo": "Photo {index}",
+    "related": "You may also like"
+  },
+  "configurator": {
+    "title": "Configure yours",
+    "width": "Width (cm)",
+    "height": "Height (cm)",
+    "range": "{min} to {max} cm",
+    "pleat": "Pleat style",
+    "fullness": "Fullness",
+    "fullnessHint": "Higher fullness gives deeper, richer folds.",
+    "fullnessStandard": "Standard",
+    "fullnessLuxury": "Luxury",
+    "fabric": "Fabric / colour",
+    "motor": "Motor",
+    "noMotor": "Manual",
+    "quantity": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "estimate": "Estimated price",
+    "estimateNote": "The final price is confirmed after the on-site survey.",
+    "perPiece": "{price} each",
+    "addToCart": "Add to cart",
+    "added": "Added to cart",
+    "errorWidth": "Width must be between {min} and {max} cm",
+    "errorHeight": "Height must be between {min} and {max} cm",
+    "errorQuantity": "Quantity must be between {min} and {max}",
+    "minArea": "Billed for at least 1 m on each side.",
+    "included": "Included"
+  },
+  "cart": {
+    "title": "Your cart",
+    "open": "Open cart ({count})",
+    "empty": "Your cart is empty",
+    "emptyHint": "Pick a curtain and enter your size to see an estimate.",
+    "continueShopping": "Continue shopping",
+    "total": "Estimated total",
+    "estimateNote": "Installation not included. The final price is confirmed after the survey.",
+    "checkout": "Request a quote",
+    "remove": "Remove {title}",
+    "viewCart": "View cart",
+    "itemCount": "{count} items",
+    "width": "W",
+    "height": "H",
+    "fullness": "Fullness",
+    "each": "{price} each",
+    "priceUpdated": "Some prices were updated to the current price list.",
+    "unavailable": "This product is no longer available. Please remove it.",
+    "summary": "Summary"
+  },
+  "checkout": {
+    "title": "Your details",
+    "subtitle": "No payment needed now. We will contact you to confirm.",
+    "name": "Full name",
+    "namePlaceholder": "Your name",
+    "phone": "Phone number",
+    "phonePlaceholder": "09xx xxx xxx",
+    "address": "Installation address",
+    "addressPlaceholder": "Street, ward, district",
+    "notes": "Notes",
+    "notesPlaceholder": "Preferred time, special requests...",
+    "zaloButton": "Confirm & send via Zalo",
+    "surveyButton": "Request a home survey",
+    "sending": "Sending...",
+    "zaloHint": "Opens Zalo with your order filled in; just press Send.",
+    "successTitle": "Request received",
+    "successZalo": "Your order text was copied. If Zalo did not fill it in, paste it into the chat and send it to us.",
+    "successSurvey": "We will call you back shortly to schedule the survey.",
+    "orderCode": "Order code",
+    "copyMessage": "Copy order text",
+    "copied": "Order text copied",
+    "openZalo": "Open Zalo",
+    "done": "Done",
+    "errorGeneric": "Could not send your request. Please try again or call us.",
+    "errorRateLimit": "Too many requests. Please try again in a few minutes.",
+    "errorUnavailable": "Some products are no longer available. Please review your cart.",
+    "zaloNotSaved": "Your order opened in Zalo but was not saved on our side. Please send the Zalo message so we receive it."
+  },
+  "zalo": {
+    "heading": "CURTAIN ORDER",
+    "code": "Order",
+    "customer": "Customer",
+    "address": "Address",
+    "width": "W",
+    "height": "H",
+    "fullness": "Fullness",
+    "subtotal": "Subtotal",
+    "total": "ESTIMATED TOTAL",
+    "notes": "Notes",
+    "more": "... and {count} more items (see order code)",
+    "chat": "Chat with us on Zalo"
+  },
+  "footer": {
+    "about": "Made-to-measure fabric curtains, roller, zebra and wooden blinds, installed at your home.",
+    "explore": "Explore",
+    "contact": "Contact",
+    "hotline": "Hotline / Zalo",
+    "rights": "© {year} Thuy Huong Curtains."
+  }
+}

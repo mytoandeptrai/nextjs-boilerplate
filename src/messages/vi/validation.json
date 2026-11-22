@@ -1,5 +1,13 @@
 {
   "invalidEmail": "Email không hợp lệ",
-  "passwordRequired": "Chuỗi phải chứa ít nhất 1 ký tự",
-  "nameRequired": "Tên là bắt buộc"
+  "passwordRequired": "Vui lòng nhập mật khẩu",
+  "nameRequired": "Vui lòng nhập họ tên",
+  "phoneInvalid": "Số điện thoại không hợp lệ",
+  "tooLong": "Nội dung quá dài",
+  "required": "Trường này là bắt buộc",
+  "slugInvalid": "Chỉ dùng chữ thường, số và dấu gạch ngang",
+  "slugTaken": "Đường dẫn này đã được dùng",
+  "imageRequired": "Vui lòng tải ảnh lên",
+  "numberInvalid": "Giá trị không hợp lệ",
+  "hotlineInvalid": "Số điện thoại gồm 8 đến 15 chữ số"
 }

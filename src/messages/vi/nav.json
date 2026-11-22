@@ -1,16 +1,20 @@
 {
-  "auth": "Xác thực",
-  "login": "Đăng nhập",
-  "register": "Đăng ký",
-  "forgotPassword": "Quên mật khẩu",
-  "resetPassword": "Đặt lại mật khẩu",
-  "verifyEmail": "Xác thực email",
-  "item1": "Mục 1",
-  "item2": "Mục 2",
-  "item3": "Mục 3",
-  "item4": "Mục 4",
-  "item5": "Mục 5",
-  "dashboard": "Bảng điều khiển",
-  "contentManagement": "Quản lý nội dung",
-  "react19": "React 19 hooks"
+  "home": "Trang chủ",
+  "products": "Sản phẩm",
+  "lookbook": "Công trình",
+  "blog": "Cẩm nang",
+  "cart": "Giỏ hàng",
+  "openMenu": "Mở menu",
+  "menu": "Menu",
+  "language": "Ngôn ngữ",
+  "admin": {
+    "dashboard": "Tổng quan",
+    "quotes": "Yêu cầu báo giá",
+    "products": "Sản phẩm",
+    "lookbooks": "Công trình",
+    "posts": "Cẩm nang",
+    "settings": "Cài đặt",
+    "viewStore": "Xem cửa hàng",
+    "toggleSidebar": "Thu gọn / mở menu"
+  }
 }
