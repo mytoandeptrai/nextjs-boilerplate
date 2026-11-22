@@ -153,9 +153,8 @@ create policy "public read published posts" on public.blog_posts
   for select to anon, authenticated using (published_at is not null and published_at <= now());
 create policy "public read public settings" on public.site_settings
   for select to anon, authenticated using (is_public);
--- Leads: insert only. No select / update / delete policy, so nobody can read them with a public key.
-create policy "public create quote" on public.quote_requests
-  for insert to anon, authenticated with check (status = 'new');
+-- Leads: no policy at all, so a public key can neither read nor write them. POST /api/quotes inserts with the
+-- service role after recomputing prices (migration 20261122010000 drops the insert policy the first version had).
 
 -- No write policies anywhere else: every other write uses the service role, which bypasses RLS.
 
@@ -179,7 +178,7 @@ on conflict (key) do nothing;
 | --- | --- |
 | `products.description` | A product page needs body copy. |
 | `site_settings` | The hotline and the alert recipient must be editable by the admin. `is_public` keeps the recipient email out of the anon API. |
-| Check constraints on `quote_requests` | The table accepts inserts from a public key, so the database bounds what can be stored. |
+| Check constraints on `quote_requests` | Defence in depth: the database bounds what can be stored even if a handler has a bug. |
 | `status` value list | The brief gives only the default `new`; the inbox needs a fixed progression. |
 
 **JSONB shapes** (validated with Zod on write, and parsed defensively on read)
@@ -321,7 +320,7 @@ Both buttons validate the same form: name (required), phone (Vietnamese mobile, 
 1. Reject a foreign `Origin`, a filled honeypot, and more than 5 requests per 10 minutes per IP.
 2. Validate the body with Zod.
 3. Load the referenced products with the anon client (inactive or unknown products are rejected with 409 and a list, so the cart can flag them) and recompute every line and the total.
-4. Insert into `quote_requests` with the anon client (`status = 'new'`, the id from the request, no `select` back).
+4. Insert into `quote_requests` with the service role (`status = 'new'`, the id from the request). The table has no public policy, so this handler is the only way in.
 5. For `channel = 'email'`: read `quote_notification_email` with the service role and send the alert through Resend. A send failure is logged and returned as `emailSent: false`; the quote stays saved.
 
 ## 9. Admin authentication and authorisation
@@ -436,10 +435,10 @@ Automated self-review of this spec. "Resolved" means the design above already co
 | --- | --- | --- | --- |
 | S1 | Service-role key reaches the browser bundle | Resolved | Read only in `env.server.ts` behind `server-only`; the admin client is created only in `src/lib/supabase/admin.ts` (also `server-only`). |
 | S2 | Anyone can sign up with the public key and call admin APIs | Resolved | Access needs `app_metadata.role = 'admin'`, writable only by the service role; `requireAdmin()` verifies the token with Supabase on every admin request. Recommendation: disable public sign-ups in the Supabase dashboard. |
-| S3 | Leads (names, phones, addresses) readable with the public key | Resolved | `quote_requests` has an insert-only policy; the handler inserts without reading back. |
+| S3 | Leads (names, phones, addresses) readable with the public key | Resolved | `quote_requests` has no public policy; only the service role reads or writes it. |
 | S4 | Notification email exposed | Resolved | `site_settings.is_public = false`; read only with the service role. |
 | S5 | Price tampering in the cart payload | Resolved | Server recomputes from the database and ignores client totals. |
-| S6 | Spam through `/api/quotes` or direct inserts with the public key | Accepted | Honeypot, per-IP rate limit, origin check, database length and size constraints. The rate limit is in memory, so it is per instance. Direct REST inserts stay possible because the brief wants public forms on the anon key; dropping the insert policy and inserting with the service role closes that path with a one-line change. |
+| S6 | Spam or forged totals through `/api/quotes` or direct inserts with the public key | Resolved | Honeypot, per-IP rate limit, origin check, database length and size constraints. The rate limit is in memory, so it is per instance. Direct REST inserts are closed: the insert policy is dropped and the handler inserts with the service role. |
 | S7 | Malicious upload (SVG, HTML renamed to .jpg, oversized file) | Resolved | Admin only, type decided from magic bytes, 8 MB cap, random file names, fixed folders. |
 | S8 | XSS through Markdown or option labels | Resolved | `react-markdown` without raw HTML; links limited to `http`, `https`, `mailto`; everything else rendered as text by React. |
 | S9 | CSRF on admin mutations | Resolved | `SameSite=Lax` httpOnly cookies, JSON bodies, `Origin` check. |

@@ -11,8 +11,8 @@ Conventions for working in this repository (see `README.md` for the architecture
 - Data: public catalogue reads use the anon Supabase client (`src/api/catalog`, row level security applies). The
   service-role client (`src/lib/supabase/admin.ts`, `server-only`) is used only on the server: in
   `src/app/api/admin/*` Route Handlers, which must be wrapped in `withAdmin` (`src/lib/server/admin-session.ts`), in
-  the `src/lib/server/*` helpers they call (storage), and in `POST /api/quotes` to read the private alert address.
-  Never import it from a module, a component or `src/api`.
+  the `src/lib/server/*` helpers they call (storage), and in `POST /api/quotes`, the only writer of `quote_requests`
+  (that table has no public policy). Never import it from a module, a component or `src/api`.
 - Prices are computed only by `calculatePrice` (`src/lib/pricing.ts`); `POST /api/quotes` recomputes them from the
   database, so never store a total sent by the browser.
 - No hardcoded user-facing strings: use `useTranslations` from `@/hooks` (client) or `useTranslationsServer`

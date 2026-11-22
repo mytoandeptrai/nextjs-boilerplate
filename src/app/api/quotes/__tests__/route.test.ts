@@ -7,10 +7,10 @@ const getProductsByIds = vi.fn();
 
 vi.mock('server-only', () => ({}));
 vi.mock('@/api/catalog/requests', () => ({ getProductsByIds: (ids: string[]) => getProductsByIds(ids) }));
-vi.mock('@/lib/supabase/client', () => ({ getSupabaseClient: () => ({ from: () => ({ insert }) }) }));
 vi.mock('@/lib/supabase/admin', () => ({
   getSupabaseAdmin: () => ({
     from: () => ({
+      insert,
       select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: { value: 'owner@example.com' } }) }) }),
     }),
   }),

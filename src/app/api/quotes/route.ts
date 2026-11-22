@@ -9,17 +9,27 @@ import { toQuoteLine } from '@/lib/quote';
 import { UNIQUE_VIOLATION } from '@/lib/server/db-error';
 import { sendQuoteAlert } from '@/lib/server/email';
 import { getClientIp, isRateLimited, isSameOrigin } from '@/lib/server/rate-limit';
+import type { SupabaseClient } from '@supabase/supabase-js';
+
 import { getSupabaseAdmin } from '@/lib/supabase/admin';
-import { getSupabaseClient } from '@/lib/supabase/client';
 import type { IQuoteLine } from '@/types/catalog';
 
 const RATE_LIMIT = { max: 5, windowMs: 10 * 60_000 };
 
 const json = (body: unknown, status: number) => Response.json(body, { status });
 
-const getNotificationEmail = async (): Promise<string> => {
+/** `null` when the service-role key is missing, instead of the throw `getSupabaseAdmin` uses for admin handlers. */
+const getDb = (): SupabaseClient | null => {
   try {
-    const { data } = await getSupabaseAdmin()
+    return getSupabaseAdmin();
+  } catch {
+    return null;
+  }
+};
+
+const getNotificationEmail = async (db: SupabaseClient): Promise<string> => {
+  try {
+    const { data } = await db
       .from('site_settings')
       .select('value')
       .eq('key', SETTING_KEYS.QUOTE_NOTIFICATION_EMAIL)
@@ -51,7 +61,7 @@ export async function POST(req: Request) {
   if (isRateLimited(`quotes:${getClientIp(req.headers)}`, RATE_LIMIT.max, RATE_LIMIT.windowMs))
     return json({ message: 'Too many requests. Please try again later.' }, HttpStatus.TOO_MANY_REQUESTS);
 
-  const db = getSupabaseClient();
+  const db = getDb();
 
   if (!db) return json({ message: 'Supabase is not configured' }, HttpStatus.SERVICE_UNAVAILABLE);
 
@@ -85,7 +95,7 @@ export async function POST(req: Request) {
     channel: body.channel,
   };
 
-  // Insert only, no `select`: the public key has no read access to leads.
+  // Service role: `quote_requests` has no public policy, so this handler is the only way a lead gets in.
   const { error } = await db.from('quote_requests').insert({ ...quote, status: 'new' });
 
   // The same id again is a retry of a submit that already succeeded: answer success without a second lead or email.
@@ -101,7 +111,7 @@ export async function POST(req: Request) {
     return json({ message: 'Could not save the request' }, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  const emailSent = body.channel === 'email' ? await sendQuoteAlert(await getNotificationEmail(), quote) : false;
+  const emailSent = body.channel === 'email' ? await sendQuoteAlert(await getNotificationEmail(db), quote) : false;
 
   return json(
     { id: quote.id, totalEstimate: quote.total_estimate, emailSent } satisfies ICreateQuoteResponse,
