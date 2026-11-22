@@ -8,10 +8,11 @@ Conventions for working in this repository (see `README.md` for the architecture
   their usual casing (`PascalCase` components, `camelCase` hooks).
 - Server Components by default. Add `'use client'` only for hooks, state or browser APIs.
 - Pages are thin: compose a module from `src/modules`. No fetching in components: use `src/api/<domain>` queries/mutations.
-- Data: public catalogue reads use the anon Supabase client (`src/api/catalog`, row level security applies). Anything
-  privileged goes through a Route Handler under `src/app/api/admin/*` wrapped in `withAdmin`
-  (`src/lib/server/admin-session.ts`) and the service-role client (`src/lib/supabase/admin.ts`). Never import the
-  service-role client outside those handlers.
+- Data: public catalogue reads use the anon Supabase client (`src/api/catalog`, row level security applies). The
+  service-role client (`src/lib/supabase/admin.ts`, `server-only`) is used only on the server: in
+  `src/app/api/admin/*` Route Handlers, which must be wrapped in `withAdmin` (`src/lib/server/admin-session.ts`), in
+  the `src/lib/server/*` helpers they call (storage), and in `POST /api/quotes` to read the private alert address.
+  Never import it from a module, a component or `src/api`.
 - Prices are computed only by `calculatePrice` (`src/lib/pricing.ts`); `POST /api/quotes` recomputes them from the
   database, so never store a total sent by the browser.
 - No hardcoded user-facing strings: use `useTranslations` from `@/hooks` (client) or `useTranslationsServer`
