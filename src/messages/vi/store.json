@@ -181,5 +181,22 @@
     "popular": "Phổ biến",
     "price-asc": "Giá thấp đến cao",
     "price-desc": "Giá cao đến thấp"
+  },
+  "chat": {
+    "open": "Mở trợ lý tư vấn",
+    "close": "Đóng trợ lý tư vấn",
+    "title": "Trợ lý Thùy Hương",
+    "subtitle": "Tư vấn rèm, giá và cách đặt may",
+    "greeting": "Chào bạn! Mình có thể tư vấn mẫu rèm, báo giá tạm tính theo kích thước và hướng dẫn đặt may. Bạn cần hỏi gì ạ?",
+    "suggestionPrice": "Rèm vải rộng 3m giá khoảng bao nhiêu?",
+    "suggestionBedroom": "Phòng ngủ nên dùng loại rèm nào?",
+    "suggestionOrder": "Đặt may rèm như thế nào?",
+    "placeholder": "Nhập câu hỏi của bạn…",
+    "send": "Gửi",
+    "typing": "Đang trả lời…",
+    "disclaimer": "Trợ lý AI trả lời theo dữ liệu của cửa hàng; giá là tạm tính.",
+    "errorOverloaded": "Hệ thống đang quá tải, bạn vui lòng thử lại sau ít phút.",
+    "errorRateLimit": "Bạn gửi quá nhiều tin nhắn. Vui lòng thử lại sau ít phút.",
+    "errorGeneric": "Trợ lý chưa trả lời được. Vui lòng thử lại."
   }
 }

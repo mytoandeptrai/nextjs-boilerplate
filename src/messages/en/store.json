@@ -181,5 +181,22 @@
     "popular": "Most popular",
     "price-asc": "Price: low to high",
     "price-desc": "Price: high to low"
+  },
+  "chat": {
+    "open": "Open the shopping assistant",
+    "close": "Close the shopping assistant",
+    "title": "Thùy Hương assistant",
+    "subtitle": "Curtain advice, prices and how to order",
+    "greeting": "Hello! I can suggest curtains, estimate a price for your size and explain how to order. What would you like to know?",
+    "suggestionPrice": "How much is a 3 m wide fabric curtain?",
+    "suggestionBedroom": "Which curtain suits a bedroom?",
+    "suggestionOrder": "How do I order?",
+    "placeholder": "Type your question…",
+    "send": "Send",
+    "typing": "Answering…",
+    "disclaimer": "AI assistant answering from the shop's data; prices are estimates.",
+    "errorOverloaded": "The system is overloaded, please try again in a few minutes.",
+    "errorRateLimit": "Too many messages. Please try again in a few minutes.",
+    "errorGeneric": "The assistant could not answer. Please try again."
   }
 }

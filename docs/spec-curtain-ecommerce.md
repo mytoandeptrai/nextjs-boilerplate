@@ -48,6 +48,8 @@ New dependencies: `@supabase/supabase-js` (data, auth, storage), `react-markdown
 | `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` | public | Existing public bucket for every image |
 | `SUPABASE_SERVICE_ROLE_KEY` | server only | Admin reads and mutations, uploads, private settings |
 | `RESEND_API_KEY` | server only | Email alert. Unset: the alert is skipped, the quote is still saved |
+| `GEMINI_API_KEY` | server only | Storefront chat assistant (added). Unset: the chat button is not rendered and `POST /api/chat` answers 503 |
+| `GEMINI_MODEL` | server only | Optional, defaults to `gemini-flash-lite-latest` |
 | `QUOTE_EMAIL_FROM` | server only | Sender, default `onboarding@resend.dev` (the only sender Resend allows before a domain is verified) |
 | `SUPABASE_DB_URL` | tooling only | Postgres URI used to apply migrations. Never read by the app |
 
@@ -329,6 +331,15 @@ Both buttons validate the same form: name (required), phone (Vietnamese mobile, 
 3. Load the referenced products with the anon client (inactive or unknown products are rejected with 409 and a list, so the cart can flag them) and recompute every line and the total.
 4. Insert into `quote_requests` with the service role (`status = 'new'`, the id from the request). The table has no public policy, so this handler is the only way in.
 5. For `channel = 'email'`: read `quote_notification_email` with the service role and send the alert through Resend. A send failure is logged and returned as `emailSent: false`; the quote stays saved.
+
+## 8b. Chat assistant (added)
+
+A floating chat on every storefront page (`ChatWidget`, mounted by `StoreLayout` when `GEMINI_API_KEY` is set). The conversation is kept in memory per tab and sent to `POST /api/chat` with the current locale.
+
+- **Answer.** `answerChat` (`src/lib/server/chat-assistant.ts`) builds a system prompt from the public catalogue read with the anon client (categories, active products with prices, sale prices and options, the latest guides, the Zalo hotline; cached for 60 s) and calls Gemini's `generateContent`. The model may only use that data and links to site paths.
+- **Prices.** The model never does the arithmetic: it calls the `estimate_price` tool, which runs `calculatePrice`, so the assistant quotes what the configurator shows (at most 3 model calls per message).
+- **Limits.** Same-origin only, 20 messages per 5 minutes per address, 1,000 characters per message, the last 20 messages as context, 15 s timeout per model call.
+- **Errors.** The body carries `code`: `overloaded` (Gemini answered 429 / 5xx or timed out; 503), `rate_limited` (429), `unavailable` (no key; 503), `failed` (502). A 5xx from Gemini is tried once more first; a 429 is not. The widget shows a toast ("Hệ thống đang quá tải…" for `overloaded`), takes the unanswered question back out of the conversation and puts it back in the input.
 
 ## 9. Admin authentication and authorisation
 
