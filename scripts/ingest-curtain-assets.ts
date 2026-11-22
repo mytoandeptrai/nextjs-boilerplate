@@ -20,6 +20,8 @@
  *
  * Each row gets its own copy of an image: deleting a photo from one product in the admin never breaks another row.
  */
+import { readFileSync } from 'node:fs';
+
 import { createClient } from '@supabase/supabase-js';
 import sharp from 'sharp';
 
@@ -275,6 +277,8 @@ const PRODUCTS: ISeedProduct[] = [
 interface ISeedLookbook {
   title: string;
   description: string;
+  /** Gallery filter. Photos without one are listed under "Other". */
+  category?: CategorySlug;
   /** Slugs of the products shown in the photo. */
   products: string[];
 }
@@ -284,53 +288,85 @@ const LOOKBOOKS: Record<string, ISeedLookbook> = {
   [FB.twoLayerWide]: {
     title: 'Rèm hai lớp cho cửa kính phòng khách',
     description: 'Lớp vải chống nắng màu be kết hợp voan trắng, buộc dây hai bên. Thi công tại Đà Nẵng.',
+    category: 'rem-vai',
     products: ['rem-vai-hai-lop-chong-nang-voan', 'rem-voan-trang-lay-sang'],
   },
   [FB.waveLivingRoom]: {
     title: 'Rèm định hình sóng cho phòng khách',
     description: 'Rèm chống nắng màu nâu taupe chạy kín mảng tường, ray âm trần.',
+    category: 'rem-vai',
     products: ['rem-vai-chong-nang-dinh-hinh-song'],
   },
   [FB.woodenBlind]: {
     title: 'Rèm gỗ cho cửa sổ, rèm vải cho cửa lớn',
     description: 'Cùng một phòng khách: rèm gỗ ở cửa sổ và rèm vải định hình sóng ở cửa kính lớn.',
+    category: 'rem-go',
     products: ['rem-go-tu-nhien', 'rem-vai-chong-nang-dinh-hinh-song'],
   },
   [FB.twoLayerWithZebra]: {
     title: 'Phối rèm vải hai lớp với rèm cầu vồng',
     description: 'Cửa lớn dùng rèm vải hai lớp, cửa sổ nhỏ dùng rèm cầu vồng cùng tông màu.',
+    category: 'rem-cau-vong',
     products: ['rem-vai-hai-lop-chong-nang-voan', 'rem-cau-vong-han-quoc'],
   },
   [FB.waveWall]: {
     title: 'Rèm sóng phủ kín mảng tường',
     description: 'Vải dày đứng form, sóng đều từ trần xuống sàn.',
+    category: 'rem-vai',
     products: ['rem-vai-chong-nang-dinh-hinh-song'],
   },
   [FB.twoLayerCorner]: {
     title: 'Rèm hai lớp cho cửa sổ góc phòng',
     description: 'Rèm vải và voan may đo cho ô cửa hẹp cạnh cột.',
+    category: 'rem-vai',
     products: ['rem-vai-hai-lop-chong-nang-voan'],
   },
   [FB.woodenHouseLiving]: {
     title: 'Rèm cửa cho phòng khách nhà gỗ',
     description: 'Rèm kẻ sọc lấy sáng cho gian phòng khách nội thất gỗ truyền thống.',
+    category: 'rem-vai',
     products: [],
   },
   [FB.woodenHouseDoor]: {
     title: 'Rèm cửa đi cho nhà gỗ truyền thống',
     description: 'Rèm vén hai bên cho lối đi giữa các gian.',
+    category: 'rem-vai',
     products: [],
   },
   [FB.woodenHouseDivider]: {
     title: 'Rèm ngăn phòng cho nhà gỗ',
     description: 'Rèm kẻ sọc vén hai bên, ngăn giữa phòng khách và gian sau.',
+    category: 'rem-vai',
     products: [],
   },
 };
 
+const FANPAGE_DESCRIPTION = 'Hình ảnh thi công thực tế của Màn Rèm Thùy Hương.';
+
+/**
+ * Title and category of the other fanpage photos, keyed by Facebook media key (`fanpage-lookbooks.json`). They were
+ * captioned by looking at each photo; the ones without a category show something other than the four curtain types.
+ */
+const FANPAGE_CAPTIONS = JSON.parse(readFileSync(new URL('./fanpage-lookbooks.json', import.meta.url), 'utf8')) as {
+  key: string;
+  title: string;
+  category?: CategorySlug;
+}[];
+
+for (const { key, title, category } of FANPAGE_CAPTIONS) {
+  LOOKBOOKS[`fb:${key}`] ??= { title, description: FANPAGE_DESCRIPTION, category, products: [] };
+}
+
+/** Fanpage images that are not installation photos: the page banner, a duplicate upload and a parcel. */
+const SKIPPED_FANPAGE_PHOTOS = new Set([
+  '718119615_122108377827305859_6631583372224670952',
+  '736053937_122111909289305859_5985560865712800217',
+  '738188534_122111908941305859_955907129113069687',
+]);
+
 const GENERIC_LOOKBOOK = (index: number): ISeedLookbook => ({
   title: `Công trình thực tế ${index}`,
-  description: 'Hình ảnh thi công thực tế của Màn Rèm Thùy Hương.',
+  description: FANPAGE_DESCRIPTION,
   products: [],
 });
 
@@ -657,8 +693,25 @@ const seedLookbooks = async (facebook: Map<string, string>, productIds: Map<stri
   // Captioned photos first, in the order above; then anything new on the fanpage.
   const fanpage = [
     ...known.filter((source) => facebook.has(source.slice(3))),
-    ...[...facebook.keys()].map((key) => `fb:${key}` as Source).filter((source) => !known.includes(source)),
+    ...[...facebook.keys()]
+      .filter((key) => !SKIPPED_FANPAGE_PHOTOS.has(key))
+      .map((key) => `fb:${key}` as Source)
+      .filter((source) => !known.includes(source)),
   ];
+  // Object names are the first segment of the media key; the rare photo that shares it gets the second one too.
+  const names = new Map<Source, string>();
+  const taken = new Set<string>();
+
+  for (const source of [...known, ...fanpage]) {
+    if (names.has(source)) continue;
+
+    const [first, second] = source.slice(source.indexOf(':') + 1).split('_');
+    const name = taken.has(first) && second ? `${first}-${second}` : first;
+
+    taken.add(name);
+    names.set(source, name);
+  }
+
   let generic = 0;
 
   for (const source of fanpage) {
@@ -678,9 +731,14 @@ const seedLookbooks = async (facebook: Map<string, string>, productIds: Map<stri
     id: string;
     image_url: string;
   }[];
+  const categories = must(await supabase.from('categories').select('id, slug'), 'Reading categories') as {
+    id: string;
+    slug: string;
+  }[];
+  const categoryId = new Map(categories.map((category) => [category.slug, category.id]));
 
   for (const [index, { source, entry }] of entries.entries()) {
-    const path = `lookbooks/seed/${sourceId(source)}.jpg`;
+    const path = `lookbooks/seed/${names.get(source) ?? sourceId(source)}.jpg`;
     const current = existing.find((lookbook) => lookbook.image_url === publicUrl(path));
 
     if (current && !FORCE) {
@@ -694,6 +752,7 @@ const seedLookbooks = async (facebook: Map<string, string>, productIds: Map<stri
 
     const row = {
       title: entry.title,
+      category_id: (entry.category && categoryId.get(entry.category)) ?? null,
       description: entry.description,
       image_url: await upload(path, image),
       tagged_product_ids: entry.products.flatMap((slug) => productIds.get(slug) ?? []),

@@ -1,10 +1,9 @@
 import { getCategories, getProducts } from '@/api/catalog/requests';
+import { CategoryFilter } from '@/components/store/category-filter';
 import { ProductCard } from '@/components/store/product-card';
 import { SectionHeading } from '@/components/store/section-heading';
 import { ROUTES } from '@/constants/routes';
 import { useTranslationsServer } from '@/hooks/use-translations-server';
-import { Link } from '@/i18n/navigation';
-import { cn } from '@/lib/utils';
 
 export default async function ProductsPage({ categorySlug }: { categorySlug?: string }) {
   const { t } = await useTranslationsServer();
@@ -31,26 +30,7 @@ export default async function ProductsPage({ categorySlug }: { categorySlug?: st
         subtitle={t('common.seo.productsDescription')}
       />
 
-      <nav aria-label={t('store.categories.title')} className='-mx-4 mt-8 overflow-x-auto px-4 sm:mx-0 sm:px-0'>
-        <ul className='flex w-max gap-2'>
-          {filters.map((filter) => (
-            <li key={filter.href}>
-              <Link
-                href={filter.href}
-                aria-current={filter.isActive ? 'page' : undefined}
-                className={cn(
-                  'block border px-4 py-2 text-sm transition-colors',
-                  filter.isActive
-                    ? 'border-foreground bg-foreground text-background'
-                    : 'border-input hover:border-foreground'
-                )}
-              >
-                {filter.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <CategoryFilter label={t('store.categories.title')} items={filters} />
 
       {products.length > 0 ? (
         <ul className='mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6'>

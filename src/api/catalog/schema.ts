@@ -56,6 +56,7 @@ export const toProduct = (row: Row): IProduct => ({
 export const toLookbook = (row: Row): ILookbook => ({
   id: String(row.id),
   title: String(row.title ?? ''),
+  category_id: (row.category_id as string | null) ?? null,
   description: String(row.description ?? ''),
   image_url: String(row.image_url ?? ''),
   tagged_product_ids: Array.isArray(row.tagged_product_ids) ? (row.tagged_product_ids as string[]) : [],

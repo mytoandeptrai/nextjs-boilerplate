@@ -7,9 +7,6 @@ import { buildMetadata } from '@/lib/seo';
 import type { PageProps } from '@/types/type';
 import LookbookPage from '@/modules/lookbook-page';
 
-/** Catalogue pages are cached and refreshed at most once a minute; admin changes revalidate them at once. */
-export const revalidate = 60;
-
 export async function generateMetadata({ params }: Pick<PageProps<{ locale: string }>, 'params'>): Promise<Metadata> {
   const { locale } = await params;
   const { t } = await useTranslationsServer('common.seo', locale);
@@ -22,6 +19,8 @@ export async function generateMetadata({ params }: Pick<PageProps<{ locale: stri
   });
 }
 
-export default function Page() {
-  return <LookbookPage />;
+export default async function Page({ searchParams }: PageProps<{ locale: string }>) {
+  const { category } = await searchParams;
+
+  return <LookbookPage categorySlug={typeof category === 'string' ? category : undefined} />;
 }

@@ -54,6 +54,7 @@ export interface IProduct {
 export interface ILookbook {
   id: string;
   title: string;
+  category_id: string | null;
   description: string;
   image_url: string;
   tagged_product_ids: string[];

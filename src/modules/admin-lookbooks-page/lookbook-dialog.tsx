@@ -12,6 +12,7 @@ import {
   useCreateAdminLookbookMutation,
   useUpdateAdminLookbookMutation,
 } from '@/api/admin-lookbooks';
+import { useCategoriesQuery } from '@/api/catalog/queries';
 import { FieldError } from '@/components/admin/field-error';
 import { ImageUpload } from '@/components/admin/image-upload';
 import { StoreImage } from '@/components/store/store-image';
@@ -20,9 +21,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useTranslations } from '@/hooks';
 import type { ILookbook, IProduct } from '@/types/catalog';
+
+const NO_CATEGORY = 'none';
 
 interface ILookbookDialogProps {
   /** `null` creates a new photo. */
@@ -36,12 +40,14 @@ export function LookbookDialog({ lookbook, products, onClose }: ILookbookDialogP
   const { t } = useTranslations('admin');
   const { mutate: create, isPending: isCreating } = useCreateAdminLookbookMutation();
   const { mutate: update, isPending: isUpdating } = useUpdateAdminLookbookMutation();
+  const { data: categories = [] } = useCategoriesQuery();
   const isPending = isCreating || isUpdating;
 
   const form = useForm<LookbookFormInput, unknown, LookbookBody>({
     resolver: zodResolver(lookbookSchema),
     defaultValues: {
       title: lookbook?.title ?? '',
+      category_id: lookbook?.category_id ?? null,
       description: lookbook?.description ?? '',
       image_url: lookbook?.image_url ?? '',
       // Tags of deleted products are dropped on the next save.
@@ -95,6 +101,33 @@ export function LookbookDialog({ lookbook, products, onClose }: ILookbookDialogP
                     <Input {...field} />
                   </FormControl>
                   <FieldError />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='category_id'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('lookbooks.category')}</FormLabel>
+                  <Select
+                    value={field.value ?? NO_CATEGORY}
+                    onValueChange={(value) => field.onChange(value === NO_CATEGORY ? null : value)}
+                  >
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={NO_CATEGORY}>{t('lookbooks.noCategory')}</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />

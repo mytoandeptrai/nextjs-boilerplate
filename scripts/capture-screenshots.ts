@@ -5,6 +5,7 @@
  *   pnpm dev                                # in another terminal (or `pnpm build && pnpm start`)
  *   pnpm screenshots                        # storefront + admin
  *   pnpm screenshots --submit               # also send two test leads (one Zalo, one home survey)
+ *   pnpm screenshots --only=15,29,42        # only rewrite the files whose name starts with one of these
  *
  * Environment: `SCREENSHOT_BASE_URL` (default http://localhost:3000), `ADMIN_EMAIL` and `ADMIN_PASSWORD` (an
  * account made with `pnpm admin:create`). Without admin credentials the admin screenshots are skipped.
@@ -21,6 +22,11 @@ const BASE_URL = (process.env.SCREENSHOT_BASE_URL ?? 'http://localhost:3000').re
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const SUBMIT = process.argv.includes('--submit');
+const ONLY = (process.argv.find((argument) => argument.startsWith('--only='))?.slice('--only='.length) ?? '')
+  .split(',')
+  .filter(Boolean);
+/** Galleries grow with every photo: their full-page captures stop here (CSS pixels). */
+const GALLERY_MAX_HEIGHT = 2600;
 const OUT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'screenshots');
 
 const DESKTOP = { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1.5 };
@@ -74,7 +80,13 @@ const fitViewportToContent = async (page: Page) => {
   await page.waitForTimeout(250);
 };
 
-const shot = async (page: Page, name: string, { fullPage = true } = {}) => {
+const shot = async (
+  page: Page,
+  name: string,
+  { fullPage = true, maxHeight }: { fullPage?: boolean; maxHeight?: number } = {}
+) => {
+  if (ONLY.length > 0 && !ONLY.some((prefix) => name.startsWith(prefix))) return;
+
   const broken = await page.evaluate(
     () => [...document.images].filter((image) => image.complete && image.naturalWidth === 0).length
   );
@@ -89,8 +101,11 @@ const shot = async (page: Page, name: string, { fullPage = true } = {}) => {
 
   // Palette PNG: a full-page capture of a photo-heavy page is several times smaller, with no visible difference.
   const png = await page.screenshot({ fullPage, animations: 'disabled' });
+  const { width = 0, height = 0 } = await sharp(png).metadata();
+  const limit = maxHeight ? Math.round((maxHeight * width) / (page.viewportSize()?.width ?? width)) : height;
+  const image = limit < height ? sharp(png).extract({ left: 0, top: 0, width, height: limit }) : sharp(png);
 
-  await sharp(png).png({ palette: true, quality: 90, effort: 8 }).toFile(join(OUT_DIR, `${name}.png`));
+  await image.png({ palette: true, quality: 90, effort: 8 }).toFile(join(OUT_DIR, `${name}.png`));
   saved.push(name);
   console.log(`  ${name}.png`);
 };
@@ -270,12 +285,19 @@ const storefront = async (browser: Browser) => {
   }
 
   await open(page, '/lookbook');
-  await shot(page, '15-lookbook');
+  await shot(page, '15-lookbook', { maxHeight: GALLERY_MAX_HEIGHT });
   await page.locator('main ul button').first().click();
   await page.locator(DIALOG).last().waitFor();
   await settle(page);
   await shot(page, '16-lookbook-photo', { fullPage: false });
   await page.keyboard.press('Escape');
+
+  await optional('lookbook category filter', async () => {
+    await page.locator('main nav a').nth(1).click();
+    await page.waitForURL(/[?&]category=/);
+    await settle(page);
+    await shot(page, '57-lookbook-category', { maxHeight: GALLERY_MAX_HEIGHT });
+  });
 
   await open(page, '/blog');
   await shot(page, '17-guides');
@@ -328,7 +350,7 @@ const storefront = async (browser: Browser) => {
   await open(phone, '/cart');
   await shot(phone, '28-cart-page-mobile');
   await open(phone, '/lookbook');
-  await shot(phone, '29-lookbook-mobile');
+  await shot(phone, '29-lookbook-mobile', { maxHeight: GALLERY_MAX_HEIGHT });
   await open(phone, '/blog');
   await shot(phone, '30-guides-mobile');
 
@@ -392,10 +414,10 @@ const admin = async (browser: Browser) => {
     await page.keyboard.press('Escape');
     await page.locator(DIALOG).waitFor({ state: 'detached', timeout: 10_000 }).catch(() => undefined);
   };
-  const capture = async (path: string, name: string) => {
+  const capture = async (path: string, name: string, options?: { maxHeight?: number }) => {
     await open(page, path);
     await ready();
-    await shot(page, name);
+    await shot(page, name, options);
   };
 
   await ready();
@@ -431,7 +453,7 @@ const admin = async (browser: Browser) => {
     await dialogShot('41-admin-quote-detail');
   });
 
-  await capture('/admin/lookbooks', '42-admin-lookbooks');
+  await capture('/admin/lookbooks', '42-admin-lookbooks', { maxHeight: GALLERY_MAX_HEIGHT });
 
   await optional('lookbook dialogs', async () => {
     await page.setViewportSize(DESKTOP.viewport);

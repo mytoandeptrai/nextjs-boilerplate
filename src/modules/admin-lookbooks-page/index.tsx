@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 import { useAdminLookbooksQuery, useDeleteAdminLookbookMutation } from '@/api/admin-lookbooks';
 import { useAdminProductsQuery } from '@/api/admin-products';
+import { useCategoriesQuery } from '@/api/catalog/queries';
 import { AdminPageHeader } from '@/components/admin/page-header';
 import { QueryState } from '@/components/admin/query-state';
 import ConfirmationDialog from '@/components/common/confirmation-dialog';
@@ -19,6 +20,8 @@ export default function AdminLookbooksPage() {
   const { t } = useTranslations('admin');
   const { data: lookbooks = [], isLoading, isError, refetch } = useAdminLookbooksQuery();
   const { data: products = [] } = useAdminProductsQuery();
+  const { data: categories = [] } = useCategoriesQuery();
+  const categoryTitle = new Map(categories.map((category) => [category.id, category.title]));
   const { mutate: deleteLookbook } = useDeleteAdminLookbookMutation();
   // `undefined` = closed, `null` = new photo.
   const [editing, setEditing] = useState<ILookbook | null | undefined>();
@@ -50,7 +53,7 @@ export default function AdminLookbooksPage() {
       >
         <ul className='grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4'>
           {lookbooks.map((lookbook, index) => (
-            <li key={lookbook.id} className='bg-card border'>
+            <li key={lookbook.id} data-testid='lookbook-card' className='bg-card border'>
               <div className='bg-muted relative aspect-[4/3]'>
                 <StoreImage
                   src={lookbook.image_url}
@@ -62,7 +65,9 @@ export default function AdminLookbooksPage() {
               <div className='flex items-start justify-between gap-2 p-3'>
                 <div className='min-w-0'>
                   <p className='truncate text-sm font-medium'>{lookbook.title}</p>
-                  <p className='text-muted-foreground text-xs'>
+                  <p className='text-muted-foreground truncate text-xs'>
+                    {(lookbook.category_id && categoryTitle.get(lookbook.category_id)) || t('lookbooks.noCategory')}
+                    {' · '}
                     {t('lookbooks.tagged', { count: lookbook.tagged_product_ids.length })}
                   </p>
                 </div>

@@ -93,12 +93,14 @@ create index products_active_created_idx on public.products (is_active, created_
 create table public.lookbooks (
   id                 uuid primary key default gen_random_uuid(),
   title              text not null,
+  category_id        uuid references public.categories (id) on delete set null,  -- gallery filter
   description        text not null default '',
   image_url          text not null,
   tagged_product_ids uuid[] not null default '{}',
   created_at         timestamptz not null default now()
 );
 create index lookbooks_created_idx on public.lookbooks (created_at desc);
+create index lookbooks_category_idx on public.lookbooks (category_id);
 
 -- --------------------------------------------------------------- blog_posts
 create table public.blog_posts (
@@ -344,7 +346,7 @@ src/app/[locale]/
     page.tsx                         /                  HomePage
     products/page.tsx                /products          ProductsPage (?category=slug)
     products/[slug]/page.tsx         /products/[slug]   ProductDetailPage
-    lookbook/page.tsx                /lookbook          LookbookPage
+    lookbook/page.tsx                /lookbook          LookbookPage (?category=slug)
     blog/page.tsx                    /blog              BlogPage
     blog/[slug]/page.tsx             /blog/[slug]       BlogPostPage
     cart/page.tsx                    /cart              CartPage
@@ -382,14 +384,14 @@ src/modules/
   products-page/           category-filter, product-grid, product-card
   product-detail-page/     product-gallery, configurator/ (dimension-input, option-group, fabric-swatches,
                            price-summary), add-to-cart-button, related-lookbooks
-  lookbook-page/           lookbook-grid, lookbook-dialog (photo + tagged products)
+  lookbook-page/           category chips, lookbook-grid, lookbook-dialog (photo + tagged products)
   blog-page/, blog-post-page/   post-card, markdown-content
   cart-page/               cart-line-item, cart-summary
   admin-login-page/        login-form
   admin-quotes-page/       status-filter, quotes-table, quote-detail-sheet, status-select
   admin-products-page/     products-table, product-form (option-list-editor, image-list-uploader)
   admin-categories-page/   categories table, category-dialog (name, slug, order); deleting keeps the products
-  admin-lookbooks-page/    lookbook-table, lookbook-form-dialog (product multi-select)
+  admin-lookbooks-page/    lookbook-table, lookbook-form-dialog (category select, product multi-select)
   admin-posts-page/        posts-table, post-form (markdown editor + preview)
   admin-settings-page/     settings-form
 
