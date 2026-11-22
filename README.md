@@ -171,7 +171,7 @@ A change is done when `pnpm lint`, `pnpm format:check`, `pnpm type-check`, `pnpm
 
 1. Import the repository and add the environment variables from the table above to the **Production** environment.
    Do not copy `NEXT_PUBLIC_APP_URL` or `NEXT_PUBLIC_APP_ENV` from `.env.local`: on Vercel they are derived from the
-   production domain. If you do set `NEXT_PUBLIC_APP_URL`, it must start with `https://`.
+   production domain. If `NEXT_PUBLIC_APP_URL` is set there with `http://`, the build upgrades it to `https://`.
 2. `NEXT_PUBLIC_*` values are read at build time, so redeploy after changing them. Server secrets such as
    `GEMINI_API_KEY` are read at runtime.
 3. Check `https://<domain>/robots.txt`: it should end with `Sitemap: https://<domain>/sitemap.xml`. A "Disallow: /"
