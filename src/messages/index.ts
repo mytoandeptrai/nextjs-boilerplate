@@ -1,21 +1,19 @@
 import type { Locale } from '@/i18n/routing';
+import enAdmin from './en/admin.json';
 import enAuth from './en/auth.json';
 import enCommon from './en/common.json';
-import enHome from './en/home.json';
-import enItem from './en/item.json';
 import enLangName from './en/langName.json';
 import enMessages from './en/messages.json';
 import enNav from './en/nav.json';
-import enReact19 from './en/react19.json';
+import enStore from './en/store.json';
 import enValidation from './en/validation.json';
+import viAdmin from './vi/admin.json';
 import viAuth from './vi/auth.json';
 import viCommon from './vi/common.json';
-import viHome from './vi/home.json';
-import viItem from './vi/item.json';
 import viLangName from './vi/langName.json';
 import viMessages from './vi/messages.json';
 import viNav from './vi/nav.json';
-import viReact19 from './vi/react19.json';
+import viStore from './vi/store.json';
 import viValidation from './vi/validation.json';
 
 /**
@@ -29,25 +27,23 @@ import viValidation from './vi/validation.json';
  */
 export const messages = {
   en: {
+    admin: enAdmin,
     auth: enAuth,
     common: enCommon,
-    home: enHome,
-    item: enItem,
     langName: enLangName,
     messages: enMessages,
     nav: enNav,
-    react19: enReact19,
+    store: enStore,
     validation: enValidation,
   },
   vi: {
+    admin: viAdmin,
     auth: viAuth,
     common: viCommon,
-    home: viHome,
-    item: viItem,
     langName: viLangName,
     messages: viMessages,
     nav: viNav,
-    react19: viReact19,
+    store: viStore,
     validation: viValidation,
   },
 } as const satisfies Record<Locale, unknown>;

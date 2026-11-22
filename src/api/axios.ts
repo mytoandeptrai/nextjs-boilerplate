@@ -10,20 +10,14 @@ const defaultConfig: AxiosRequestConfig = {
   headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 };
 
-/** Direct backend client. Use it on the server only (Route Handlers, Server Components). */
-export const request: AxiosInstance = axios.create({ ...defaultConfig, baseURL: env.API_URL });
-
 /**
  * BFF client: talks to this app's own Route Handlers (`src/app/api/**`). The browser never sees a token:
- * the handlers read the httpOnly cookies and forward them to the backend.
+ * the handlers read the httpOnly session cookies and talk to Supabase.
  */
 export const requestInternal: AxiosInstance = axios.create({
   ...defaultConfig,
   baseURL: `${isServer ? env.APP_URL : ''}${INTERNAL_API_PREFIX}`,
   withCredentials: !isServer,
 });
-
-/** Server code calls the backend directly; browser code always goes through the BFF. */
-export const getApiRequestClient = (): AxiosInstance => (isServer ? request : requestInternal);
 
 attachInterceptors(requestInternal);

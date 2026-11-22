@@ -1,16 +1,39 @@
 export const ROUTES = {
   HOME: '/',
-  LOGIN: '/login',
-  ITEM1: '/item1',
-  REACT_19: '/react-19',
+  PRODUCTS: '/products',
+  PRODUCT_DETAIL: '/products/:slug',
+  LOOKBOOK: '/lookbook',
+  BLOG: '/blog',
+  BLOG_POST: '/blog/:slug',
+  CART: '/cart',
+  ADMIN: '/admin',
+  ADMIN_LOGIN: '/admin/login',
+  ADMIN_QUOTES: '/admin/quotes',
+  ADMIN_PRODUCTS: '/admin/products',
+  ADMIN_PRODUCT_NEW: '/admin/products/new',
+  ADMIN_PRODUCT_EDIT: '/admin/products/:id',
+  ADMIN_CATEGORIES: '/admin/categories',
+  ADMIN_LOOKBOOKS: '/admin/lookbooks',
+  ADMIN_POSTS: '/admin/posts',
+  ADMIN_POST_NEW: '/admin/posts/new',
+  ADMIN_POST_EDIT: '/admin/posts/:id',
+  ADMIN_SETTINGS: '/admin/settings',
 } as const;
 
-/** Routes that stay reachable without a session. */
-export const PUBLIC_ROUTES: string[] = [ROUTES.LOGIN];
+/** Everything under this prefix needs an admin session, except the login page. */
+export const ADMIN_PREFIX = ROUTES.ADMIN;
 
-/** Routes listed in `sitemap.xml`. */
-/** The CMS pages sit behind the session guard, so only the login page is public and indexable. */
-export const INDEXABLE_ROUTES: string[] = [ROUTES.LOGIN];
+/** Static routes listed in `sitemap.xml`. Product and guide pages are added from the database. */
+export const INDEXABLE_ROUTES: string[] = [ROUTES.HOME, ROUTES.PRODUCTS, ROUTES.LOOKBOOK, ROUTES.BLOG];
+
+export const isAdminPath = (path: string): boolean => path === ADMIN_PREFIX || path.startsWith(`${ADMIN_PREFIX}/`);
+
+/** Only same-app admin paths are accepted as a post-login destination (no open redirect). */
+/** Query flag on the admin login URL: the session cookie was rejected by Supabase, show the form anyway. */
+export const ADMIN_REAUTH_PARAM = 'reauth';
+
+export const safeAdminNext = (next: string | null | undefined): string =>
+  next && isAdminPath(next) && next !== ROUTES.ADMIN_LOGIN && !next.startsWith('//') ? next : ROUTES.ADMIN;
 
 /**
  * Replace `:param` placeholders of a route.

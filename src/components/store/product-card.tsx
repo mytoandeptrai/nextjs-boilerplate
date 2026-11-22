@@ -1,0 +1,48 @@
+import { DiscountBadge, ProductPrice } from '@/components/store/product-price';
+import { StoreImage } from '@/components/store/store-image';
+import { buildRoute, ROUTES } from '@/constants/routes';
+import { Link } from '@/i18n/navigation';
+import type { IProduct } from '@/types/catalog';
+
+interface IProductCardProps {
+  product: IProduct;
+  categoryTitle?: string;
+  /** Already translated: "From", the unit suffix for the product's pricing type and "Original price". */
+  labels: { from: string; unit: string; originalPrice: string };
+  sizes?: string;
+  /** First row of a listing: load the image at once. */
+  eager?: boolean;
+}
+
+export function ProductCard({
+  product,
+  categoryTitle,
+  labels,
+  sizes = '(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw',
+  eager = false,
+}: IProductCardProps) {
+  return (
+    <Link
+      href={buildRoute(ROUTES.PRODUCT_DETAIL, { slug: product.slug })}
+      className='group focus-visible:outline-ring block focus-visible:outline-2 focus-visible:outline-offset-4'
+    >
+      <div className='bg-muted relative aspect-[4/5] overflow-hidden'>
+        <StoreImage
+          src={product.images[0]}
+          alt={product.title}
+          sizes={sizes}
+          eager={eager}
+          className='transition-transform duration-700 ease-out group-hover:scale-105'
+        />
+        <DiscountBadge product={product} className='absolute top-3 left-3' />
+      </div>
+      <div className='pt-4'>
+        {categoryTitle ? (
+          <p className='text-muted-foreground mb-1 text-xs tracking-[0.15em] uppercase'>{categoryTitle}</p>
+        ) : null}
+        <h3 className='text-foreground group-hover:text-brand text-base leading-snug font-medium'>{product.title}</h3>
+        <ProductPrice product={product} labels={labels} className='mt-1 text-sm' />
+      </div>
+    </Link>
+  );
+}

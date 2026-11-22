@@ -4,6 +4,8 @@ import { HttpStatus } from '@/enums/enum';
 import { useSessionStore } from '@/stores';
 import type { IApiError } from '@/types/type';
 
+const ADMIN_LOGOUT_PATH = '/admin/auth/logout';
+
 /** Turn any axios failure into the `IApiError` shape the app relies on. */
 export const normalizeApiError = (error: unknown): IApiError => {
   if (axios.isAxiosError(error)) {
@@ -27,15 +29,16 @@ export const normalizeApiError = (error: unknown): IApiError => {
 export const successInterceptor = (response: AxiosResponse): AxiosResponse => response;
 
 /**
- * The BFF already refreshes expired access tokens. A 401 that reaches the browser therefore means the session is
- * over: drop it, clear the cookies and let the proxy send the user to the login page.
+ * The admin Route Handlers already renew an expired access token. A 401 from them therefore means the admin
+ * session is over: drop it, clear the cookies and let the proxy send the user to the login page.
  */
 export const createErrorInterceptor = (instance: AxiosInstance) => async (error: AxiosError) => {
-  const isAuthRequest = error.config?.url?.startsWith('/auth/');
+  const url = error.config?.url ?? '';
+  const isAdminRequest = url.startsWith('/admin/') && !url.startsWith('/admin/auth/');
 
-  if (error.response?.status === HttpStatus.UNAUTHORIZED && !isAuthRequest) {
+  if (error.response?.status === HttpStatus.UNAUTHORIZED && isAdminRequest) {
     useSessionStore.getState().clearSession();
-    await instance.post('/auth/logout').catch(() => undefined);
+    await instance.post(ADMIN_LOGOUT_PATH).catch(() => undefined);
     window.location.reload();
   }
 

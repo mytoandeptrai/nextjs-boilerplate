@@ -1,7 +1,7 @@
 import { defineRouting } from 'next-intl/routing';
 
 export const LOCALES = ['en', 'vi'] as const;
-export const DEFAULT_LOCALE = 'en';
+export const DEFAULT_LOCALE = 'vi';
 export type Locale = (typeof LOCALES)[number];
 
 export const LOCALE_LABELS: Record<Locale, string> = {
@@ -18,7 +18,7 @@ export const LOCALE_OG: Record<Locale, string> = {
 export const routing = defineRouting({
   locales: LOCALES,
   defaultLocale: DEFAULT_LOCALE,
-  // `/item1` for the default locale, `/vi/item1` for the others (same URLs as before the migration).
+  // `/products` for the default locale (Vietnamese), `/en/products` for the others.
   localePrefix: 'as-needed',
 });
 
