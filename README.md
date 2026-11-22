@@ -176,6 +176,8 @@ A change is done when `pnpm lint`, `pnpm format:check`, `pnpm type-check`, `pnpm
    `GEMINI_API_KEY` are read at runtime.
 3. Check `https://<domain>/robots.txt`: it should end with `Sitemap: https://<domain>/sitemap.xml`. A "Disallow: /"
    answer means the deployment is not running as production.
+4. Page views are sent to Vercel Web Analytics by `<Analytics />` in `src/app/[locale]/layout.tsx`. Enable Analytics
+   in the Vercel project to see them. Outside Vercel the script is not served and nothing is collected.
 
 ### Docker
 
