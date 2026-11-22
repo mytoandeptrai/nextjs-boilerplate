@@ -1,3 +1,8 @@
+/** `GET /api/chat`: whether the assistant has a key on this server. */
+export interface IChatStatus {
+  enabled: boolean;
+}
+
 export interface IChatResponse {
   reply: string;
 }

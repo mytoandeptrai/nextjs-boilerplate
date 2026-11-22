@@ -48,7 +48,7 @@ New dependencies: `@supabase/supabase-js` (data, auth, storage), `react-markdown
 | `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` | public | Existing public bucket for every image |
 | `SUPABASE_SERVICE_ROLE_KEY` | server only | Admin reads and mutations, uploads, private settings |
 | `RESEND_API_KEY` | server only | Email alert. Unset: the alert is skipped, the quote is still saved |
-| `GEMINI_API_KEY` | server only | Storefront chat assistant (added). Unset: the chat button is not rendered and `POST /api/chat` answers 503 |
+| `GEMINI_API_KEY` | server only | Storefront chat assistant (added). Unset: the chat button is not rendered and `POST /api/chat` answers 503. Read at runtime, like the other server secrets |
 | `GEMINI_MODEL` | server only | Optional, defaults to `gemini-flash-lite-latest` |
 | `QUOTE_EMAIL_FROM` | server only | Sender, default `onboarding@resend.dev` (the only sender Resend allows before a domain is verified) |
 | `SUPABASE_DB_URL` | tooling only | Postgres URI used to apply migrations. Never read by the app |
@@ -334,7 +334,7 @@ Both buttons validate the same form: name (required), phone (Vietnamese mobile, 
 
 ## 8b. Chat assistant (added)
 
-A floating chat on every storefront page (`ChatWidget`, mounted by `StoreLayout` when `GEMINI_API_KEY` is set). The conversation is kept in memory per tab and sent to `POST /api/chat` with the current locale.
+A floating chat on every storefront page (`ChatWidget`, mounted by `StoreLayout`; it shows itself when `GET /api/chat` answers `{ enabled: true }`, i.e. the running server has `GEMINI_API_KEY`, so a key set only at runtime, as with Docker, works on prerendered pages too). The conversation is kept in memory per tab and sent to `POST /api/chat` with the current locale.
 
 - **Answer.** `answerChat` (`src/lib/server/chat-assistant.ts`) builds a system prompt from the public catalogue read with the anon client (categories, active products with prices, sale prices and options, the latest guides, the Zalo hotline; cached for 60 s) and calls Gemini's `generateContent`. The model may only use that data and links to site paths.
 - **Prices.** The model never does the arithmetic: it calls the `estimate_price` tool, which runs `calculatePrice`, so the assistant quotes what the configurator shows (at most 3 model calls per message).

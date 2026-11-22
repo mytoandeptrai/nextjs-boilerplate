@@ -1,5 +1,5 @@
 import { GeminiError } from '@/lib/server/gemini';
-import { POST } from '../route';
+import { GET, POST } from '../route';
 
 const answerChat = vi.fn();
 const gemini = vi.hoisted(() => ({ configured: true }));
@@ -32,6 +32,14 @@ const post = (payload: unknown, headers: Record<string, string> = {}) =>
 beforeEach(() => {
   gemini.configured = true;
   answerChat.mockReset().mockResolvedValue('Từ 320.000đ / mét ngang.');
+});
+
+describe('GET /api/chat', () => {
+  it.each([true, false])('reports whether a key is configured (%s)', async (configured) => {
+    gemini.configured = configured;
+
+    expect(await GET().json()).toEqual({ enabled: configured });
+  });
 });
 
 describe('POST /api/chat', () => {

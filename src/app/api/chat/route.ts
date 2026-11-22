@@ -1,5 +1,5 @@
 import { chatBodySchema } from '@/api/chat/schema';
-import type { ChatErrorCode, IChatError, IChatResponse } from '@/api/chat/type';
+import type { ChatErrorCode, IChatError, IChatResponse, IChatStatus } from '@/api/chat/type';
 import { env } from '@/constants/env';
 import { HttpStatus } from '@/enums/enum';
 import { answerChat } from '@/lib/server/chat-assistant';
@@ -19,6 +19,14 @@ const ERROR_STATUS: Record<ChatErrorCode, number> = {
 const json = (body: unknown, status: number) => Response.json(body, { status });
 
 const fail = (code: ChatErrorCode, message: string) => json({ message, code } satisfies IChatError, ERROR_STATUS[code]);
+
+/** Read on every request: the key is set where the server runs, not where it is built. */
+export const dynamic = 'force-dynamic';
+
+/** Whether the assistant can answer, so the widget only shows where it works. */
+export function GET() {
+  return json({ enabled: isGeminiConfigured() } satisfies IChatStatus, HttpStatus.OK);
+}
 
 /**
  * Storefront chat assistant. The answer is written by Gemini from the public catalogue (products, prices, guides);

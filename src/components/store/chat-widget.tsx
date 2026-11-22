@@ -5,7 +5,7 @@ import { type FormEvent, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { toast } from 'sonner';
 
-import { CHAT_LIMITS, type ChatMessage, type IChatError, useSendChatMutation } from '@/api/chat';
+import { CHAT_LIMITS, type ChatMessage, type IChatError, useChatStatusQuery, useSendChatMutation } from '@/api/chat';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { HttpStatus } from '@/enums/enum';
@@ -41,12 +41,16 @@ function Reply({ content }: { content: string }) {
   );
 }
 
-/** Floating chat with the store assistant (`POST /api/chat`). The conversation lives in memory, per tab. */
+/**
+ * Floating chat with the store assistant (`POST /api/chat`). The conversation lives in memory, per tab.
+ * Renders nothing on a server without a Gemini key.
+ */
 export function ChatWidget() {
   const { t, locale } = useTranslations('store.chat');
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState('');
+  const { data: status } = useChatStatusQuery();
   const { mutate, isPending } = useSendChatMutation();
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -97,6 +101,8 @@ export function ChatWidget() {
     event.preventDefault();
     _send(draft);
   };
+
+  if (!status?.enabled) return null;
 
   return (
     <>

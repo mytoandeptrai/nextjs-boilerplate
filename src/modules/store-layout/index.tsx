@@ -4,11 +4,10 @@ import { getZaloHotline } from '@/api/catalog/requests';
 import { CartDrawer } from '@/components/store/cart-drawer';
 import { ChatWidget } from '@/components/store/chat-widget';
 import { StoreProvider } from '@/components/store/store-provider';
-import { isGeminiConfigured } from '@/lib/server/gemini';
 import { SiteFooter } from './site-footer';
 import { SiteHeader } from './site-header';
 
-/** Shell of every public page: header, cart drawer, footer and (when a Gemini key is set) the chat assistant. The Zalo hotline comes from the admin settings. */
+/** Shell of every public page: header, cart drawer, footer and the chat assistant (which shows itself when the server has a Gemini key). The Zalo hotline comes from the admin settings. */
 export default async function StoreLayout({ children }: { children: ReactNode }) {
   const zaloHotline = await getZaloHotline();
 
@@ -20,7 +19,7 @@ export default async function StoreLayout({ children }: { children: ReactNode })
         <SiteFooter zaloHotline={zaloHotline} />
       </div>
       <CartDrawer />
-      {isGeminiConfigured() ? <ChatWidget /> : null}
+      <ChatWidget />
     </StoreProvider>
   );
 }
