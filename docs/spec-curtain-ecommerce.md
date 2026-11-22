@@ -406,7 +406,7 @@ src/api/                   catalog (anon reads), quotes, admin-auth, admin-produ
 | --- | --- | --- |
 | Server Components | anon | First render of public pages (SEO). RLS applies. |
 | Client Components | anon, through `src/api/catalog` queries | Category filter, lookbook tags, cart re-validation |
-| `POST /api/quotes` | anon (+ service role for the private setting) | Lead capture |
+| `POST /api/quotes` | anon to read products, service role to write the lead and read the private setting | Lead capture |
 | `/api/admin/*` | service role, after `requireAdmin()` | Every admin read and write, uploads |
 
 Public pages are rendered per request (no stale cache to invalidate after an admin edit); the query layer is where caching can be added later.
