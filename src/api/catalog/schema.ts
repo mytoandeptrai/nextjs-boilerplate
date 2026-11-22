@@ -37,6 +37,9 @@ const parseList = <T>(schema: z.ZodType<T>, value: unknown): T[] =>
 type Row = Record<string, unknown>;
 
 /** Normalise a `products` row: numeric columns arrive as numbers or strings, JSONB as anything. */
+const toNullableNumber = (value: unknown): number | null =>
+  value === null || value === undefined || !Number.isFinite(Number(value)) ? null : Number(value);
+
 export const toProduct = (row: Row): IProduct => ({
   id: String(row.id),
   title: String(row.title ?? ''),
@@ -44,6 +47,7 @@ export const toProduct = (row: Row): IProduct => ({
   category_id: (row.category_id as string | null) ?? null,
   description: String(row.description ?? ''),
   base_price: Number(row.base_price) || 0,
+  sale_price: toNullableNumber(row.sale_price),
   pricing_type: row.pricing_type === 'square_meter' ? 'square_meter' : 'linear_meter',
   pleat_options: parseList(pleatOptionSchema, row.pleat_options),
   fabric_options: parseList(fabricOptionSchema, row.fabric_options),

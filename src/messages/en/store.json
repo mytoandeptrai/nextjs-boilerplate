@@ -75,7 +75,8 @@
     "seenInHomes": "This product in real homes",
     "madeToMeasure": "Made to measure",
     "photo": "Photo {index}",
-    "related": "You may also like"
+    "related": "You may also like",
+    "originalPrice": "Original price"
   },
   "configurator": {
     "title": "Configure yours",
@@ -102,7 +103,8 @@
     "errorHeight": "Height must be between {min} and {max} cm",
     "errorQuantity": "Quantity must be between {min} and {max}",
     "minArea": "Billed for at least 1 m on each side.",
-    "included": "Included"
+    "included": "Included",
+    "originalPrice": "Price before discount"
   },
   "cart": {
     "title": "Your cart",
@@ -172,5 +174,12 @@
     "contact": "Contact",
     "hotline": "Hotline / Zalo",
     "rights": "© {year} Thuy Huong Curtains."
+  },
+  "sort": {
+    "label": "Sort by",
+    "newest": "Newest",
+    "popular": "Most popular",
+    "price-asc": "Price: low to high",
+    "price-desc": "Price: high to low"
   }
 }

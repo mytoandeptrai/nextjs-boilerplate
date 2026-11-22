@@ -75,7 +75,8 @@
     "seenInHomes": "Sản phẩm này tại nhà khách hàng",
     "madeToMeasure": "May đo theo kích thước",
     "photo": "Ảnh {index}",
-    "related": "Có thể bạn cũng thích"
+    "related": "Có thể bạn cũng thích",
+    "originalPrice": "Giá gốc"
   },
   "configurator": {
     "title": "Tùy chọn của bạn",
@@ -102,7 +103,8 @@
     "errorHeight": "Chiều cao phải từ {min} đến {max} cm",
     "errorQuantity": "Số lượng phải từ {min} đến {max}",
     "minArea": "Tính tối thiểu 1 m mỗi chiều.",
-    "included": "Đã gồm"
+    "included": "Đã gồm",
+    "originalPrice": "Giá chưa giảm"
   },
   "cart": {
     "title": "Giỏ hàng",
@@ -172,5 +174,12 @@
     "contact": "Liên hệ",
     "hotline": "Hotline / Zalo",
     "rights": "© {year} Màn Rèm Thùy Hương."
+  },
+  "sort": {
+    "label": "Sắp xếp",
+    "newest": "Mới nhất",
+    "popular": "Phổ biến",
+    "price-asc": "Giá thấp đến cao",
+    "price-desc": "Giá cao đến thấp"
   }
 }

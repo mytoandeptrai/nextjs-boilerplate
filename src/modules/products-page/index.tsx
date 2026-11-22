@@ -3,41 +3,50 @@ import { CategoryFilter } from '@/components/store/category-filter';
 import { Pagination } from '@/components/store/pagination';
 import { ProductCard } from '@/components/store/product-card';
 import { SectionHeading } from '@/components/store/section-heading';
-import { ROUTES } from '@/constants/routes';
+import { SortSelect } from '@/components/store/sort-select';
 import { useTranslationsServer } from '@/hooks/use-translations-server';
 import { getTotalPages } from '@/lib/pagination';
+import { buildProductsHref, DEFAULT_PRODUCT_SORT, PRODUCT_SORTS, type ProductSort } from '@/lib/product-listing';
 
 /** Three rows of four on desktop, six rows of two on a phone. */
 const PRODUCTS_PAGE_SIZE = 12;
 
-export default async function ProductsPage({ categorySlug, page = 1 }: { categorySlug?: string; page?: number }) {
+interface IProductsPageProps {
+  categorySlug?: string;
+  sort?: ProductSort;
+  page?: number;
+}
+
+export default async function ProductsPage({
+  categorySlug,
+  sort = DEFAULT_PRODUCT_SORT,
+  page = 1,
+}: IProductsPageProps) {
   const { t } = await useTranslationsServer();
   const categories = await getCategories();
   // An unknown slug shows everything instead of an empty page.
   const active = categories.find((category) => category.slug === categorySlug);
-  const query = { categoryId: active?.id, pageSize: PRODUCTS_PAGE_SIZE };
+  const query = { categoryId: active?.id, sort, pageSize: PRODUCTS_PAGE_SIZE };
   const requested = await getProductsPage({ ...query, page });
   // A page past the end (an old link, a product removed since) shows the first page instead of an empty one.
   const isPastEnd = page > 1 && requested.products.length === 0;
   const { products, total } = isPastEnd ? await getProductsPage({ ...query, page: 1 }) : requested;
   const currentPage = isPastEnd ? 1 : page;
-  const getPageHref = (target: number) => {
-    const params = new URLSearchParams();
-
-    if (active) params.set('category', active.slug);
-    if (target > 1) params.set('page', String(target));
-
-    return params.size > 0 ? `${ROUTES.PRODUCTS}?${params}` : ROUTES.PRODUCTS;
-  };
   const categoryTitle = new Map(categories.map((category) => [category.id, category.title]));
+  // Changing the category or the order starts again from the first page.
   const filters = [
-    { href: ROUTES.PRODUCTS, label: t('store.categories.all'), isActive: !active },
+    { href: buildProductsHref({ sort }), label: t('store.categories.all'), isActive: !active },
     ...categories.map((category) => ({
-      href: `${ROUTES.PRODUCTS}?category=${category.slug}`,
+      href: buildProductsHref({ category: category.slug, sort }),
       label: category.title,
       isActive: category.id === active?.id,
     })),
   ];
+  const sortOptions = PRODUCT_SORTS.map((value) => ({
+    value,
+    label: t(`store.sort.${value}`),
+    href: buildProductsHref({ category: active?.slug, sort: value }),
+  }));
 
   return (
     <div className='container-page pt-12 lg:pt-16'>
@@ -48,7 +57,12 @@ export default async function ProductsPage({ categorySlug, page = 1 }: { categor
         subtitle={t('common.seo.productsDescription')}
       />
 
-      <CategoryFilter label={t('store.categories.title')} items={filters} />
+      <div className='sm:flex sm:items-end sm:justify-between sm:gap-6'>
+        <CategoryFilter label={t('store.categories.title')} items={filters} />
+        <div className='mt-4 sm:mt-8'>
+          <SortSelect label={t('store.sort.label')} value={sort} options={sortOptions} />
+        </div>
+      </div>
 
       {products.length > 0 ? (
         <ul className='mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6'>
@@ -60,6 +74,7 @@ export default async function ProductsPage({ categorySlug, page = 1 }: { categor
                 categoryTitle={product.category_id ? categoryTitle.get(product.category_id) : undefined}
                 labels={{
                   from: t('store.product.from'),
+                  originalPrice: t('store.product.originalPrice'),
                   unit:
                     product.pricing_type === 'linear_meter'
                       ? t('store.product.perMeter')
@@ -78,7 +93,7 @@ export default async function ProductsPage({ categorySlug, page = 1 }: { categor
       <Pagination
         page={currentPage}
         totalPages={getTotalPages(total, PRODUCTS_PAGE_SIZE)}
-        getHref={getPageHref}
+        getHref={(target) => buildProductsHref({ category: active?.slug, sort, page: target })}
         labels={{
           navigation: t('store.pagination.label'),
           previous: t('store.pagination.previous'),

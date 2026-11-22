@@ -105,6 +105,7 @@ export default async function HomePage() {
                   categoryTitle={product.category_id ? categoryTitle.get(product.category_id) : undefined}
                   labels={{
                     from: t('product.from'),
+                    originalPrice: t('product.originalPrice'),
                     unit: product.pricing_type === 'linear_meter' ? t('product.perMeter') : t('product.perSquareMeter'),
                   }}
                 />

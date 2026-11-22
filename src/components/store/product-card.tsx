@@ -1,14 +1,14 @@
+import { DiscountBadge, ProductPrice } from '@/components/store/product-price';
 import { StoreImage } from '@/components/store/store-image';
 import { buildRoute, ROUTES } from '@/constants/routes';
 import { Link } from '@/i18n/navigation';
-import { formatVnd } from '@/lib/format';
 import type { IProduct } from '@/types/catalog';
 
 interface IProductCardProps {
   product: IProduct;
   categoryTitle?: string;
-  /** Already translated: "From" and the unit suffix for the product's pricing type. */
-  labels: { from: string; unit: string };
+  /** Already translated: "From", the unit suffix for the product's pricing type and "Original price". */
+  labels: { from: string; unit: string; originalPrice: string };
   sizes?: string;
   /** First row of a listing: load the image at once. */
   eager?: boolean;
@@ -34,16 +34,14 @@ export function ProductCard({
           eager={eager}
           className='transition-transform duration-700 ease-out group-hover:scale-105'
         />
+        <DiscountBadge product={product} className='absolute top-3 left-3' />
       </div>
       <div className='pt-4'>
         {categoryTitle ? (
           <p className='text-muted-foreground mb-1 text-xs tracking-[0.15em] uppercase'>{categoryTitle}</p>
         ) : null}
         <h3 className='text-foreground group-hover:text-brand text-base leading-snug font-medium'>{product.title}</h3>
-        <p className='text-muted-foreground mt-1 text-sm'>
-          {labels.from} <span className='text-foreground font-medium'>{formatVnd(product.base_price)}</span>{' '}
-          {labels.unit}
-        </p>
+        <ProductPrice product={product} labels={labels} className='mt-1 text-sm' />
       </div>
     </Link>
   );

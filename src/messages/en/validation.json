@@ -9,5 +9,6 @@
   "slugTaken": "This slug is already in use",
   "imageRequired": "Please upload an image",
   "numberInvalid": "Invalid value",
-  "hotlineInvalid": "Phone number must have 8 to 15 digits"
+  "hotlineInvalid": "Phone number must have 8 to 15 digits",
+  "salePriceInvalid": "The sale price must be a number lower than the base price"
 }

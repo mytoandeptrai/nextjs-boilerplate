@@ -2,6 +2,7 @@ import type { IProduct } from '@/types/catalog';
 import { POST } from '../route';
 
 const insert = vi.fn();
+const rpc = vi.fn();
 const sendQuoteAlert = vi.fn();
 const getProductsByIds = vi.fn();
 
@@ -9,6 +10,7 @@ vi.mock('server-only', () => ({}));
 vi.mock('@/api/catalog/requests', () => ({ getProductsByIds: (ids: string[]) => getProductsByIds(ids) }));
 vi.mock('@/lib/supabase/admin', () => ({
   getSupabaseAdmin: () => ({
+    rpc: (...args: unknown[]) => rpc(...args),
     from: () => ({
       insert,
       select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: { value: 'owner@example.com' } }) }) }),
@@ -27,6 +29,7 @@ const product: IProduct = {
   category_id: null,
   description: '',
   base_price: 450_000,
+  sale_price: null,
   pricing_type: 'linear_meter',
   pleat_options: [{ id: 'triple', label: 'Ly ba', multiplier: 1.2 }],
   fabric_options: [],
@@ -71,6 +74,7 @@ const post = (payload: unknown, headers: Record<string, string> = {}) =>
 
 beforeEach(() => {
   insert.mockReset().mockResolvedValue({ error: null });
+  rpc.mockReset().mockResolvedValue({ error: null });
   sendQuoteAlert.mockReset().mockResolvedValue(true);
   getProductsByIds.mockReset().mockResolvedValue([product]);
 });
@@ -158,6 +162,36 @@ describe('POST /api/quotes', () => {
 
     expect(response.status).toBe(200);
     expect(sendQuoteAlert).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('prices a discounted product with its sale price', async () => {
+    getProductsByIds.mockResolvedValue([{ ...product, sale_price: 360_000 }]);
+
+    const response = await post(body());
+
+    // Whatever the full-price total is, the stored one is recomputed from 360,000 / m.
+    const { totalEstimate } = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(totalEstimate).toBeLessThan(12_974_000);
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({ total_estimate: totalEstimate }));
+  });
+
+  it('counts each product once per stored request for the popular order', async () => {
+    const item = body().items[0];
+
+    await post(body({ items: [item, { ...item, widthCm: 200 }] }));
+
+    expect(rpc).toHaveBeenCalledTimes(1);
+    expect(rpc).toHaveBeenCalledWith('increment_product_quote_count', { product_ids: [PRODUCT_ID] });
+  });
+
+  it('still stores the lead when the popularity count fails', async () => {
+    rpc.mockResolvedValue({ error: { code: '42883', message: 'function does not exist' } });
+
+    expect((await post(body())).status).toBe(201);
+    expect(sendQuoteAlert).toHaveBeenCalledTimes(1);
   });
 
   it('answers 500 when the lead cannot be stored', async () => {

@@ -78,6 +78,9 @@ create table public.products (
   category_id    uuid references public.categories (id) on delete set null,
   description    text not null default '',                      -- added
   base_price     numeric(14, 2) not null check (base_price >= 0),
+  sale_price     numeric(14, 2) check (sale_price is null or (sale_price >= 0 and sale_price < base_price)),  -- added: optional discount, replaces base_price in pricing
+  effective_price numeric(14, 2) generated always as (coalesce(sale_price, base_price)) stored,                 -- added: catalogue price sort
+  quote_count    integer not null default 0 check (quote_count >= 0),                                          -- added: quote requests that included the product ("popular" sort), bumped by POST /api/quotes
   pricing_type   text not null check (pricing_type in ('linear_meter', 'square_meter')),
   pleat_options  jsonb not null default '[]'::jsonb check (jsonb_typeof(pleat_options)  = 'array'),
   fabric_options jsonb not null default '[]'::jsonb check (jsonb_typeof(fabric_options) = 'array'),
@@ -88,6 +91,8 @@ create table public.products (
 );
 create index products_category_idx on public.products (category_id);
 create index products_active_created_idx on public.products (is_active, created_at desc);
+create index products_active_price_idx on public.products (is_active, effective_price);
+create index products_active_popular_idx on public.products (is_active, quote_count desc);
 
 -- ---------------------------------------------------------------- lookbooks
 create table public.lookbooks (
@@ -240,7 +245,7 @@ Admin form (browser)                    Route Handler (server)                  
 Inputs: `width_cm`, `height_cm` (integers, converted to metres), fabric, motor, quantity, and for linear-meter products pleat style and fullness.
 
 ```
-price_per_unit   = base_price + fabric.price_delta            (VND per m, or per m2)
+price_per_unit   = (sale_price ?? base_price) + fabric.price_delta   (VND per m, or per m2; sale_price only when below base_price)
 motor_price      = motor.price, or 0 for "no motor"
 
 Linear meter:    unit = width * price_per_meter * pleat_multiplier + motor_price
@@ -344,7 +349,7 @@ src/app/[locale]/
   (storefront)/
     layout.tsx                       SiteHeader, SiteFooter, CartDrawer, FloatingZaloButton
     page.tsx                         /                  HomePage
-    products/page.tsx                /products          ProductsPage (?category=slug&page=n, 12 per page)
+    products/page.tsx                /products          ProductsPage (?category=slug&sort=newest|popular|price-asc|price-desc&page=n, 12 per page)
     products/[slug]/page.tsx         /products/[slug]   ProductDetailPage
     lookbook/page.tsx                /lookbook          LookbookPage (?category=slug)
     blog/page.tsx                    /blog              BlogPage

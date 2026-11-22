@@ -9,5 +9,6 @@
   "slugTaken": "Đường dẫn này đã được dùng",
   "imageRequired": "Vui lòng tải ảnh lên",
   "numberInvalid": "Giá trị không hợp lệ",
-  "hotlineInvalid": "Số điện thoại gồm 8 đến 15 chữ số"
+  "hotlineInvalid": "Số điện thoại gồm 8 đến 15 chữ số",
+  "salePriceInvalid": "Giá khuyến mãi phải là số nhỏ hơn giá gốc"
 }

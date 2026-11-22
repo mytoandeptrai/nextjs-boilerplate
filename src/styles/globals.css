@@ -26,6 +26,8 @@
   --ring: #94a3b8;
   --brand: #8a6d3b;
   --brand-foreground: #ffffff;
+  /* Discounted prices and the discount tag. */
+  --sale: #b4532a;
   --chart-1: #8a6d3b;
   --chart-2: #475569;
   --chart-3: #94a3b8;
@@ -46,6 +48,7 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
+  --color-sale: var(--sale);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

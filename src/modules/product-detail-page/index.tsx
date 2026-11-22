@@ -1,10 +1,10 @@
 import { getCategories, getLookbooksByProduct, getProducts } from '@/api/catalog/requests';
 import { ProductCard } from '@/components/store/product-card';
+import { DiscountBadge, ProductPrice } from '@/components/store/product-price';
 import { StoreImage } from '@/components/store/store-image';
 import { ROUTES } from '@/constants/routes';
 import { useTranslationsServer } from '@/hooks/use-translations-server';
 import { Link } from '@/i18n/navigation';
-import { formatVnd } from '@/lib/format';
 import type { IProduct } from '@/types/catalog';
 import { Configurator } from './configurator';
 import { ProductGallery } from './product-gallery';
@@ -20,6 +20,11 @@ export default async function ProductDetailPage({ product }: { product: IProduct
   const related = siblings.filter((item) => item.id !== product.id).slice(0, 4);
   const unit = (item: IProduct) =>
     item.pricing_type === 'linear_meter' ? t('store.product.perMeter') : t('store.product.perSquareMeter');
+  const priceLabels = (item: IProduct) => ({
+    from: t('store.product.from'),
+    unit: unit(item),
+    originalPrice: t('store.product.originalPrice'),
+  });
 
   return (
     <div className='container-page pt-6 lg:pt-10'>
@@ -57,10 +62,10 @@ export default async function ProductDetailPage({ product }: { product: IProduct
         <div>
           {category ? <p className='eyebrow mb-3'>{category.title}</p> : null}
           <h1 className='text-3xl font-light tracking-tight lg:text-4xl'>{product.title}</h1>
-          <p className='text-muted-foreground mt-3'>
-            {t('store.product.from')}{' '}
-            <span className='text-foreground text-lg font-medium'>{formatVnd(product.base_price)}</span> {unit(product)}
-          </p>
+          <div className='mt-3 flex flex-wrap items-center gap-3'>
+            <ProductPrice product={product} labels={priceLabels(product)} priceClassName='text-lg' />
+            <DiscountBadge product={product} />
+          </div>
 
           <div className='border-border mt-8 border-t pt-8'>
             <h2 className='sr-only'>{t('store.configurator.title')}</h2>
@@ -95,7 +100,7 @@ export default async function ProductDetailPage({ product }: { product: IProduct
           <ul className='mt-8 grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-6'>
             {related.map((item) => (
               <li key={item.id}>
-                <ProductCard product={item} labels={{ from: t('store.product.from'), unit: unit(item) }} />
+                <ProductCard product={item} labels={priceLabels(item)} />
               </li>
             ))}
           </ul>

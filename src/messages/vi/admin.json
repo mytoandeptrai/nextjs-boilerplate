@@ -87,7 +87,9 @@
       "optionPrice": "Giá (VND)",
       "color": "Màu",
       "addOption": "Thêm lựa chọn",
-      "removeOption": "Xóa lựa chọn"
+      "removeOption": "Xóa lựa chọn",
+      "salePrice": "Giá khuyến mãi (VND)",
+      "salePriceHint": "Không bắt buộc. Khi có, cửa hàng hiện giá này cùng giá gốc gạch ngang và tính báo giá theo giá này. Để trống nếu không giảm giá."
     }
   },
   "categories": {

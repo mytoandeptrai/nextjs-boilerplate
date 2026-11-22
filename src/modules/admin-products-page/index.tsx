@@ -17,6 +17,7 @@ import { useTranslations } from '@/hooks';
 import { Link } from '@/i18n/navigation';
 import { formatVnd } from '@/lib/format';
 import { getTotalPages } from '@/lib/pagination';
+import { getEffectivePrice, getSalePrice } from '@/lib/pricing';
 import { cn } from '@/lib/utils';
 
 const PAGE_SIZE = 10;
@@ -90,7 +91,16 @@ export default function AdminProductsPage() {
                   <TableCell className='whitespace-nowrap'>
                     {product.pricing_type === 'linear_meter' ? t('products.linearMeter') : t('products.squareMeter')}
                   </TableCell>
-                  <TableCell className='text-right tabular-nums'>{formatVnd(product.base_price)}</TableCell>
+                  <TableCell className='text-right tabular-nums'>
+                    {getSalePrice(product) === null ? (
+                      formatVnd(product.base_price)
+                    ) : (
+                      <>
+                        <span className='text-sale font-medium'>{formatVnd(getEffectivePrice(product))}</span>
+                        <s className='text-muted-foreground block text-xs'>{formatVnd(product.base_price)}</s>
+                      </>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <span
                       className={cn(

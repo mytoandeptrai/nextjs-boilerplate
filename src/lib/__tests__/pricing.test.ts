@@ -1,10 +1,14 @@
 import type { IConfiguration, IProduct } from '@/types/catalog';
-import { calculatePrice, roundToThousand } from '../pricing';
+import { calculatePrice, getDiscountPercent, getEffectivePrice, getSalePrice, roundToThousand } from '../pricing';
 
-type Priced = Pick<IProduct, 'base_price' | 'pricing_type' | 'pleat_options' | 'fabric_options' | 'motor_options'>;
+type Priced = Pick<
+  IProduct,
+  'base_price' | 'sale_price' | 'pricing_type' | 'pleat_options' | 'fabric_options' | 'motor_options'
+>;
 
 const curtain: Priced = {
   base_price: 450_000,
+  sale_price: null,
   pricing_type: 'linear_meter',
   pleat_options: [
     { id: 'wave', label: 'Wave', multiplier: 1 },
@@ -111,5 +115,51 @@ describe('calculatePrice: validation and fallbacks', () => {
     const bare: Priced = { ...curtain, pleat_options: [], fabric_options: [], motor_options: [] };
 
     expect(priceOf(bare).unitPrice).toBe(1_440_000);
+  });
+});
+
+describe('sale price', () => {
+  it('replaces the base price per meter, with options still added on top', () => {
+    const onSale: Priced = { ...curtain, sale_price: 360_000 };
+
+    // 3.2 m * 360,000
+    expect(priceOf(onSale)).toMatchObject({
+      unitPrice: 1_152_000,
+      originalUnitPrice: 1_440_000,
+      pricePerUnit: 360_000,
+    });
+    // 3.2 m * (360,000 + 120,000) * 1.2 + 4,500,000, against 3.2 m * (450,000 + 120,000) * 1.2 + 4,500,000
+    expect(priceOf(onSale, { pleatId: 'triple', fabricId: 'velvet', motorId: 'somfy' })).toMatchObject({
+      unitPrice: 6_343_000,
+      originalUnitPrice: 6_689_000,
+    });
+  });
+
+  it('applies to square-meter products', () => {
+    // 3.2 m * 2.6 m * 300,000, against * 380,000
+    expect(priceOf({ ...blind, sale_price: 300_000 })).toMatchObject({
+      unitPrice: 2_496_000,
+      originalUnitPrice: 3_162_000,
+    });
+  });
+
+  it('reports no original price for a product that is not discounted', () => {
+    expect(priceOf(curtain).originalUnitPrice).toBeNull();
+  });
+
+  it.each([450_000, 500_000, -1, Number.NaN])('ignores a sale price of %d (not below the base price)', (sale_price) => {
+    const product: Priced = { ...curtain, sale_price };
+
+    expect(getSalePrice(product)).toBeNull();
+    expect(getEffectivePrice(product)).toBe(450_000);
+    expect(getDiscountPercent(product)).toBe(0);
+    expect(priceOf(product)).toMatchObject({ unitPrice: 1_440_000, originalUnitPrice: null });
+  });
+
+  it('rounds the discount to a whole percent, never down to zero', () => {
+    expect(getDiscountPercent({ base_price: 450_000, sale_price: 360_000 })).toBe(20);
+    expect(getDiscountPercent({ base_price: 450_000, sale_price: 299_000 })).toBe(34);
+    expect(getDiscountPercent({ base_price: 450_000, sale_price: 449_000 })).toBe(1);
+    expect(getDiscountPercent({ base_price: 450_000, sale_price: 0 })).toBe(100);
   });
 });

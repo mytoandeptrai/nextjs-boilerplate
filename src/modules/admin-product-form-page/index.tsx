@@ -41,6 +41,7 @@ const EMPTY: ProductFormInput = {
   category_id: null,
   description: '',
   base_price: '',
+  sale_price: '',
   pricing_type: 'linear_meter',
   pleat_options: [],
   fabric_options: [],
@@ -55,6 +56,7 @@ const toFormValues = (product: IProduct): ProductFormInput => ({
   category_id: product.category_id,
   description: product.description,
   base_price: product.base_price,
+  sale_price: product.sale_price ?? '',
   pricing_type: product.pricing_type,
   pleat_options: product.pleat_options,
   fabric_options: product.fabric_options,
@@ -240,6 +242,28 @@ function ProductForm({ product }: { product?: IProduct }) {
                       : t('products.form.basePriceHintSquare')}
                   </FormDescription>
                   <FieldError messageKey='numberInvalid' />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='sale_price'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('products.form.salePrice')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type='number'
+                      inputMode='numeric'
+                      min={0}
+                      step={1000}
+                      className='max-w-xs'
+                      {...field}
+                      value={String(field.value ?? '')}
+                    />
+                  </FormControl>
+                  <FormDescription>{t('products.form.salePriceHint')}</FormDescription>
+                  <FieldError messageKey='salePriceInvalid' />
                 </FormItem>
               )}
             />

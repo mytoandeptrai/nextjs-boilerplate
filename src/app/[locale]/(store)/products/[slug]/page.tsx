@@ -6,6 +6,7 @@ import { getProductBySlug } from '@/api/catalog/requests';
 import { JsonLd } from '@/components/seo/json-ld';
 import { buildRoute, ROUTES } from '@/constants/routes';
 import { toLocale } from '@/i18n/routing';
+import { getEffectivePrice } from '@/lib/pricing';
 import { buildMetadata, getAbsoluteUrl } from '@/lib/seo';
 import ProductDetailPage from '@/modules/product-detail-page';
 import type { PageProps } from '@/types/type';
@@ -53,7 +54,7 @@ export default async function Page({ params }: Props) {
           offers: {
             '@type': 'Offer',
             priceCurrency: 'VND',
-            price: product.base_price,
+            price: getEffectivePrice(product),
             availability: 'https://schema.org/InStock',
           },
         }}

@@ -42,6 +42,8 @@ export interface IProduct {
   category_id: string | null;
   description: string;
   base_price: number;
+  /** Discounted price per m (or per m2). `null` when the product is not on sale. */
+  sale_price: number | null;
   pricing_type: PricingType;
   pleat_options: IPleatOption[];
   fabric_options: IFabricOption[];

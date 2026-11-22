@@ -87,7 +87,9 @@
       "optionPrice": "Price (VND)",
       "color": "Colour",
       "addOption": "Add option",
-      "removeOption": "Remove option"
+      "removeOption": "Remove option",
+      "salePrice": "Sale price (VND)",
+      "salePriceHint": "Optional. When set, the store shows it next to the struck-through base price and quotes are priced with it. Leave empty for no discount."
     }
   },
   "categories": {

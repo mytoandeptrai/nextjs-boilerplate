@@ -1,4 +1,5 @@
 import { SETTING_KEYS } from '@/constants/const';
+import { DEFAULT_PRODUCT_SORT, type ProductSort } from '@/lib/product-listing';
 import { getSupabaseClient } from '@/lib/supabase/client';
 import type { IBlogPost, ICategory, ILookbook, IProduct } from '@/types/catalog';
 import { toBlogPost, toLookbook, toProduct } from './schema';
@@ -60,10 +61,12 @@ export const getProducts = ({ categoryId, limit }: { categoryId?: string; limit?
  */
 export const getProductsPage = ({
   categoryId,
+  sort = DEFAULT_PRODUCT_SORT,
   page,
   pageSize,
 }: {
   categoryId?: string;
+  sort?: ProductSort;
   page: number;
   pageSize: number;
 }): Promise<{ products: IProduct[]; total: number }> => {
@@ -72,12 +75,16 @@ export const getProductsPage = ({
 
   if (!db) return Promise.resolve(empty);
 
-  let query = db
-    .from('products')
-    .select('*', { count: 'exact' })
-    .eq('is_active', true)
+  let query = db.from('products').select('*', { count: 'exact' }).eq('is_active', true);
+
+  // `effective_price` is the sale price when there is one; `quote_count` counts the quote requests with the product.
+  if (sort === 'price-asc') query = query.order('effective_price', { ascending: true });
+  if (sort === 'price-desc') query = query.order('effective_price', { ascending: false });
+  if (sort === 'popular') query = query.order('quote_count', { ascending: false });
+
+  query = query
     .order('created_at', { ascending: false })
-    // Products created in the same instant must not swap places between pages.
+    // Products that tie on everything above must not swap places between pages.
     .order('id')
     .range((page - 1) * pageSize, page * pageSize - 1);
 

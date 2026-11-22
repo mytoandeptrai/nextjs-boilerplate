@@ -11,9 +11,11 @@ export type PriceError = 'width' | 'height' | 'quantity';
 export interface IPriceBreakdown {
   /** Price of one piece, rounded to 1,000 VND. */
   unitPrice: number;
+  /** What one piece would cost without the product's discount; `null` when the product is not discounted. */
+  originalUnitPrice: number | null;
   /** `unitPrice * quantity`. */
   lineTotal: number;
-  /** Price per m (or per m2) after the fabric surcharge. */
+  /** Price per m (or per m2) after the discount and the fabric surcharge. */
   pricePerUnit: number;
   /** `pleat.multiplier * fullness / 2.0`, or 1 for square-meter products. */
   multiplier: number;
@@ -29,8 +31,24 @@ export type PriceResult = ({ ok: true } & IPriceBreakdown) | { ok: false; error:
 
 type PricedProduct = Pick<
   IProduct,
-  'base_price' | 'pricing_type' | 'pleat_options' | 'fabric_options' | 'motor_options'
+  'base_price' | 'sale_price' | 'pricing_type' | 'pleat_options' | 'fabric_options' | 'motor_options'
 >;
+
+type DiscountableProduct = Pick<IProduct, 'base_price' | 'sale_price'>;
+
+/** The sale price when it is a real discount (below the base price), otherwise `null`. */
+export const getSalePrice = ({ base_price, sale_price }: DiscountableProduct): number | null =>
+  sale_price !== null && Number.isFinite(sale_price) && sale_price >= 0 && sale_price < base_price ? sale_price : null;
+
+/** Price per m (or per m2) the customer pays before options: the sale price when there is one. */
+export const getEffectivePrice = (product: DiscountableProduct): number => getSalePrice(product) ?? product.base_price;
+
+/** Whole percent taken off the base price, at least 1 for any discount; 0 when there is none. */
+export const getDiscountPercent = (product: DiscountableProduct): number => {
+  const salePrice = getSalePrice(product);
+
+  return salePrice === null ? 0 : Math.max(1, Math.round((1 - salePrice / product.base_price) * 100));
+};
 
 /** Round half up to the nearest 1,000 VND. */
 export const roundToThousand = (value: number): number => Math.round(value / 1000) * 1000;
@@ -46,6 +64,8 @@ export const normalizeFullness = (value: number): Fullness =>
 
 /**
  * The one pricing function, shared by the configurator, the cart and `POST /api/quotes`.
+ *
+ * `price_per_meter` / `price_per_m2` is the sale price when the product has one, otherwise the base price.
  *
  * - Linear meter: `width * price_per_meter * pleat_multiplier + motor_price`
  * - Square meter: `max(1, width) * max(1, height) * price_per_m2 + motor_price`
@@ -68,19 +88,26 @@ export const calculatePrice = (product: PricedProduct, config: IConfiguration): 
   const pleat = isLinear ? (pick(product.pleat_options, config.pleatId) ?? product.pleat_options[0] ?? null) : null;
   const fullness = isLinear ? normalizeFullness(config.fullness) : null;
 
-  const pricePerUnit = product.base_price + (fabric?.price_delta ?? 0);
+  const fabricDelta = fabric?.price_delta ?? 0;
+  const pricePerUnit = getEffectivePrice(product) + fabricDelta;
   const motorPrice = motor?.price ?? 0;
   const multiplier = isLinear ? (pleat?.multiplier ?? 1) * ((fullness ?? BASE_FULLNESS) / BASE_FULLNESS) : 1;
 
-  const raw = isLinear
-    ? width * pricePerUnit * multiplier + motorPrice
-    : Math.max(MIN_BILLABLE_METERS, width) * Math.max(MIN_BILLABLE_METERS, height) * pricePerUnit + motorPrice;
+  const priceAt = (perUnit: number) =>
+    roundToThousand(
+      isLinear
+        ? width * perUnit * multiplier + motorPrice
+        : Math.max(MIN_BILLABLE_METERS, width) * Math.max(MIN_BILLABLE_METERS, height) * perUnit + motorPrice
+    );
 
-  const unitPrice = roundToThousand(raw);
+  const unitPrice = priceAt(pricePerUnit);
+  const undiscounted = getSalePrice(product) === null ? null : priceAt(product.base_price + fabricDelta);
 
   return {
     ok: true,
     unitPrice,
+    // Rounding can make a small discount disappear: only report an original price that is really higher.
+    originalUnitPrice: undiscounted !== null && undiscounted > unitPrice ? undiscounted : null,
     lineTotal: unitPrice * config.quantity,
     pricePerUnit,
     multiplier,

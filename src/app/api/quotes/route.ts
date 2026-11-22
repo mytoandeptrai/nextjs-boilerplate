@@ -111,6 +111,13 @@ export async function POST(req: Request) {
     return json({ message: 'Could not save the request' }, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  // Feeds the catalogue's "popular" order. Each product counts once per request; a failure never fails the lead.
+  const { error: countError } = await db.rpc('increment_product_quote_count', {
+    product_ids: [...new Set(cartItems.map((line) => line.product_id))],
+  });
+
+  if (countError) console.error('[quotes] popularity count failed', countError.code, countError.message);
+
   const emailSent = body.channel === 'email' ? await sendQuoteAlert(await getNotificationEmail(db), quote) : false;
 
   return json(

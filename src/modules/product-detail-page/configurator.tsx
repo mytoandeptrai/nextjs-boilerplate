@@ -243,6 +243,12 @@ export function Configurator({ product }: { product: IProduct }) {
         <div className='flex items-end justify-between gap-4'>
           <span className='text-muted-foreground text-sm'>{t('estimate')}</span>
           <div className='text-right' aria-live='polite'>
+            {price.ok && price.originalUnitPrice !== null ? (
+              <p className='text-muted-foreground text-sm tabular-nums'>
+                <span className='sr-only'>{t('originalPrice')}</span>
+                <s data-testid='estimate-original'>{formatVnd(price.originalUnitPrice * quantity)}</s>
+              </p>
+            ) : null}
             <p className='text-3xl font-light tracking-tight tabular-nums' data-testid='estimate'>
               {price.ok ? formatVnd(price.lineTotal) : '—'}
             </p>
