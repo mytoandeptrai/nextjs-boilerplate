@@ -10,6 +10,8 @@ interface IProductCardProps {
   /** Already translated: "From" and the unit suffix for the product's pricing type. */
   labels: { from: string; unit: string };
   sizes?: string;
+  /** First row of a listing: load the image at once. */
+  eager?: boolean;
 }
 
 export function ProductCard({
@@ -17,6 +19,7 @@ export function ProductCard({
   categoryTitle,
   labels,
   sizes = '(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw',
+  eager = false,
 }: IProductCardProps) {
   return (
     <Link
@@ -28,6 +31,7 @@ export function ProductCard({
           src={product.images[0]}
           alt={product.title}
           sizes={sizes}
+          eager={eager}
           className='transition-transform duration-700 ease-out group-hover:scale-105'
         />
       </div>

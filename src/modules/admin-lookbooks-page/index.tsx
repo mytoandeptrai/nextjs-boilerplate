@@ -49,10 +49,15 @@ export default function AdminLookbooksPage() {
         emptyText={t('lookbooks.empty')}
       >
         <ul className='grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4'>
-          {lookbooks.map((lookbook) => (
+          {lookbooks.map((lookbook, index) => (
             <li key={lookbook.id} className='bg-card border'>
               <div className='bg-muted relative aspect-[4/3]'>
-                <StoreImage src={lookbook.image_url} alt={lookbook.title} sizes='(min-width: 1280px) 25vw, 50vw' />
+                <StoreImage
+                  src={lookbook.image_url}
+                  alt={lookbook.title}
+                  sizes='(min-width: 1280px) 25vw, 50vw'
+                  eager={index < 4}
+                />
               </div>
               <div className='flex items-start justify-between gap-2 p-3'>
                 <div className='min-w-0'>
