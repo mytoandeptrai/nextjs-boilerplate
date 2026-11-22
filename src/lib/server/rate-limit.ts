@@ -25,8 +25,12 @@ export const isRateLimited = (key: string, limit: number, windowMs: number, now 
   return false;
 };
 
+/**
+ * `x-real-ip` first: the reverse proxy (nginx, Vercel) overwrites it with the peer address, whereas a client can
+ * prepend anything to `x-forwarded-for`.
+ */
 export const getClientIp = (headers: Headers): string =>
-  headers.get('x-forwarded-for')?.split(',')[0]?.trim() || headers.get('x-real-ip') || 'unknown';
+  headers.get('x-real-ip')?.trim() || headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
 
 /** `true` when the request comes from this app (or has no `Origin`, e.g. curl and same-origin GET). */
 export const isSameOrigin = (req: Request, appUrl: string): boolean => {
